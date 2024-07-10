@@ -69,9 +69,10 @@ app.use('/api/v1/users',authenticateUser , userRouter);
 app.use('/api/v1/auth', authRouter);
 
 
-app.get('*',(req,res) => {
+app.get('*', (req, res) => {
   res.sendFile(path.resolve(__dirname, './Client/dist', 'index.html'));
-})
+});
+
 
 
 
