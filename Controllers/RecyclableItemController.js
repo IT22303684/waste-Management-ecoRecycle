@@ -2,6 +2,7 @@ import RItem from '../models/RItemsModel.js'
 import { StatusCodes } from 'http-status-codes';
 import cloudinary from 'cloudinary';
 import fs from 'fs/promises';
+import { formatImage } from '../middleware/multerMiddleware.js';
 
 
 
@@ -17,8 +18,9 @@ export const createRItem = async  (req, res) => {
   const obj = {...req.body};
 
   if(req.file) {
-    const response = await cloudinary.v2.uploader.upload(req.file.path) ;
-    await fs.unlink(req.file.path);
+    const file = formatImage(req.file);
+    const response = await cloudinary.v2.uploader.upload(file) ;
+    
     obj.itemPhoto = response.secure_url;
     obj.itemPhotoPublicId = response.public_id;
 }

@@ -1,7 +1,7 @@
 import { StatusCodes } from "http-status-codes";
 import User from '../models/UserModel.js';
 import cloudinary from 'cloudinary';
-import fs from 'fs/promises';
+import { formatImage } from "../middleware/multerMiddleware.js";
 
 
 
@@ -27,8 +27,9 @@ export const updateUser = async (req, res) => {
     delete obj.password;
 
     if(req.file) {
-        const response = await cloudinary.v2.uploader.upload(req.file.path) ;
-        await fs.unlink(req.file.path);
+        const file = formatImage(req.file);
+        const response = await cloudinary.v2.uploader.upload(file) ;
+       
         obj.avatar = response.secure_url;
         obj.avatarPublicId = response.public_id;
     }
