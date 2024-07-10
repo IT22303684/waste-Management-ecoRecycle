@@ -54,9 +54,7 @@ app.use(express.static(path.resolve(__dirname, './Client/dist')));
 app.use(cookieParser());
 app.use(express.json());
 
-app.get('/', (req, res) => {
-  res.send('Hello World');
-});
+
 
 
 app.get('/api/v1/test', (req, res) => {
