@@ -51,12 +51,13 @@ if(process.env.NODE_ENV === 'development') {
 
 app.use(express.static(path.resolve(__dirname, './Client/dist')));
 
-app.get('*', (req, res) => {
-  res.sendFile(path.resolve(__dirname, './Client/dist', 'index.html'));
-});
+
 
 app.use(cookieParser());
 app.use(express.json());
+
+
+
 
 
 
@@ -71,6 +72,11 @@ app.get('/api/v1/test', (req, res) => {
 app.use('/api/v1/RItems', authenticateUser , RItemRouter);
 app.use('/api/v1/users',authenticateUser , userRouter);
 app.use('/api/v1/auth', authRouter);
+
+
+app.get('*', (req, res) => {
+  res.sendFile(path.resolve(__dirname, './Client/dist', 'index.html'));
+});
 
 
 
