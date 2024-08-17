@@ -15,6 +15,7 @@ import {
   Admin,
   EditItems,
   AllItems,
+  AdminDashboard,
 } from "./pages/index";
 
 import { action as registerAction } from "./pages/Register";
@@ -47,6 +48,10 @@ function App() {
           path: "login",
           element: <Login />,
           action: loginAction,
+        },
+        {
+          path: "AdminDashboard",
+          element: <AdminDashboard />,
         },
         {
           path: "dashboard",

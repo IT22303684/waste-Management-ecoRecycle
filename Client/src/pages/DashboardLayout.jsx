@@ -9,6 +9,17 @@ import Wrapper from "../assets/wrappers/DashboardFormPage";
 export const loader = async () => {
   try {
     const { data } = await customFetch.get("/users/current-user");
+
+    // Extract the role from the data
+    const { user } = data;
+    const { role } = user;
+    console.log(role);
+
+    // Check the user's role and redirect accordingly
+    if (role === "admin") {
+      return redirect("/AdminDashboard");
+    }
+
     return data;
   } catch (error) {
     return redirect("/");
