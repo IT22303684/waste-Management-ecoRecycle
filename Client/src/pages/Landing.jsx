@@ -4,14 +4,14 @@ import styled from "styled-components";
 import { NavBar } from "../Components";
 import hero from "../assets/Images/recycleBin2.svg";
 import Footer from "../Components/Footer";
-import banner from "../assets/Images/banner2.svg";
+import banner from "../assets/Images/banner.svg";
 
 const Landing = () => {
   return (
     <>
       <NavBar />
 
-      <div className="container flex  flex-col-reverse mx-auto p-1 lg:flex-row px-40 bg-background">
+      <div className="container flex  flex-col-reverse mx-auto p-1 lg:flex-row px-40">
         <div className="flex flex-col space-y-10 mb-44 lg:mt-16 lg:w-1/2 xl:mb-52">
           <h1 className="text-6xl font-bold text-center lg:text-6xl lg:max-w-md lg:text-left">
             TURN Waste Into Money
