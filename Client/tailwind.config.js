@@ -17,6 +17,7 @@ export default {
         DarkGunmetal : 'rgb(26,35,49)',
         sidebar : 'rgb(249,250,251)',
         itemBox : 'rgb(63,63,63)',
+        background : 'rgb(237,245,242)',
 
       },
       fontFamily: {
