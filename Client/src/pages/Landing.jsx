@@ -2,16 +2,16 @@ import React from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { NavBar } from "../Components";
-import hero from "../assets/Images/recycleBin.svg";
+import hero from "../assets/Images/hero-section-bg-remover.svg";
 import Footer from "../Components/Footer";
-import banner from "../assets/Images/banner.svg";
+import banner from "../assets/Images/banner2.svg";
 
 const Landing = () => {
   return (
     <>
       <NavBar />
 
-      <div className="container flex  flex-col-reverse mx-auto p-1 lg:flex-row px-40">
+      <div className="container flex  flex-col-reverse mx-auto p-1 lg:flex-row px-40 bg-green-100">
         <div className="flex flex-col space-y-10 mb-44 lg:mt-16 lg:w-1/2 xl:mb-52">
           <h1 className="text-6xl font-bold text-center lg:text-6xl lg:max-w-md lg:text-left">
             TURN Waste Into Money
@@ -34,7 +34,7 @@ const Landing = () => {
         </div>
       </div>
 
-      <div className="">
+      <div className="bg-green-100">
         <img src={banner} alt="" className="w-screen h-auto" />
       </div>
 
