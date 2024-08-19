@@ -4,7 +4,7 @@ import styled from "styled-components";
 import { NavBar } from "../Components";
 import hero from "../assets/Images/recycleBin2.svg";
 import Footer from "../Components/Footer";
-import banner from "../assets/Images/banner.svg";
+import banner from "../assets/Images/banner-bg-remove.svg";
 
 const Landing = () => {
   return (
