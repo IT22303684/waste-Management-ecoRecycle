@@ -7,7 +7,7 @@ function NavBar() {
   return (
     <div>
       {/* nav container */}
-      <nav className="relative container mx-auto pl-10 pr-10 pt-0 bg-background">
+      <nav className="relative container mx-auto pl-10 pr-10 pt-0">
         <div className="flex justify-between items-center">
           {/* flex container for logo */}
           <div className="flex items-center space-x-20">
