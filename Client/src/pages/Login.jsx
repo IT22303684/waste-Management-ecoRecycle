@@ -28,7 +28,7 @@ const Login = () => {
     <div>
       <NavBar />
 
-      <div className="flex items-center justify-center min-h-screen">
+      <div className="flex items-center justify-center min-h-screen bg-background">
         {/* <!--Card Container--> */}
         <div className="relative flex flex-col m-6 space-y-10 bg-white shadow-2xl shadow-black rounded-2xl md:flex-row md:space-y-0 md:mb-15 border border-black  ">
           {/* <!--Left side--> */}
