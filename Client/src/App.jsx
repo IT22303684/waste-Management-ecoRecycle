@@ -16,6 +16,13 @@ import {
   EditItems,
   AllItems,
   AdminDashboard,
+  AdminDashbordLayout, 
+  AdminDashbord, Request, 
+  Staf, 
+  Company, 
+  Item, 
+  Transaction, 
+  Vehicle, Route, AddRoute
 } from "./pages/index";
 
 import { action as registerAction } from "./pages/Register";
@@ -88,6 +95,48 @@ function App() {
               action: editItemAction,
             },
             { path: "delete-item/:id", action: deleteItemAction },
+          ],
+        },
+        {
+          path: "admin",
+          element: <AdminDashbordLayout />,
+          children: [
+            {
+              index: true,
+              element: <AdminDashbord />,
+            },
+            {
+              path: "/admin/request",
+              element: <Request />,
+            },
+            {
+              path: "/admin/route",
+              element: <Route />,
+            },
+            {
+              path: "/admin/staf",
+              element: <Staf />,
+            },
+            {
+              path: "/admin/company",
+              element: <Company />,
+            },
+            {
+              path: "/admin/transaction",
+              element: <Transaction />,
+            },
+            {
+              path: "/admin/vehicle",
+              element: <Vehicle />,
+            },
+            {
+              path: "/admin/item",
+              element: <Item />,
+            },
+            {
+              path: "/admin/request/add-route",
+              element: <AddRoute />,
+            },
           ],
         },
       ],

@@ -12,3 +12,18 @@ export { default as EditItems } from './EditItems'
 export { default as Profile } from './Profile'
 export { default as Admin } from './Admin'
 export {default as AdminDashboard} from './AdminDashboard'
+
+
+
+
+export {default as AdminDashbordLayout } from './AdminDashbordLayout'
+export {default as AdminDashbord } from './Dashbord'
+export {default as Request } from './Request'
+export {default as Staf } from './Staf'
+export {default as Company } from './Company'
+export {default as Item } from './Item'
+export {default as Transaction } from './Transaction'
+export {default as Vehicle } from './Vehicle'
+export {default as Route } from './Route'
+export {default as AddRoute } from './AddRoute'
+
