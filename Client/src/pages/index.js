@@ -26,4 +26,5 @@ export {default as Transaction } from './Transaction'
 export {default as Vehicle } from './Vehicle'
 export {default as Route } from './Route'
 export {default as AddRoute } from './AddRoute'
+export {default as Test } from './Test'
 

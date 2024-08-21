@@ -22,7 +22,7 @@ import {
   Company, 
   Item, 
   Transaction, 
-  Vehicle, Route, AddRoute
+  Vehicle, Route, AddRoute,Test
 } from "./pages/index";
 
 import { action as registerAction } from "./pages/Register";
@@ -57,10 +57,6 @@ function App() {
           action: loginAction,
         },
         {
-          path: "AdminDashboard",
-          element: <AdminDashboard />,
-        },
-        {
           path: "dashboard",
           element: <DashboardLayout />,
           loader: dashboardLoader,
@@ -85,20 +81,18 @@ function App() {
               action: profileAction,
             },
             {
-              path: "admin",
-              element: <Admin />,
-            },
-            {
               path: "edit-items/:id",
               element: <EditItems />,
               loader: editItemLoader,
               action: editItemAction,
             },
-            { path: "delete-item/:id", action: deleteItemAction },
+            { path: "delete-item/:id",
+              action: deleteItemAction 
+            },
           ],
         },
         {
-          path: "admin",
+          path: "AdminDashboard",
           element: <AdminDashbordLayout />,
           children: [
             {
@@ -106,36 +100,32 @@ function App() {
               element: <AdminDashbord />,
             },
             {
-              path: "/admin/request",
+              path: "request",
               element: <Request />,
             },
             {
-              path: "/admin/route",
+              path: "route",
               element: <Route />,
             },
             {
-              path: "/admin/staf",
+              path: "staf",
               element: <Staf />,
             },
             {
-              path: "/admin/company",
+              path: "company",
               element: <Company />,
             },
             {
-              path: "/admin/transaction",
+              path: "transaction",
               element: <Transaction />,
             },
             {
-              path: "/admin/vehicle",
+              path: "vehicle",
               element: <Vehicle />,
             },
             {
-              path: "/admin/item",
+              path: "item",
               element: <Item />,
-            },
-            {
-              path: "/admin/request/add-route",
-              element: <AddRoute />,
             },
           ],
         },

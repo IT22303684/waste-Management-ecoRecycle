@@ -14,49 +14,49 @@ export const ADMIN_DASHBOARD_SIDEBAR_UPPER_LINKS = [
 	{
 		key: 'dashboard',
 		label: 'Dashboard',
-		path: '/admin',
+		path: '/AdminDashboard',
 		icon: <HiOutlineViewGrid />
 	},
 	{
 		key: 'request',
 		label: 'Request',
-		path: '/admin/request',
+		path: '/AdminDashboard/request',
 		icon: <HiArrowNarrowDown  />
 	},
 	{
 		key: 'route',
 		label: 'Route',
-		path: '/admin/route',
+		path: '/AdminDashboard/route',
 		icon: <HiOutlineLocationMarker   />
 	},
 	{
 		key: 'staf',
 		label: 'Staf',
-		path: '/admin/staf',
+		path: '/AdminDashboard/staf',
 		icon: <HiOutlineUsers />
 	},
 	{
 		key: 'company',
 		label: 'Company',
-		path: '/admin/company',
+		path: '/AdminDashboard/company',
 		icon: <HiOfficeBuilding  />
 	},
 	{
 		key: 'item',
 		label: 'Item',
-		path: '/admin/item',
+		path: '/AdminDashboard/item',
 		icon: <HiCube  />
 	},
 	{
 		key: 'transactions',
 		label: 'Transactions',
-		path: '/admin/transaction',
+		path: '/AdminDashboard/transaction',
 		icon: <HiOutlineDocumentText />
 	},
 	{
 		key: 'vehicle',
 		label: 'Vehicle',
-		path: '/admin/vehicle',
+		path: '/AdminDashboard/vehicle',
 		icon: <HiTruck />
 	}
 ]
