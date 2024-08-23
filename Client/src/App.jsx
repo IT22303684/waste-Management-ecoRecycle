@@ -16,13 +16,17 @@ import {
   EditItems,
   AllItems,
   AdminDashboard,
-  AdminDashbordLayout, 
-  AdminDashbord, Request, 
-  Staf, 
-  Company, 
-  Item, 
-  Transaction, 
-  Vehicle, Route, AddRoute,Test
+  AdminDashbordLayout,
+  AdminDashbord,
+  Request,
+  Staf,
+  Company,
+  Item,
+  Transaction,
+  Vehicle,
+  Route,
+  AddRoute,
+  Test,
 } from "./pages/index";
 
 import { action as registerAction } from "./pages/Register";
@@ -34,6 +38,7 @@ import { loader as AllItemsLoader } from "./pages/AllItems";
 import { loader as editItemLoader } from "./pages/EditItems";
 import { action as editItemAction } from "./pages/EditItems";
 import { action as deleteItemAction } from "./pages/DeleteItem";
+import { loader as AdminDashboardLoader } from "./pages/AdminDashbordLayout";
 
 function App() {
   const router = createBrowserRouter([
@@ -86,14 +91,13 @@ function App() {
               loader: editItemLoader,
               action: editItemAction,
             },
-            { path: "delete-item/:id",
-              action: deleteItemAction 
-            },
+            { path: "delete-item/:id", action: deleteItemAction },
           ],
         },
         {
           path: "AdminDashboard",
           element: <AdminDashbordLayout />,
+          loader: AdminDashboardLoader,
           children: [
             {
               index: true,
