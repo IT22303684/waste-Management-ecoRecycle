@@ -52,7 +52,7 @@ const Login = () => {
 
               {/* <!--Middle conten--> */}
               <div className="flex flex-col items-center justify-between mt-6 space-y-6 md:flex-row">
-                <div className="font-thin text-cyan-700">
+                <div className=" text-cyan-700">
                   {" "}
                   <Link to="/register"> Register</Link>
                 </div>

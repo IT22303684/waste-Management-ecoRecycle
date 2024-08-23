@@ -16,6 +16,13 @@ import {
   EditItems,
   AllItems,
   AdminDashboard,
+  AdminDashbordLayout, 
+  AdminDashbord, Request, 
+  Staf, 
+  Company, 
+  Item, 
+  Transaction, 
+  Vehicle, Route, AddRoute,Test
 } from "./pages/index";
 
 import { action as registerAction } from "./pages/Register";
@@ -50,10 +57,6 @@ function App() {
           action: loginAction,
         },
         {
-          path: "AdminDashboard",
-          element: <AdminDashboard />,
-        },
-        {
           path: "dashboard",
           element: <DashboardLayout />,
           loader: dashboardLoader,
@@ -78,16 +81,52 @@ function App() {
               action: profileAction,
             },
             {
-              path: "admin",
-              element: <Admin />,
-            },
-            {
               path: "edit-items/:id",
               element: <EditItems />,
               loader: editItemLoader,
               action: editItemAction,
             },
-            { path: "delete-item/:id", action: deleteItemAction },
+            { path: "delete-item/:id",
+              action: deleteItemAction 
+            },
+          ],
+        },
+        {
+          path: "AdminDashboard",
+          element: <AdminDashbordLayout />,
+          children: [
+            {
+              index: true,
+              element: <AdminDashbord />,
+            },
+            {
+              path: "request",
+              element: <Request />,
+            },
+            {
+              path: "route",
+              element: <Route />,
+            },
+            {
+              path: "staf",
+              element: <Staf />,
+            },
+            {
+              path: "company",
+              element: <Company />,
+            },
+            {
+              path: "transaction",
+              element: <Transaction />,
+            },
+            {
+              path: "vehicle",
+              element: <Vehicle />,
+            },
+            {
+              path: "item",
+              element: <Item />,
+            },
           ],
         },
       ],

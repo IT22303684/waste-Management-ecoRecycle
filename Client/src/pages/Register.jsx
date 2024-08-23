@@ -64,8 +64,8 @@ const Register = () => {
 
               {/* <!--Middle conten--> */}
               <div className="flex flex-col items-center justify-between  space-y-6 md:flex-row">
-                <div className="font-thin text-cyan-700">
-                  are you already a member ? <br />
+                <div className=" text-cyan-700">
+                  are you already a <br /> member ? <br /> <br />
                   <Link to="/login"> Log in</Link>
                 </div>
 
