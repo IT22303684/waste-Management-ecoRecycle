@@ -1,8 +1,27 @@
 import React, { useEffect, useState } from 'react';
-import { useParams, Form, redirect, useLoaderData  } from 'react-router-dom';
+import { useParams, Form, redirect, useLoaderData } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import customFetch from '../utils/customFetch';
 
+// Loader function to fetch route and vehicle data
+export const loader = async ({ params }) => {
+  try {
+    const [routeResponse, vehicleResponse] = await Promise.all([
+      customFetch(`/routePath/retriveSpecificRoutePath/${params.id}`),
+      customFetch(`/vehicle/retrivevehicles`)
+    ]);
+
+    return {
+      route: routeResponse.data,
+      vehicles: vehicleResponse.data
+    };
+  } catch (error) {
+    toast.error(error?.response?.data?.msg || "Failed to load data");
+    return redirect("/AdminDashboard/route");
+  }
+};
+
+// Action function for handling form submission
 export const action = async ({ request, params }) => {
   const formData = await request.formData();
   const data = Object.fromEntries(formData);
@@ -22,20 +41,19 @@ export const action = async ({ request, params }) => {
   }
 };
 
-export const loader = async ({ params }) => {
-  try {
-    const { data } = await customFetch(`/routePath/retriveSpecificRoutePath/${params.id}`);
-    return data;
-  } catch (error) {
-    toast.error(error?.response?.data?.msg);
-    return redirect("/AdminDashboard/route");
-  }
-};
-
 export default function EditRoute() {
-  const data = useLoaderData();
+  const { route, vehicles } = useLoaderData();
+  const [vehicleOptions, setVehicleOptions] = useState([]);
 
-  if (!data) {
+  // Populate vehicle options when data is fetched
+  useEffect(() => {
+    if (vehicles && Array.isArray(vehicles)) {
+      setVehicleOptions(vehicles);
+      console.log('Vehicle Options:', vehicles); // Debugging
+    }
+  }, [vehicles]);
+
+  if (!route) {
     return <div>Loading...</div>;
   }
 
@@ -50,7 +68,7 @@ export default function EditRoute() {
             <input
               type='text'
               name='CustomerName'
-              defaultValue={data.CustomerName} // Use `data` directly
+              defaultValue={route.CustomerName}
               className='w-full border-2 border-gray-100 rounded-xl p-3 mt-1'
               placeholder='Enter Name'
             />
@@ -61,7 +79,7 @@ export default function EditRoute() {
             <input
               type='text'
               name='ContactNumber'
-              defaultValue={data.ContactNumber} // Use `data` directly
+              defaultValue={route.ContactNumber}
               className='w-full border-2 border-gray-100 rounded-xl p-3 mt-1'
               placeholder='Enter Number'
             />
@@ -83,7 +101,7 @@ export default function EditRoute() {
             <input
               type='text'
               name='PickupPath'
-              defaultValue={data.PickupPath} // Use `data` directly
+              defaultValue={route.PickupPath}
               className='w-full border-2 border-gray-100 rounded-xl p-3 mt-1'
               placeholder='Enter Path'
             />
@@ -94,7 +112,7 @@ export default function EditRoute() {
             <input
               type='date'
               name='ArriveDate'
-              defaultValue={data.ArriveDate} // Use `data` directly
+              defaultValue={route.ArriveDate}
               className='w-full border-2 border-gray-100 rounded-xl p-3 mt-1'
             />
           </div>
@@ -104,28 +122,36 @@ export default function EditRoute() {
             <input
               type='time'
               name='ArriveTime'
-              defaultValue={data.ArriveTime} // Use `data` directly
+              defaultValue={route.ArriveTime}
               className='w-full border-2 border-gray-100 rounded-xl p-3 mt-1'
             />
           </div>
 
+          {/* Vehicle selection */}
           <div className='mt-4'>
             <label className='text-lg font-medium'>Vehicle</label>
             <select
               name='Vehicle'
-              defaultValue={data.Vehicle} // Use `data` directly
+              defaultValue={route.Vehicle}
               className='w-full border-2 border-gray-50 rounded-xl p-3 mt-1'
             >
-              <option value=''>Select Vehicle</option>
-              <option value='Car'>Car</option>
-              <option value='Bus'>Bus</option>
-              <option value='Bike'>Bike</option>
-              <option value='Truck'>Truck</option>
+              <option value={route.Vehicle}>{route.Vehicle}</option>
+              {vehicleOptions.length > 0 ? (
+                vehicleOptions.map(vehicle => (
+                  <option key={vehicle._id} value={vehicle.VehicleNumber}>
+                    {vehicle.VehicleNumber} - {vehicle.VehicleName}
+                  </option>
+                ))
+              ) : (
+                <option disabled>No vehicles available</option>
+              )}
             </select>
           </div>
 
           <div className='mt-4'>
-            <button type='submit' className='bg-green-500 text-white font-bold py-4 rounded w-full hover:bg-green-700'>SUBMIT</button>
+            <button type='submit' className='bg-green-500 text-white font-bold py-4 rounded w-full hover:bg-green-700'>
+              SUBMIT
+            </button>
           </div>
         </Form>
       </div>
