@@ -27,4 +27,6 @@ export {default as Vehicle } from './Vehicle'
 export {default as Route } from './Route'
 export {default as AddRoute } from './AddRoute'
 export {default as Test } from './Test'
+export {default as EditRoute } from './EditRoute'
+
 

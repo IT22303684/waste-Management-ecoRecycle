@@ -9,6 +9,7 @@ import morgan from 'morgan';
 import mongoose from 'mongoose';
 import cookieParser from 'cookie-parser';
 import cloudinary from 'cloudinary';
+app.use(express.json());
 
 
 
@@ -18,6 +19,10 @@ import cloudinary from 'cloudinary';
 import RItemRouter from './routes/RItemRouter.js';
 import authRouter from './routes/authRouter.js';
 import userRouter from './routes/userRouter.js';
+import routePathRouter from './routes/routePathRouter.js';
+import vehicleRouter from './routes/vehicleRouter.js';
+
+
 
 
 //public
@@ -50,6 +55,7 @@ if(process.env.NODE_ENV === 'development') {
 }
 
 
+
 app.use(express.static(path.resolve(__dirname, './Client/dist')));
 app.use(cookieParser());
 app.use(express.json());
@@ -68,6 +74,10 @@ app.get('/api/v1/test', (req, res) => {
 app.use('/api/v1/RItems', authenticateUser , RItemRouter);
 app.use('/api/v1/users',authenticateUser , userRouter);
 app.use('/api/v1/auth', authRouter);
+app.use('/api/v1/routePath', routePathRouter);
+app.use('/api/v1/vehicle', vehicleRouter);
+
+
 
 
 app.get('*', (req, res) => {

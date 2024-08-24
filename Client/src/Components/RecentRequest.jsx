@@ -19,6 +19,15 @@ const recentRequestData = [
         requestQuentity: '2KG',
         address: 'kirimetimulla, thelijjawila',
         currentStatus: 'pending'
+    },
+    {
+        requestId: '456',
+        customerName: 'jinad',
+        requestDate: '2024-07-19',
+        type: 'plastic',
+        requestQuentity: '2KG',
+        address: 'kirimetimulla, thelijjawila',
+        currentStatus: 'pending'
     }
 ]
 
@@ -33,6 +42,7 @@ export default function RecentRequest() {
                 <thead>
                     <tr>
                         <th>Request Id</th>
+                        <th></th>
                         <th>Customer Name</th>
                         <th>Request Date</th>
                         <th>Request Type</th>
@@ -46,6 +56,7 @@ export default function RecentRequest() {
                 {recentRequestData.map((request)=>(
                     <tr key={request.requestId}>
                         <td>{request.requestId}</td>
+                        <td><img src="" alt="image" class="object-fill rounded h-30 w-30 rounded-r-none transform hover:scale-105 hover:rounded-xl duration-200" /></td>
                         <td>{request.customerName}</td>
                         <td>{request.requestDate}</td>
                         <td>{request.type}</td>

@@ -22,7 +22,11 @@ import {
   Company, 
   Item, 
   Transaction, 
-  Vehicle, Route, AddRoute,Test
+  Vehicle, 
+  Route, 
+  AddRoute,
+  Test,
+  EditRoute
 } from "./pages/index";
 
 import { action as registerAction } from "./pages/Register";
@@ -34,6 +38,9 @@ import { loader as AllItemsLoader } from "./pages/AllItems";
 import { loader as editItemLoader } from "./pages/EditItems";
 import { action as editItemAction } from "./pages/EditItems";
 import { action as deleteItemAction } from "./pages/DeleteItem";
+import { loader as routeLoader } from "./pages/Route";
+import { loader as editRouteLoader } from "./pages/EditRoute";
+import { action as editRouteAction } from "./pages/EditRoute";
 
 function App() {
   const router = createBrowserRouter([
@@ -106,6 +113,7 @@ function App() {
             {
               path: "route",
               element: <Route />,
+              loader: routeLoader,
             },
             {
               path: "staf",
@@ -127,6 +135,17 @@ function App() {
               path: "item",
               element: <Item />,
             },
+            {
+              path: "addRoute",
+              element: <AddRoute />,
+            },
+            {
+              path: "editRoute/:id",
+              element: <EditRoute />,
+              loader: editRouteLoader,
+              action: editRouteAction,
+            },
+            
           ],
         },
       ],
