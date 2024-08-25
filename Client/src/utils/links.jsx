@@ -23,6 +23,16 @@ const links = [
     icon: <IoBarChartSharp />,
   },
   {
+    text: "Bank Account Details",
+    path: "Bank-Details",
+    icon: <IoBarChartSharp />,
+  },
+  {
+    text: "View Bank Account Details",
+    path: "VBank-Details",
+    icon: <IoBarChartSharp />,
+  },
+  {
     text: "all Items",
     path: "all-Items",
     icon: <MdQueryStats />,

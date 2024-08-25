@@ -11,6 +11,8 @@ import {
   Error,
   Dashboard,
   AddItems,
+  AddBankDetails,
+  ViewBankDetails,
   Profile,
   Admin,
   EditItems,
@@ -34,6 +36,8 @@ import { action as loginAction } from "./pages/Login";
 import { loader as dashboardLoader } from "./pages/DashboardLayout";
 import { action as profileAction } from "./pages/Profile";
 import { action as addRitemAction } from "./pages/AddItems";
+import { action as addBankDetails } from "./pages/AddBankDetails";
+import { action as viewBankDetails } from "./pages/ViewBankDetails";
 import { loader as AllItemsLoader } from "./pages/AllItems";
 import { loader as editItemLoader } from "./pages/EditItems";
 import { action as editItemAction } from "./pages/EditItems";
@@ -75,6 +79,17 @@ function App() {
               element: <AddItems />,
               action: addRitemAction,
             },
+            {
+              path: "VBank-Details",
+              element: <ViewBankDetails />,
+              action: viewBankDetails,
+            },
+            {
+              path: "Bank-Details",
+              element: <AddBankDetails />,
+              action: addBankDetails,
+            },
+
             {
               path: "all-items",
               element: <AllItems />,

@@ -16,6 +16,7 @@ import cloudinary from 'cloudinary';
 
 // routers
 import RItemRouter from './routes/RItemRouter.js';
+import BankRouter from './routes/BankRouter.js';
 import authRouter from './routes/authRouter.js';
 import userRouter from './routes/userRouter.js';
 import CompanyRouter from './routes/CompanyRoute.js';
@@ -64,7 +65,7 @@ app.get('/api/v1/test', (req, res) => {
 
 
 
-
+app.use('/api/v1/Bank', BankRouter);
 app.use('/api/v1/RItems', authenticateUser , RItemRouter);
 app.use('/api/v1/users',authenticateUser , userRouter);
 app.use('/api/v1/auth', authRouter);
@@ -92,11 +93,15 @@ app.use(errorHandelerMiddleware);
 
 
 try {
+  console.log("hi")
     await mongoose.connect(process.env.MONGO_URL)
+    console.log("hg")
     app.listen(PORT, () => {
+      console.log("na")
         console.log(`Server is running on ${PORT}`);
       });
 }catch(error) {
+  console.log("my")
     console.log(error);
 }
 
