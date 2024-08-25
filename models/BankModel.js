@@ -6,7 +6,7 @@ const bankSchema = new mongoose.Schema({
         required: false,
     },
     Account_Number: {
-        type: Number,
+        type: String,
         required: false,
     },
     Account_Name: {
@@ -18,7 +18,7 @@ const bankSchema = new mongoose.Schema({
         required: false,
     },
     Branch_Code : {
-        type: Number,
+        type: String,
         required: false,
     },
   });

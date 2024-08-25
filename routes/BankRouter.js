@@ -1,13 +1,14 @@
 import { Router } from "express";
 import upload from "../middleware/multerMiddleware.js";
-
+ 
 const router = Router();
-
-import { createBank } from '../Controllers/BankController.js';
+ 
+import { createBank, getBankById, updateBank, deleteBank } from '../Controllers/BankController.js';
 console.log("ïnsideeeeeeee")
 // Define routes for bank-related operations
-router.post('/',createBank); // Route for creating a new bank object
-console.log("name")
-// Additional routes for bank operations (e.g., get, patch, delete) can be added here if needed
-
+router.post('/',createBank);
+router.get('/:id', getBankById);
+router.put('/:id', updateBank);
+router.delete('/:id', deleteBank);
+ 
 export default router;
