@@ -1,38 +1,16 @@
 import React from 'react'
 import RequestStatus from '../utils/RequestStatus'
-
-const recentRequestData = [
-    {
-        requestId: '123',
-        customerName: 'dasun',
-        requestDate: '2024-08-19',
-        type: 'Iron',
-        requestQuentity: '5KG',
-        address: 'kirimetimulla, thelijjawila',
-        currentStatus: 'pending'
-    },
-    {
-        requestId: '456',
-        customerName: 'jinad',
-        requestDate: '2024-07-19',
-        type: 'plastic',
-        requestQuentity: '2KG',
-        address: 'kirimetimulla, thelijjawila',
-        currentStatus: 'pending'
-    },
-    {
-        requestId: '456',
-        customerName: 'jinad',
-        requestDate: '2024-07-19',
-        type: 'plastic',
-        requestQuentity: '2KG',
-        address: 'kirimetimulla, thelijjawila',
-        currentStatus: 'pending'
-    }
-]
+import { useAllRecentRequest } from '../pages/Dashbord'
 
 
 export default function RecentRequest() {
+
+    const { data, setData} = useAllRecentRequest();
+
+    if (!data || data.length === 0) {
+        return <h1>No Items to display...</h1>;
+    }
+
   return (
     <div className='bg-white px-4  pb-4 rounded-sm border border-gray-200 w-full'>
         <strong className='text-gray-700 font-medium'>Recent Request</strong>
@@ -46,23 +24,24 @@ export default function RecentRequest() {
                         <th>Customer Name</th>
                         <th>Request Date</th>
                         <th>Request Type</th>
-                        <th>Quentity</th>
+                        <th>Weight (KG)</th>
                         <th>Request Address</th>
                         <th>Status</th>
                         <th></th>
                     </tr>
                 </thead>
                 <tbody>
-                {recentRequestData.map((request)=>(
-                    <tr key={request.requestId}>
-                        <td>{request.requestId}</td>
-                        <td><img src="" alt="image" class="object-fill rounded h-30 w-30 rounded-r-none transform hover:scale-105 hover:rounded-xl duration-200" /></td>
-                        <td>{request.customerName}</td>
-                        <td>{request.requestDate}</td>
-                        <td>{request.type}</td>
-                        <td>{request.requestQuentity}</td>
-                        <td>{request.address}</td>
-                        <td>{RequestStatus(request.currentStatus)}</td>
+                {data.map((request)=>(
+                    <tr className='hover:bg-gray-50' key={request._id}>
+
+                        <td >{request._id}</td>
+                        <td><img src={request.itemPhoto} alt="image" class="object-fill rounded h-12 w-12 rounded-r-none transform hover:scale-105 hover:h-28 hover:w-28 duration-200" /></td>
+                        <td>{request.name}</td>
+                        <td>none</td>
+                        <td>{request.category}</td>
+                        <td>{request.weight}</td>
+                        <td>{request.Location}</td>
+                        <td>{RequestStatus(request.status)}</td>
                         <td>
                             <button className='bg-green-500 mr-3 text-white px-4 py-2 hover:bg-green-700 rounded shadow-md outline-none border-none select-none'>
                                 Aprove
