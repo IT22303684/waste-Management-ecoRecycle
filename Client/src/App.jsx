@@ -27,6 +27,7 @@ import {
   Route,
   AddRoute,
   Test,
+  Paymentinfo,
 } from "./pages/index";
 
 import { action as registerAction } from "./pages/Register";
@@ -91,6 +92,11 @@ function App() {
               loader: editItemLoader,
               action: editItemAction,
             },
+            {
+              path: "payment-info",
+              element: <Paymentinfo />,
+            },
+
             { path: "delete-item/:id", action: deleteItemAction },
           ],
         },

@@ -12,6 +12,7 @@ export { default as EditItems } from './EditItems'
 export { default as Profile } from './Profile'
 export { default as Admin } from './Admin'
 export {default as AdminDashboard} from './AdminDashboard'
+export { default as Paymentinfo} from './PaymentInfo'
 
 
 
