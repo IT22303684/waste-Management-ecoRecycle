@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useAllRecycleItems } from "../pages/AllItems";
 import image from "../assets/Images/signup.svg";
 import { Form, Link } from "react-router-dom";
@@ -8,7 +8,6 @@ function RecycleItem({
   _id,
   name,
   description,
-  price,
   Location,
   category,
   status,
@@ -17,7 +16,12 @@ function RecycleItem({
   console.log(name);
   console.log(Location);
   const navigation = useNavigation();
-  const isSubmitting = navigation.state === "submitting";
+  const [isDeleting, setIsDeleting] = useState(false);
+
+  const handleDeleteClick = () => {
+    setIsDeleting(true);
+  };
+
   return (
     <div className=" w-[47%] m-2 ">
       <div className="bg-gray-200 p-2 mx-6 rounded-2xl shadow-lg border-black">
@@ -60,9 +64,6 @@ function RecycleItem({
               {description}
             </p>
             <div className=" flex justify-between border ">
-              <p className="text-lg text-darkViolet font-extrabold ">
-                Rs: {price}
-              </p>
               <p className=" text-black ml-5 text-lg">{Location}</p>
             </div>
             <div className="border-black  flex ">
@@ -71,13 +72,17 @@ function RecycleItem({
                   Edit items
                 </button>
               </Link>
-              <Form method="post" action={`../delete-item/${_id}`}>
+              <Form
+                method="post"
+                action={`../delete-item/${_id}`}
+                onSubmit={handleDeleteClick}
+              >
                 <button
-                  disabled={isSubmitting}
+                  disabled={isDeleting}
                   className="bg-red-600 text-white bg-red p-2 rounded-lg mt-2 ml-2 shadow-lg hover:opacity-80 transition hover:translate-y-0.5 duration-150 "
                 >
                   <span className="text-black">
-                    {isSubmitting ? "Deletng.." : "Delete"}
+                    {isDeleting ? "Deleting.." : "Delete"}
                   </span>
                 </button>
               </Form>
