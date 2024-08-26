@@ -54,7 +54,7 @@ export default function RouteTable() {
                     <tbody>
                         {data.map((route) => (
                             <tr key={route._id}>
-                                <td>{route.RouteId}</td>
+                                <td>{route._id}</td>
                                 <td>{route.RequestId}</td>
                                 <td>{route.CustomerName}</td>
                                 <td>{route.ContactNumber}</td>

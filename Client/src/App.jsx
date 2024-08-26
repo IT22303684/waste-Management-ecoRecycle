@@ -42,6 +42,7 @@ import { loader as routeLoader } from "./pages/Route";
 import { loader as editRouteLoader } from "./pages/EditRoute";
 import { action as editRouteAction } from "./pages/EditRoute";
 import { loader as AdminDashbordLoader } from "./pages/Dashbord";
+import { loader as RequestLoader } from "./pages/Dashbord";
 
 function App() {
   const router = createBrowserRouter([
@@ -111,6 +112,7 @@ function App() {
             {
               path: "request",
               element: <Request />,
+              loader: RequestLoader,
             },
             {
               path: "route",

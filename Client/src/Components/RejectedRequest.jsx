@@ -1,13 +1,10 @@
 import React from 'react'
-import RequestStatus from '../utils/RequestStatus'
 import { useAllRequest } from '../pages/Request'
 
-
-export default function AprovedRequest() {
-
+export default function RejectedRequest() {
     const { data } = useAllRequest();
 
-    const aproveRequest = data ? data.filter(request => request.status == 'available') : [];
+    const rejectedRequest = data ? data.filter(request => request.status == 'available') : [];
 
     if (!data || data.length === 0) {
         return <h1>No Items to display...</h1>;
@@ -15,7 +12,7 @@ export default function AprovedRequest() {
 
   return (
     <div className='bg-white px-4  pb-4 rounded-sm border border-gray-200 w-full  pt-3'>
-        <strong className=' font-medium text-xl text-green-600'>Aproved Request</strong>
+        <strong className=' font-medium text-xl text-red'>Rejected Request</strong>
 
         <div className='mt-3'>
             <table className='w-full text-gray-700'>
@@ -31,7 +28,7 @@ export default function AprovedRequest() {
                     </tr>
                 </thead>
                 <tbody>
-                {aproveRequest.map((request)=>(
+                {rejectedRequest.map((request)=>(
                     <tr key={request._id}>
                         <td>{request._id}</td>
                         <td>{request.name}</td>
@@ -39,11 +36,11 @@ export default function AprovedRequest() {
                         <td>{request.category}</td>
                         <td>{request.weight}</td>
                         <td>{request.Location}</td>
-                        <td>
-                            <button className='bg-sky-500 mr-3 text-white px-4 py-2 hover:sky-green-700 rounded shadow-md outline-none border-none select-none'>
-                                ADD ROUTE
+
+                        <td className='flex flex-col gap-2'>
+                            <button className='bg-green-500 mr-3 text-white px-4 py-2 hover:bg-green-700 rounded shadow-md outline-none border-none select-none'>
+                                Aprove
                             </button>
-                            
                         </td>
                     </tr>
                 ))}

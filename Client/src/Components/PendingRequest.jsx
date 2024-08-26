@@ -1,11 +1,10 @@
 import React from 'react'
 import RequestStatus from '../utils/RequestStatus'
-import { useAllRecentRequest } from '../pages/Dashbord'
+import { useAllRequest } from '../pages/Request'
 
+export default function PendingRequest() {
+    const { data } = useAllRequest();
 
-export default function RecentRequest() {
-
-    const { data } = useAllRecentRequest();
 
     const pendingRequests = data ? data.filter(request => request.status == 'available') : [];
 
@@ -15,7 +14,7 @@ export default function RecentRequest() {
 
   return (
     <div className='bg-white px-4  pb-4 rounded-sm border border-gray-200 w-full pt-3'>
-        <strong className='font-medium text-xl text-green-600 '>Pending Request</strong>
+        <strong className='font-medium text-xl text-sky-600 '>Pending Request</strong>
 
         <div className='mt-3'>
             <table className='w-full text-gray-700'>

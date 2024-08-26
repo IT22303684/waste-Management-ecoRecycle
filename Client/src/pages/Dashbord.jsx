@@ -19,16 +19,21 @@ export const loader = async ({ request }) => {
 const allRecentRequestDetailsContext = createContext({ data: [] });
 
 const AllRecentRequest = () => {
-  const { data } = useLoaderData();
+const { data } = useLoaderData();
 
   return (
     <allRecentRequestDetailsContext.Provider value={{ data }}>
       <div className='flex flex-col gap-4'>
         <AdminStatusGrid />
 
-        <div className='flex flex-row gap-4 w-full'>
-          <RecentRequest />
+        <div className='flex flex-col gap-4 w-full h-screen  overflow-y-auto'>
+          <div className='flex flex-row gap-4 w-full'>
+            <RecentRequest />
+          </div>
         </div>
+
+       
+        
       </div>
     </allRecentRequestDetailsContext.Provider>
   );
