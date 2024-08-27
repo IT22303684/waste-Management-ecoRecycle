@@ -22,7 +22,7 @@ export default function AprovedRequest() {
                 <thead>
                     <tr>
                         <th>Request Id</th>
-                        <th>Customer Name</th>
+                        <th>Customer Id</th>
                         <th>Request Date</th>
                         <th>Request Type</th>
                         <th>Weight (KG)</th>
@@ -34,7 +34,7 @@ export default function AprovedRequest() {
                 {aproveRequest.map((request)=>(
                     <tr key={request._id}>
                         <td>{request._id}</td>
-                        <td>{request.name}</td>
+                        <td>{request.createdBy}</td>
                         <td>none</td>
                         <td>{request.category}</td>
                         <td>{request.weight}</td>
