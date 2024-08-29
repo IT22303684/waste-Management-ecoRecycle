@@ -46,9 +46,6 @@ export default function AprovedRequest() {
                                 ADD ROUTE
                             </button>
                         </Link>
-                            <button className='bg-purple-700 mr-3 text-white px-4 py-2 hover:sky-green-700 rounded shadow-md outline-none border-none select-none'>
-                                Process Payment
-                            </button>
                             
                         </td>
                     </tr>

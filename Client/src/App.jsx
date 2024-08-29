@@ -26,7 +26,11 @@ import {
   Route, 
   AddRoute,
   Test,
-  EditRoute
+  EditRoute,
+  AddVehicle,
+  AddEmployee,
+  EditVehicle,
+  EditEmployee,
 } from "./pages/index";
 
 import { action as registerAction } from "./pages/Register";
@@ -153,6 +157,22 @@ function App() {
               loader: editRouteLoader,
               action: editRouteAction,
             },
+            {
+              path: "AddVehicle",
+              element: <AddVehicle />
+            },
+            {
+              path: "EditVehicle",
+              element: <EditVehicle />
+            },
+            {
+              path: "AddEmployee",
+              element: <AddEmployee />
+            },
+            {
+              path: "EditEmployee",
+              element: <EditEmployee />
+            }
             
           ],
         },

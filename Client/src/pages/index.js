@@ -30,3 +30,11 @@ export {default as Test } from './Test'
 export {default as EditRoute } from './EditRoute'
 
 
+export {default as AddVehicle} from './AddVehicle'
+export {default as EditVehicle} from './EditVehicel'
+
+export {default as AddEmployee} from './AddEmployee'
+export {default as EditEmployee} from './EditEmployee'
+
+
+
