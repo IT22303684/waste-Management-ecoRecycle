@@ -59,6 +59,7 @@ const AddBankDetails = () => {
               type="text"
               name="Account Number"
               label="accountnumber"
+              // defaulyValue={user?.accountNumber}
               className="border mt-10   p-2 px-4 text-center text-white bg-zinc-600  border-zinc-600 placeholder:text-xs placeholder:text-center md:text-left placeholder:md:text-left focus:outline-none focus:bg-white focus:text-black"
               labelClass="text-xl text-white font-bold ml-6 capitalize ml-2"
             />
@@ -66,6 +67,7 @@ const AddBankDetails = () => {
               type="text"
               name="Account Name"
               label="accountname"
+              // defaulyValue={user?.accountName}
               className="border p-2 px-4 text-center text-white bg-zinc-600  border-zinc-600 placeholder:text-xs placeholder:text-center md:text-left placeholder:md:text-left focus:outline-none focus:bg-white  focus:text-black"
               labelClass="text-xl text-white font-bold capitalize ml-2"
             />
@@ -73,6 +75,7 @@ const AddBankDetails = () => {
               type="text"
               name="Bank Name"
               label="bankname"
+              // defaulyValue={user?.bankName}
               className="border  p-2 px-4 text-center text-white bg-zinc-600  border-zinc-600 placeholder:text-xs placeholder:text-center md:text-left placeholder:md:text-left focus:outline-none focus:bg-white  focus:text-black"
               labelClass="text-xl text-white font-bold capitalize ml-2"
             />
@@ -80,6 +83,7 @@ const AddBankDetails = () => {
               type="text"
               name="Branch Code"
               label="branchcode"
+              // defaulyValue={user?.branchCode}
               className="border p-2 px-4 text-center text-white bg-zinc-600  border-zinc-600 placeholder:text-xs placeholder:text-center md:text-left placeholder:md:text-left focus:outline-none focus:bg-white  focus:text-black"
               labelClass="text-xl text-white font-bold capitalize ml-2"
             />

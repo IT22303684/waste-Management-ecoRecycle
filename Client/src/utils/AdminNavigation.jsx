@@ -4,6 +4,7 @@ import {
 	HiOfficeBuilding ,
 	HiOutlineUsers,
 	HiOutlineDocumentText,
+	HiOutlineDocumentDownload,
 	HiTruck,
 	HiOutlineLocationMarker ,
 	HiOutlineQuestionMarkCircle,
@@ -52,6 +53,12 @@ export const ADMIN_DASHBOARD_SIDEBAR_UPPER_LINKS = [
 		label: 'Transactions',
 		path: '/AdminDashboard/transaction',
 		icon: <HiOutlineDocumentText />
+	},
+	{
+		key: 'completedpayments',
+		label: 'CompletedPayments',
+		path: '/AdminDashboard/completedpayments',
+		icon: <HiOutlineDocumentDownload />
 	},
 	{
 		key: 'vehicle',

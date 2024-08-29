@@ -1,5 +1,7 @@
 import React from "react";
 
+import { IoBag } from "react-icons/io5";
+import { IoBagCheckOutline } from "react-icons/io5";
 import { IoBarChartSharp } from "react-icons/io5";
 import { MdQueryStats } from "react-icons/md";
 import { FaWpforms } from "react-icons/fa";
@@ -25,13 +27,18 @@ const links = [
   {
     text: "Bank Account Details",
     path: "Bank-Details",
-    icon: <IoBarChartSharp />,
+    icon: <IoBag />,
   },
   {
     text: "View Bank Account Details",
     path: "VBank-Details",
-    icon: <IoBarChartSharp />,
+    icon: <IoBagCheckOutline />,
   },
+  // {
+  //   text: "My Earnings",
+  //   path: "my-earning",
+  //   icon: <IoBarChartSharp />,
+  // },
   {
     text: "all Items",
     path: "all-Items",

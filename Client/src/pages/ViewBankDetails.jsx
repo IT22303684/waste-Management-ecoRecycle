@@ -53,28 +53,28 @@ const ViewBankDetails = () => {
                 <FormRow
                   type="text"
                   name="Account Number"
-                  defaulyValue={user?.name}
+                  // defaulyValue={user?.accountNumber}
                   className="w-full p-2 border border-gray-300 rounded-md placeholder:font-sans placeholder:font-light"
                   labelClass="text-xl text-gray-700 font-bold capitalize"
                 />
                 <FormRow
                   type="text"
                   name="Account Name"
-                  defaulyValue={user?.lastName}
+                  // defaulyValue={user?.accountName}
                   className="w-full p-2 border border-gray-300 rounded-md placeholder:font-sans placeholder:font-light"
                   labelClass="text-xl text-gray-700 font-bold capitalize"
                 />
                 <FormRow
                   type="text"
                   name="Bank Name"
-                  defaulyValue={user?.location}
+                  // defaulyValue={user?.bankName}
                   className="w-full p-2 border border-gray-300 rounded-md placeholder:font-sans placeholder:font-light"
                   labelClass="text-xl text-gray-700 font-bold capitalize"
                 />
                 <FormRow
                   type="text"
                   name="Branch Code"
-                  defaulyValue={user?.email}
+                  // defaulyValue={user?.branchCode}
                   className="w-full p-2 border border-gray-300 rounded-md placeholder:font-sans placeholder:font-light"
                   labelClass="text-xl text-gray-700 font-bold capitalize"
                 />
@@ -84,7 +84,7 @@ const ViewBankDetails = () => {
                     className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition-colors duration-200"
                     disabled={isSubmitting}
                   >
-                    {isSubmitting ? "submitting..." : "Delete"}
+                    {isSubmitting ? "deleting..." : "Delete"}
                   </button>
                   </div>
 
@@ -94,7 +94,7 @@ const ViewBankDetails = () => {
                     className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition-colors duration-200"
                     disabled={isSubmitting}
                   >
-                    {isSubmitting ? "submitting..." : "Update"}
+                    {isSubmitting ? "updating..." : "Update"}
                   </button>
                 </div>
               </Form>

@@ -13,6 +13,7 @@ import {
   AddItems,
   AddBankDetails,
   ViewBankDetails,
+  // MyEarning,
   Profile,
   Admin,
   EditItems,
@@ -25,6 +26,7 @@ import {
   Company,
   Item,
   Transaction,
+  CompletedPayments,
   Vehicle,
   Route,
   AddRoute,
@@ -38,6 +40,7 @@ import { action as profileAction } from "./pages/Profile";
 import { action as addRitemAction } from "./pages/AddItems";
 import { action as addBankDetails } from "./pages/AddBankDetails";
 import { action as viewBankDetails } from "./pages/ViewBankDetails";
+// import { action as myEarning } from "./pages/MyEarning";
 import { loader as AllItemsLoader } from "./pages/AllItems";
 import { loader as editItemLoader } from "./pages/EditItems";
 import { action as editItemAction } from "./pages/EditItems";
@@ -89,6 +92,12 @@ function App() {
               element: <AddBankDetails />,
               action: addBankDetails,
             },
+            // {
+            //   path: "my-earning",
+            //   element: <MyEarning />,
+            //   action: myEarning,
+            // },
+            
 
             {
               path: "all-items",
@@ -137,6 +146,10 @@ function App() {
             {
               path: "transaction",
               element: <Transaction />,
+            },
+            {
+              path: "completedpayments",
+              element: <CompletedPayments />,
             },
             {
               path: "vehicle",
