@@ -1,6 +1,7 @@
 import React from 'react'
 import RequestStatus from '../utils/RequestStatus'
 import { useAllRequest } from '../pages/Request'
+import { Link } from 'react-router-dom';
 
 
 export default function AprovedRequest() {
@@ -40,9 +41,11 @@ export default function AprovedRequest() {
                         <td>{request.weight}</td>
                         <td>{request.Location}</td>
                         <td>
-                            <button className='bg-sky-500 mr-3 text-white px-4 py-2 hover:sky-green-700 rounded shadow-md outline-none border-none select-none'>
+                        <Link to={`../addRoute/${request._id}?cusId=${request.createdBy}`}>
+                            <button className='bg-sky-500 mr-3 text-white px-4 py-2 hover:bg-green-700 rounded shadow-md outline-none border-none select-none'>
                                 ADD ROUTE
                             </button>
+                        </Link>
                             <button className='bg-purple-700 mr-3 text-white px-4 py-2 hover:sky-green-700 rounded shadow-md outline-none border-none select-none'>
                                 Process Payment
                             </button>

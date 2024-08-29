@@ -1,13 +1,13 @@
 import mongoose from 'mongoose';
 
 const RoutePathSchema = new mongoose.Schema({
-    RouteId: {
-        type: String,
-        required: false,
-    },
     RequestId: {
         type: String,
-        required: false,
+        required: true,
+    },
+    CustomerId: {
+        type: String,
+        required: true,
     },
     CustomerName: {
         type: String,
@@ -36,6 +36,7 @@ const RoutePathSchema = new mongoose.Schema({
     Status: {
         type: String,
         required: false,
+        default: 'Scheduled'
     },
 });
 

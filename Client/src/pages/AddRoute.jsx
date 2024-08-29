@@ -2,29 +2,43 @@ import React, { useEffect, useState } from 'react';
 import { Form, redirect, useLoaderData } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import customFetch from '../utils/customFetch';
+import { useParams, useSearchParams } from 'react-router-dom';
 
-// Loader function to fetch only vehicle data
 export const loader = async () => {
   try {
-    const vehicleResponse = await customFetch(`vehicle/retrivevehicles`);
+    const vehicleResponse = await customFetch('vehicle/retrivevehicles');
     return {
-      vehicles: vehicleResponse.data
+      vehicles: vehicleResponse.data,
     };
   } catch (error) {
-    toast.error(error?.response?.data?.msg || "Failed to load vehicle data");
-    return redirect("/AdminDashboard/route");
+    toast.error(error?.response?.data?.msg || 'Failed to load vehicle data');
+    return redirect('/AdminDashboard/request');
+  }
+};
+
+export const action = async ({ request }) => {
+  const formData = new URLSearchParams(await request.formData());
+  try {
+    await customFetch.post('routePath/addRoutePath', Object.fromEntries(formData));
+    toast.success('Route Added Successfully');
+    return redirect('/AdminDashboard/request');
+  } catch (error) {
+    toast.error(error?.response?.data?.msg || 'Failed to add route');
+    return null;
   }
 };
 
 export default function AddRoute() {
-  const { vehicles } = useLoaderData(); // Fetch vehicles from loader
-  const [vehicleOptions, setVehicleOptions] = useState([]); // Define state and setState
+  const { vehicles } = useLoaderData();
+  const [vehicleOptions, setVehicleOptions] = useState([]);
 
-  // Populate vehicle options when data is fetched
+  const { Reqid } = useParams();
+  const [searchParams] = useSearchParams();
+  const cusId = searchParams.get('cusId');
+
   useEffect(() => {
     if (vehicles && Array.isArray(vehicles)) {
       setVehicleOptions(vehicles);
-      console.log('Vehicle Options:', vehicles);
     }
   }, [vehicles]);
 
@@ -35,6 +49,26 @@ export default function AddRoute() {
 
         <Form method="post">
           <div className='mt-8'>
+            <label className='text-lg font-medium'>Request ID</label>
+            <input
+              type='text'
+              name='RequestId'
+              className='w-full border-2 border-gray-100 rounded-xl p-3 mt-1'
+              value={Reqid}
+              readOnly
+            />
+          </div>
+          <div className='mt-8'>
+            <label className='text-lg font-medium'>Customer ID</label>
+            <input
+              type='text'
+              name='CustomerId'
+              className='w-full border-2 border-gray-100 rounded-xl p-3 mt-1'
+              value={cusId}
+              readOnly
+            />
+          </div>
+          <div className='mt-8'>
             <label className='text-lg font-medium'>Contact Name</label>
             <input
               type='text'
@@ -43,7 +77,6 @@ export default function AddRoute() {
               placeholder='Enter Name'
             />
           </div>
-
           <div className='mt-8'>
             <label className='text-lg font-medium'>Contact Number</label>
             <input
@@ -53,7 +86,6 @@ export default function AddRoute() {
               placeholder='Enter Number'
             />
           </div>
-
           <div className="mt-8">
             <a
               href="https://www.google.com/maps"
@@ -64,7 +96,6 @@ export default function AddRoute() {
               Select New Route Pin From Google Map
             </a>
           </div>
-
           <div className='mt-8'>
             <label className='text-lg font-medium'>Pickup Path Pin</label>
             <input
@@ -74,7 +105,6 @@ export default function AddRoute() {
               placeholder='Enter Path'
             />
           </div>
-
           <div className='mt-4'>
             <label className='text-lg font-medium'>Arrive Date</label>
             <input
@@ -83,7 +113,6 @@ export default function AddRoute() {
               className='w-full border-2 border-gray-100 rounded-xl p-3 mt-1'
             />
           </div>
-
           <div className='mt-4'>
             <label className='text-lg font-medium'>Arrive Time</label>
             <input
@@ -92,8 +121,6 @@ export default function AddRoute() {
               className='w-full border-2 border-gray-100 rounded-xl p-3 mt-1'
             />
           </div>
-
-          {/* Vehicle selection */}
           <div className='mt-4'>
             <label className='text-lg font-medium'>Vehicle</label>
             <select
@@ -111,7 +138,6 @@ export default function AddRoute() {
               )}
             </select>
           </div>
-
           <div className='mt-4'>
             <button type='submit' className='bg-green-500 text-white font-bold py-4 rounded w-full hover:bg-green-700'>
               ADD
