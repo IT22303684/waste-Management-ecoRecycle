@@ -4,6 +4,7 @@ import {RITEM_CATEGORY , RITEM_STATUS} from "../Utils/constants.js";
 import User from '../models/UserModel.js';
 import RItem from '../models/RItemsModel.js'
 import Company from '../models/CompanyModel.js';
+import emp from '../models/Employee.js'
 
 import mongoose, { mongo } from 'mongoose';
 
@@ -136,3 +137,43 @@ export const validateUpdateUserInput = withValidationError([
     body('location').notEmpty().withMessage('location is required'),
     body('lastName').notEmpty().withMessage('lastName is required'),
 ])
+
+export const validateEmployeeIdParam = withValidationError([
+    param('id')
+    .custom(async (value , {req}) => {
+        const isValid = mongoose.Types.ObjectId.isValid(value);
+
+        if(!isValid) throw new BadRequestError('Invalid MongoDB id');
+
+        const employee = await emp.findById(value);
+   
+
+     if(!employee) throw new NotFoundError(`employee with id ${value} not found`);
+     
+
+    }
+)
+    
+]);
+
+
+export const validateEmployee = withValidationError([
+    body('EmployeeId').notEmpty().withMessage('Employee Id is required').custom(async (EmployeeId) =>{
+        const employee = await emp.findOne({EmployeeId})
+        if(employee) {
+            throw new BadRequestError('Employee Id already exists');
+        }
+} ),
+    body('Email').notEmpty().withMessage('email is required').isEmail().withMessage('invalid email format'),
+    body('Name').notEmpty().withMessage('Name is required'),
+    body('JoinDate').notEmpty().withMessage('JoinDate is required'),
+    body('phone').notEmpty().withMessage('phone is required'),
+    body('Street').notEmpty().withMessage('phone is required'),
+    body('City').notEmpty().withMessage('phone is required'),
+    body('PostalCode').notEmpty().withMessage('phone is required'),
+   body('Type').notEmpty().withMessage('Type is Required'),
+   
+]);
+
+
+
