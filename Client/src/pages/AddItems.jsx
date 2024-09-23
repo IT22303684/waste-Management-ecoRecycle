@@ -31,14 +31,14 @@ const AddItems = () => {
   const navigation = useNavigation();
   const isSubmitting = navigation.state === "submitting";
   return (
-    <div className=" shadow-lg  flex flex-col justify-center items-center min-h-screen bg-background">
+    <div className=" shadow-md rounded-lg  flex flex-col justify-center items-center min-h-screen bg-gray-200 ">
       <h4 className="font-mono mb-5 text-4xl font-bold text-center mt-8 text-bla">
         Add Waste Item
       </h4>
 
       <Form
         method="post"
-        className="w-full  p-6 bg-background rounded-lg shadow-md"
+        className="w-full  p-6 bg-gray-200 rounded-lg "
         encType="multipart/form-data"
       >
         <div className="space-y-6">

@@ -40,6 +40,7 @@ import { loader as editItemLoader } from "./pages/EditItems";
 import { action as editItemAction } from "./pages/EditItems";
 import { action as deleteItemAction } from "./pages/DeleteItem";
 import { loader as AdminDashboardLoader } from "./pages/AdminDashbordLayout";
+import { loader as userDasboardLoader } from "./pages/Dashboard";
 
 function App() {
   const router = createBrowserRouter([
@@ -70,6 +71,7 @@ function App() {
             {
               index: true,
               element: <Dashboard />,
+              loader: userDasboardLoader,
             },
             {
               path: "Add-Items",

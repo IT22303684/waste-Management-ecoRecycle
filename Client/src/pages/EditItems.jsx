@@ -37,14 +37,14 @@ const EditItems = () => {
   const isSubmitting = navigation.state === "submitting";
 
   return (
-    <div className=" shadow-lg  flex flex-col justify-center items-center min-h-screen bg-background">
+    <div className=" shadow-lg  flex flex-col justify-center items-center min-h-screen bg-gray-200">
       <h4 className="font-mono mb-5 text-4xl font-bold text-center mt-8 text-bla">
         Update Waste Item
       </h4>
 
       <Form
         method="post"
-        className="w-full  p-6 rounded-lg shadow-md bg-background"
+        className="w-full  p-6 rounded-lg shadow-md bg-gray-200"
       >
         <div className="space-y-6">
           <FormRow
