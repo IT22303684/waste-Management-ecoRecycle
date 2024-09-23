@@ -28,6 +28,8 @@ import {
   AddRoute,
   Test,
   Paymentinfo,
+  AddEmployee,
+  Editemployee,
 } from "./pages/index";
 
 import { action as registerAction } from "./pages/Register";
@@ -41,6 +43,11 @@ import { action as editItemAction } from "./pages/EditItems";
 import { action as deleteItemAction } from "./pages/DeleteItem";
 import { loader as AdminDashboardLoader } from "./pages/AdminDashbordLayout";
 import { loader as userDasboardLoader } from "./pages/Dashboard";
+import { loader as EmployeeLoader } from "./pages/Staf";
+import { action as addEmployee } from "./pages/AddEmployee";
+import { action as DeleteEmploye } from "./pages/DeleteEmploye";
+import { action as editempAction } from "./pages/EditEmployee";
+import { loader as editEmpLoader } from "./pages/EditEmployee";
 
 function App() {
   const router = createBrowserRouter([
@@ -122,6 +129,7 @@ function App() {
             {
               path: "staf",
               element: <Staf />,
+              loader: EmployeeLoader,
             },
             {
               path: "company",
@@ -138,6 +146,19 @@ function App() {
             {
               path: "item",
               element: <Item />,
+            },
+            {
+              path: "add-employee",
+              element: <AddEmployee />,
+              action: addEmployee,
+            },
+            { path: "delete-employee/:id", action: DeleteEmploye },
+            {
+              path: "edit-employee/:id",
+              element: <Editemployee />,
+              action: editempAction,
+
+              loader: editEmpLoader,
             },
           ],
         },

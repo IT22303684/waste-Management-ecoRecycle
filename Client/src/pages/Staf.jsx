@@ -1,102 +1,39 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { useLoaderData } from "react-router-dom";
+import { Form, Link } from "react-router-dom";
 import { IoBuild, IoTrashSharp } from "react-icons/io5";
+import customFetch from "../utils/customFetch";
+import { toast } from "react-toastify";
+import { IoPersonAddSharp } from "react-icons/io5";
 
-// Sample employee data
-const employees = [
-  {
-    EmployeeId: "EMP001",
-    Email: "nimal.perera@example.lk",
-    Name: "Nimal Perera",
-    JoinDate: "2023-01-15",
-    RoadNo: "12A",
-    Street: "Galle Road",
-    City: "Colombo",
-    PostalCode: "00300",
-    Type: "Driver",
-  },
-  {
-    EmployeeId: "EMP002",
-    Email: "susan.dee@example.lk",
-    Name: "Susan Dee",
-    JoinDate: "2022-06-01",
-    RoadNo: "22B",
-    Street: "Dharamshala",
-    City: "Kandy",
-    PostalCode: "20000",
-    Type: "Collector",
-  },
-  {
-    EmployeeId: "EMP003",
-    Email: "kamal.jayawardena@example.lk",
-    Name: "Kamal Jayawardena",
-    JoinDate: "2021-03-20",
-    RoadNo: "34C",
-    Street: "Sri Jayawardenepura Kotte",
-    City: "Colombo",
-    PostalCode: "10100",
-    Type: "Admin",
-  },
-  {
-    EmployeeId: "EMP004",
-    Email: "shanthi.fernando@example.lk",
-    Name: "Shanthi Fernando",
-    JoinDate: "2020-09-30",
-    RoadNo: "56D",
-    Street: "Kollupitiya",
-    City: "Colombo",
-    PostalCode: "00300",
-    Type: "Driver",
-  },
-  {
-    EmployeeId: "EMP005",
-    Email: "rajitha.ranasinghe@example.lk",
-    Name: "Rajitha Ranasinghe",
-    JoinDate: "2019-11-12",
-    RoadNo: "78E",
-    Street: "Negombo Road",
-    City: "Negombo",
-    PostalCode: "11500",
-    Type: "Collector",
-  },
-  {
-    EmployeeId: "EMP006",
-    Email: "malini.mendis@example.lk",
-    Name: "Malini Mendis",
-    JoinDate: "2021-12-01",
-    RoadNo: "91F",
-    Street: "Pettah",
-    City: "Colombo",
-    PostalCode: "01000",
-    Type: "Driver",
-  },
-  {
-    EmployeeId: "EMP007",
-    Email: "nuwan.gunawardena@example.lk",
-    Name: "Nuwan Gunawardena",
-    JoinDate: "2023-04-10",
-    RoadNo: "110G",
-    Street: "Nugegoda",
-    City: "Colombo",
-    PostalCode: "10200",
-    Type: "Supervisor",
-  },
-  {
-    EmployeeId: "EMP008",
-    Email: "priyanka.senaratne@example.lk",
-    Name: "Priyanka Senaratne",
-    JoinDate: "2022-08-05",
-    RoadNo: "123H",
-    Street: "Rajagiriya",
-    City: "Colombo",
-    PostalCode: "10100",
-    Type: "Collector",
-  },
-];
+export const loader = async () => {
+  try {
+    const { data } = await customFetch.get("/employees");
+    console.log(data);
+    return { data };
+  } catch (error) {
+    toast.error(error?.response?.data?.msg || "Failed to load employees");
+    return { employee: [] };
+  }
+};
 
 export default function Staf() {
+  const { data } = useLoaderData(); // Load data using useLoaderData from React Router
+  const [employees, setEmployees] = useState(data.employee || []);
+
+  useEffect(() => {
+    setEmployees(data.employee || []);
+  }, [data]);
+
   return (
     <>
+      <Link to={"../add-employee"}>
+        <button className="bg-green-500 text-white px-4 py-2 hover:bg-green-600 rounded shadow-md outline-none border-none select-none flex items-center">
+          <IoPersonAddSharp className="mr-2" />
+          Add Employee
+        </button>
+      </Link>
+      <br />
       <div className="bg-white px-4 pb-4 rounded-sm border border-gray-200 w-full pt-3">
         <strong className="font-medium text-xl text-sky-600">
           All Employees
@@ -122,21 +59,29 @@ export default function Staf() {
                   <td>{employee.EmployeeId}</td>
                   <td>{employee.Email}</td>
                   <td>{employee.Name}</td>
-                  <td>{employee.JoinDate}</td>
+                  <td>
+                    {new Date(employee.JoinDate).toLocaleDateString()}
+                  </td>{" "}
+                  {/* Format date */}
                   <td>{employee.Street}</td>
                   <td>{employee.City}</td>
                   <td>{employee.PostalCode}</td>
                   <td>{employee.Type}</td>
                   <td>
                     <div className="flex flex-row gap-1">
-                      <Link to={"../EditEmployee"}>
+                      <Link to={`../edit-employee/${employee._id}`}>
                         <button className="bg-sky-500 text-white px-4 py-2 hover:bg-sky-600 rounded shadow-md outline-none border-none select-none">
                           <IoBuild />
                         </button>
                       </Link>
-                      <button className="bg-red text-white px-4 py-2 hover:bg-red-600 rounded shadow-md outline-none border-none select-none">
-                        <IoTrashSharp />
-                      </button>
+                      <Form
+                        method="post"
+                        action={`../delete-employee/${employee._id}`}
+                      >
+                        <button className="bg-red text-white px-4 py-2 hover:bg-red-600 rounded shadow-md outline-none border-none select-none">
+                          <IoTrashSharp />
+                        </button>
+                      </Form>
                     </div>
                   </td>
                 </tr>

@@ -28,4 +28,7 @@ export {default as Vehicle } from './Vehicle'
 export {default as Route } from './Route'
 export {default as AddRoute } from './AddRoute'
 export {default as Test } from './Test'
+export {default as AddEmployee} from './AddEmployee'
+export {default as DeleteEmploye} from './DeleteEmploye'
+export {default as Editemployee} from './EditEmployee'
 

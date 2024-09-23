@@ -175,5 +175,18 @@ export const validateEmployee = withValidationError([
    
 ]);
 
+export const validateUpdateEmployee = withValidationError([
+    body('EmployeeId').notEmpty().withMessage('EmployeeId is required'),
+    body('Email').notEmpty().withMessage('email is required').isEmail().withMessage('invalid email format'),
+    body('Name').notEmpty().withMessage('Name is required'),
+    body('JoinDate').notEmpty().withMessage('JoinDate is required'),
+    body('phone').notEmpty().withMessage('phone is required'),
+    body('Street').notEmpty().withMessage('phone is required'),
+    body('City').notEmpty().withMessage('phone is required'),
+    body('PostalCode').notEmpty().withMessage('phone is required'),
+   body('Type').notEmpty().withMessage('Type is Required'),
+   
+]);
+
 
 
