@@ -33,6 +33,9 @@ import {
   Addcompany,
   EditCompany,
   DeleteCompany,
+  AddcompanyItem,
+  EditcompanyItem,
+  DeleteCompanyItem,
 } from "./pages/index";
 
 import { action as registerAction } from "./pages/Register";
@@ -56,6 +59,11 @@ import { action as AddCompanyAction } from "./pages/AddCompany";
 import { action as EditcomapnyAction } from "./pages/EditCompany";
 import { loader as EditcompanyLoader } from "./pages/EditCompany";
 import { action as DeleteCompanyAction } from "./pages/DeleteCompany";
+import { loader as itemLoader } from "./pages/Item";
+import { action as addCitemAction } from "./pages/AddcompanyItem";
+import { action as editcompanyItemAction } from "./pages/EditcompanyItem";
+import { loader as editcompanyItemLoader } from "./pages/EditcompanyItem";
+import { action as deleteCompanyItemAction } from "./pages/DeleteCompanyItem";
 
 function App() {
   const router = createBrowserRouter([
@@ -155,6 +163,7 @@ function App() {
             {
               path: "item",
               element: <Item />,
+              loader: itemLoader,
             },
             {
               path: "add-employee",
@@ -180,6 +189,18 @@ function App() {
               action: AddCompanyAction,
             },
             { path: "delete-company/:id", action: DeleteCompanyAction },
+            {
+              path: "add-CItem",
+              element: <AddcompanyItem />,
+              action: addCitemAction,
+            },
+            {
+              path: "edit-CItem/:id",
+              element: <EditcompanyItem />,
+              action: editcompanyItemAction,
+              loader: editcompanyItemLoader,
+            },
+            { path: "delete-CItem/:id", action: deleteCompanyItemAction },
           ],
         },
       ],
