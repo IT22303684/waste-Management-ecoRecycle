@@ -30,6 +30,9 @@ import {
   Paymentinfo,
   AddEmployee,
   Editemployee,
+  Addcompany,
+  EditCompany,
+  DeleteCompany,
 } from "./pages/index";
 
 import { action as registerAction } from "./pages/Register";
@@ -48,6 +51,11 @@ import { action as addEmployee } from "./pages/AddEmployee";
 import { action as DeleteEmploye } from "./pages/DeleteEmploye";
 import { action as editempAction } from "./pages/EditEmployee";
 import { loader as editEmpLoader } from "./pages/EditEmployee";
+import { loader as comapnyLoader } from "./pages/Company";
+import { action as AddCompanyAction } from "./pages/AddCompany";
+import { action as EditcomapnyAction } from "./pages/EditCompany";
+import { loader as EditcompanyLoader } from "./pages/EditCompany";
+import { action as DeleteCompanyAction } from "./pages/DeleteCompany";
 
 function App() {
   const router = createBrowserRouter([
@@ -134,6 +142,7 @@ function App() {
             {
               path: "company",
               element: <Company />,
+              loader: comapnyLoader,
             },
             {
               path: "transaction",
@@ -157,9 +166,20 @@ function App() {
               path: "edit-employee/:id",
               element: <Editemployee />,
               action: editempAction,
-
               loader: editEmpLoader,
             },
+            {
+              path: "edit-company/:id",
+              element: <EditCompany />,
+              action: EditcomapnyAction,
+              loader: EditcompanyLoader,
+            },
+            {
+              path: "add-company",
+              element: <Addcompany />,
+              action: AddCompanyAction,
+            },
+            { path: "delete-company/:id", action: DeleteCompanyAction },
           ],
         },
       ],

@@ -31,4 +31,8 @@ export {default as Test } from './Test'
 export {default as AddEmployee} from './AddEmployee'
 export {default as DeleteEmploye} from './DeleteEmploye'
 export {default as Editemployee} from './EditEmployee'
+export {default as Addcompany} from './AddCompany'
+export {default as EditCompany} from './EditCompany'
+export { default as DeleteCompany} from './DeleteCompany'
+
 
