@@ -5,6 +5,7 @@ import User from '../models/UserModel.js';
 import RItem from '../models/RItemsModel.js'
 import Company from '../models/CompanyModel.js';
 import emp from '../models/Employee.js'
+import cItems from '../models/CompanyItemsModel.js'
 
 import mongoose, { mongo } from 'mongoose';
 
@@ -186,6 +187,33 @@ export const validateUpdateEmployee = withValidationError([
     body('PostalCode').notEmpty().withMessage('phone is required'),
    body('Type').notEmpty().withMessage('Type is Required'),
    
+]);
+
+
+export const validateCompanyItem= withValidationError([
+
+    body('name').notEmpty().withMessage('name is required'),
+    body('limit').notEmpty().withMessage('limit is required'),
+    body('description').notEmpty().withMessage('descrption is required'),
+  
+]);
+
+export const validateCompanyItemParam = withValidationError([
+    param('id')
+    .custom(async (value , {req}) => {
+        const isValid = mongoose.Types.ObjectId.isValid(value);
+
+        if(!isValid) throw new BadRequestError('Invalid MongoDB id');
+
+        const Item = await cItems.findById(value);
+   
+
+     if(!Item) throw new NotFoundError(`Item with id ${value} not found`);
+     
+
+    }
+)
+    
 ]);
 
 

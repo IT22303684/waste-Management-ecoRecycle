@@ -20,6 +20,7 @@ import authRouter from './routes/authRouter.js';
 import userRouter from './routes/userRouter.js';
 import CompanyRouter from './routes/CompanyRoute.js';
 import employeeRouter from './routes/EmployeeRoute.js'
+import CompanyItemRoute from './routes/CompanyItem.js'
 
 //public
 import {dirname} from 'path';
@@ -71,6 +72,7 @@ app.use('/api/v1/users',authenticateUser , userRouter);
 app.use('/api/v1/auth', authRouter);
 app.use('/api/v1/Company', authenticateUser , CompanyRouter);
 app.use('/api/v1/employees', authenticateUser , employeeRouter);
+app.use('/api/v1/CItems',authenticateUser , CompanyItemRoute )
 
 
 app.get('*', (req, res) => {
