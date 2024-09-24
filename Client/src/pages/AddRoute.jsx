@@ -18,15 +18,39 @@ export const loader = async () => {
 
 export const action = async ({ request }) => {
   const formData = new URLSearchParams(await request.formData());
+
+  // Extract Reqid from form data
+  const Reqid = formData.get('RequestId');
+
   try {
+    // Add the route
     await customFetch.post('routePath/addRoutePath', Object.fromEntries(formData));
     toast.success('Route Added Successfully');
+
+    // Ensure Reqid exists before attempting to update status
+    if (Reqid) {
+      try {
+        const response = await customFetch.put(`/request/updateRequestStatus/${Reqid}`, {
+          status: 'done',
+        });
+        if (response.status === 200) {
+        } else {
+          throw new Error('Update failed with status code: ' + response.status);
+        }
+      } catch (error) {
+        toast.error(error?.response?.data?.msg);
+      }
+    } else {
+      throw new Error('Request ID is missing');
+    }
+
     return redirect('/AdminDashboard/request');
   } catch (error) {
     toast.error(error?.response?.data?.msg || 'Failed to add route');
     return null;
   }
 };
+
 
 export default function AddRoute() {
   const { vehicles } = useLoaderData();

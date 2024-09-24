@@ -1,10 +1,31 @@
 import React from 'react'
 import { useAllRequest } from '../pages/Request'
+import customFetch from '../utils/customFetch';
+import { toast } from 'react-toastify';
+import { useNavigate } from 'react-router-dom';
+
 
 export default function RejectedRequest() {
     const { data } = useAllRequest();
 
-    const rejectedRequest = data ? data.filter(request => request.status == 'available') : [];
+    // Function to handle approval
+  const handleApprove = async (id) => {
+    try {
+      const response = await customFetch.put(`/request/updateRequestStatus/${id}`, {
+        status: 'approved',
+      });
+      if (response.status === 200) {
+        toast.success('Request approved successfully');
+        return redirect("../route");
+      } else {
+        throw new Error('Update failed with status code: ' + response.status);
+      }
+    } catch (error) {
+      toast.error(error?.response?.data?.msg );
+    }
+  };
+
+    const rejectedRequest = data ? data.filter(request => request.status == 'reject') : [];
 
     if (!data || data.length === 0) {
         return <h1>No Items to display...</h1>;
@@ -38,9 +59,12 @@ export default function RejectedRequest() {
                         <td>{request.Location}</td>
 
                         <td className='flex flex-col gap-2'>
-                            <button className='bg-green-500 mr-3 text-white px-4 py-2 hover:bg-green-700 rounded shadow-md outline-none border-none select-none'>
-                                Aprove
-                            </button>
+                        <button
+                            className='bg-green-500 mr-3 text-white px-4 py-2 hover:bg-green-700 rounded shadow-md outline-none border-none select-none'
+                            onClick={() => handleApprove(request._id)}
+                        >
+                            Approve
+                        </button>
                         </td>
                     </tr>
                 ))}

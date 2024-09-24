@@ -8,7 +8,7 @@ export default function AprovedRequest() {
 
     const { data } = useAllRequest();
 
-    const aproveRequest = data ? data.filter(request => request.status == 'available') : [];
+    const aproveRequest = data ? data.filter(request => request.status == 'approved') : [];
 
     if (!data || data.length === 0) {
         return <h1>No Items to display...</h1>;

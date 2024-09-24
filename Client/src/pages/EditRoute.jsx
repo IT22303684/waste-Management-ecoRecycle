@@ -21,7 +21,7 @@ export const loader = async ({ params }) => {
   }
 };
 
-// Action function for handling form submission
+// Action function for handling form updating
 export const action = async ({ request, params }) => {
   const formData = await request.formData();
   const data = Object.fromEntries(formData);

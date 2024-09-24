@@ -37,8 +37,8 @@ export const UpdateRoutePath = async (req, res) => {
 
         const updateRoutePath = await RoutePath.findByIdAndUpdate(
             req.params.id,
-            req.body,  // This line applies the update to the document
-            { new: true } // This option returns the updated document
+            req.body,  
+            { new: true } 
         );
 
         if (!updateRoutePath) {

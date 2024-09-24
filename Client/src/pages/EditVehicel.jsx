@@ -57,7 +57,7 @@ export default function EditVehicel() {
                 name='RegisterDate'
                 className='w-full border-2 border-gray-100 rounded-xl p-3 mt-1'
                 value={today} 
-                readOnly={false}
+                readOnly={true}
               />
             </div>
             <div className='mt-4'>

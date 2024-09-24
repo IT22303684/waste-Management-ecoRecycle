@@ -34,13 +34,12 @@ export default function RouteTable() {
     }
     
     return (
-        <div className='bg-white px-4 pb-4 rounded-sm border border-gray-200 w-full'>
-            <div className='mt-3'>
-                <table className='w-full text-gray-700'>
-                    <thead>
+        <div className="bg-white border border-gray-200 overflow-x-auto"> 
+            <table className="min-w-[1000px] w-full text-gray-700">
+                
+                <thead>
                         <tr>
                             <th>Route Id</th>
-                            <th>Request Id</th>
                             <th>Customer Name</th>
                             <th>Contact Number</th>
                             <th>Pickup Path</th>
@@ -54,8 +53,12 @@ export default function RouteTable() {
                     <tbody>
                         {data.map((route) => (
                             <tr key={route._id}>
-                                <td>{route._id}</td>
-                                <td>{route.RequestId}</td>
+                                <td>{route._id}
+                                    <div className='text-gray-300'>
+                                        request Id :
+                                        <p>{route.RequestId}</p>
+                                    </div>
+                                </td>
                                 <td>{route.CustomerName}</td>
                                 <td>{route.ContactNumber}</td>
                                 <td>
@@ -90,6 +93,5 @@ export default function RouteTable() {
                     </tbody>
                 </table>
             </div>
-        </div>
     );
 }

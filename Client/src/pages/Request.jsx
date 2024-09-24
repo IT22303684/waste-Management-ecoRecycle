@@ -38,6 +38,9 @@ const { data } = useLoaderData();
           <div className='flex flex-row gap-4 w-full'>
             <RejectedRequest />
           </div>
+          <div className='flex flex-row gap-4 w-full mt-4'>
+            <RejectedRequest />
+          </div>
         </div> 
     </div>
     </allRequestDetailsContext.Provider>
