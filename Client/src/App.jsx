@@ -41,6 +41,8 @@ import {
   DriverDashboardlayout,
   DriverProfile,
   EditDailyWaste,
+  UserManagement,
+  DeleteUser,
 } from "./pages/index";
 
 import { action as registerAction } from "./pages/Register";
@@ -71,6 +73,8 @@ import { loader as editcompanyItemLoader } from "./pages/EditcompanyItem";
 import { action as deleteCompanyItemAction } from "./pages/DeleteCompanyItem";
 import { action as DriverprofileAction } from "./pages/DriverProfile";
 import { loader as DriverProfileLoader } from "./pages/DriverProfile";
+import { loader as UserManagementLoader } from "./pages/UserManagement";
+import { action as DeleteUserAction } from "./pages/DeleteUser";
 
 function App() {
   const router = createBrowserRouter([
@@ -208,6 +212,12 @@ function App() {
               loader: editcompanyItemLoader,
             },
             { path: "delete-CItem/:id", action: deleteCompanyItemAction },
+            {
+              path: "user-management",
+              element: <UserManagement />,
+              loader: UserManagementLoader,
+            },
+            { path: "delete-user/:id", action: DeleteUserAction },
           ],
         },
 

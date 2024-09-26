@@ -37,6 +37,8 @@ export { default as DeleteCompany} from './DeleteCompany'
 export { default as AddcompanyItem} from './AddcompanyItem'
 export {default as EditcompanyItem} from './EditcompanyItem'
 export {default as DeleteCompanyItem} from './DeleteCompanyItem'
+export {default as UserManagement} from './UserManagement'
+export {default as DeleteUser} from './DeleteUser'
 
 
 

@@ -5,6 +5,9 @@ import { IoBuild, IoTrashSharp } from "react-icons/io5";
 import customFetch from "../utils/customFetch";
 import { toast } from "react-toastify";
 import { IoPersonAddSharp } from "react-icons/io5";
+import jsPDF from "jspdf";
+import html2canvas from "html2canvas";
+import "jspdf-autotable";
 
 export const loader = async () => {
   try {
@@ -25,14 +28,77 @@ export default function Staf() {
     setEmployees(data.employee || []);
   }, [data]);
 
+  const generatePDF = () => {
+    const doc = new jsPDF();
+
+    // Add the site name to the header
+    doc.setFontSize(18);
+    doc.setTextColor(40);
+    doc.text("Eco Recycle - Employee List", 14, 10);
+
+    // Add additional header information (optional)
+    doc.setFontSize(12);
+    doc.text("Generated on: " + new Date().toLocaleDateString(), 14, 20);
+
+    // Define table columns
+    const tableColumn = [
+      "Employee ID",
+      "Name",
+      "Email",
+      "Join Date",
+      "City",
+      "Type",
+    ];
+
+    // Define table rows by mapping the employees' data
+    const tableRows = employees.map((employee) => [
+      employee.EmployeeId,
+      employee.Name,
+      employee.Email,
+      new Date(employee.JoinDate).toLocaleDateString(),
+      employee.City,
+      employee.Type,
+    ]);
+
+    doc.autoTable({
+      head: [tableColumn],
+      body: tableRows,
+      startY: 30,
+      styles: {
+        fillColor: [255, 255, 255],
+        textColor: [0, 0, 0],
+      },
+      headStyles: {
+        fillColor: [22, 160, 133],
+        textColor: [255, 255, 255],
+      },
+      alternateRowStyles: {
+        fillColor: [240, 240, 240],
+      },
+      margin: { top: 30 },
+    });
+
+    // Save the PDF
+    doc.save("employees.pdf");
+  };
+
   return (
     <>
-      <Link to={"../add-employee"}>
-        <button className="bg-green-500 text-white px-4 py-2 hover:bg-green-600 rounded shadow-md outline-none border-none select-none flex items-center">
-          <IoPersonAddSharp className="mr-2" />
-          Add Employee
+      <div className="flex justify-between items-center">
+        <Link to={"../add-employee"}>
+          <button className="bg-green-500 text-white px-4 py-2 hover:bg-green-600 rounded shadow-md outline-none border-none select-none flex items-center">
+            <IoPersonAddSharp className="mr-2" />
+            Add Employee
+          </button>
+        </Link>
+        {/* Generate PDF Button */}
+        <button
+          onClick={generatePDF}
+          className="bg-blue-500 text-white px-4 py-2 hover:bg-blue-600 rounded shadow-md outline-none border-none select-none flex items-center"
+        >
+          Generate PDF
         </button>
-      </Link>
+      </div>
       <br />
       <div className="bg-white px-4 pb-4 rounded-sm border border-gray-200 w-full pt-3">
         <strong className="font-medium text-xl text-sky-600">
