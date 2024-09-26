@@ -69,6 +69,8 @@ import { action as addCitemAction } from "./pages/AddcompanyItem";
 import { action as editcompanyItemAction } from "./pages/EditcompanyItem";
 import { loader as editcompanyItemLoader } from "./pages/EditcompanyItem";
 import { action as deleteCompanyItemAction } from "./pages/DeleteCompanyItem";
+import { action as DriverprofileAction } from "./pages/DriverProfile";
+import { loader as DriverProfileLoader } from "./pages/DriverProfile";
 
 function App() {
   const router = createBrowserRouter([
@@ -220,6 +222,8 @@ function App() {
             {
               path: "driver-profile",
               element: <DriverProfile />,
+              action: DriverprofileAction,
+              loader: DriverProfileLoader,
             },
             {
               path: "daily-waste",
