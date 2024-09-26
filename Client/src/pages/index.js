@@ -40,3 +40,14 @@ export {default as DeleteCompanyItem} from './DeleteCompanyItem'
 
 
 
+
+
+
+export {default as DriverDashboardlayout} from './DriverDashboardLayout'
+export {default as DriverDashboard} from './DriverDashboard'
+export {default as DriverProfile} from './DriverProfile'
+export {default as DailyWaste} from './DailyWaste'
+export {default as EditDailyWaste} from './EditDailyWaste'
+
+
+

@@ -36,6 +36,11 @@ import {
   AddcompanyItem,
   EditcompanyItem,
   DeleteCompanyItem,
+  DailyWaste,
+  DriverDashboard,
+  DriverDashboardlayout,
+  DriverProfile,
+  EditDailyWaste,
 } from "./pages/index";
 
 import { action as registerAction } from "./pages/Register";
@@ -201,6 +206,29 @@ function App() {
               loader: editcompanyItemLoader,
             },
             { path: "delete-CItem/:id", action: deleteCompanyItemAction },
+          ],
+        },
+
+        {
+          path: "DriverDashboard",
+          element: <DriverDashboardlayout />,
+          children: [
+            {
+              index: true,
+              element: <DriverDashboard />,
+            },
+            {
+              path: "driver-profile",
+              element: <DriverProfile />,
+            },
+            {
+              path: "daily-waste",
+              element: <DailyWaste />,
+            },
+            {
+              path: "edit-daily-waste",
+              element: <EditDailyWaste />,
+            },
           ],
         },
       ],

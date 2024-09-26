@@ -6,3 +6,8 @@ export { default as UserNavBar } from './UserNavBar'
 export { default as RecycleItemContainer} from './RecycleItemContainer'
 export { default as SearchContainer } from './SearchContainer'
 export {default as confirmModel} from './ConfirmModel'
+
+
+export {default as DriverHeader} from './DriverHeader'
+export {default as DriverRequest} from './DriverRequest'
+export {default as DriverSidebar} from './DriverSidebar'
