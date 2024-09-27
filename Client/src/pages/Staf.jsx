@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useLoaderData } from "react-router-dom";
 import { Form, Link } from "react-router-dom";
-import { IoBuild, IoTrashSharp } from "react-icons/io5";
+import { IoBuild, IoTrashSharp, IoSearch } from "react-icons/io5";
 import customFetch from "../utils/customFetch";
 import { toast } from "react-toastify";
 import { IoPersonAddSharp } from "react-icons/io5";
@@ -23,24 +23,29 @@ export const loader = async () => {
 export default function Staf() {
   const { data } = useLoaderData(); // Load data using useLoaderData from React Router
   const [employees, setEmployees] = useState(data.employee || []);
+  const [searchTerm, setSearchTerm] = useState(""); // Add searchTerm state
 
   useEffect(() => {
     setEmployees(data.employee || []);
   }, [data]);
 
+  // Filter employees based on search term (name or email)
+  const filteredEmployees = employees.filter(
+    (employee) =>
+      employee.Name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      employee.Email.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
   const generatePDF = () => {
     const doc = new jsPDF();
 
-    // Add the site name to the header
     doc.setFontSize(18);
     doc.setTextColor(40);
     doc.text("Eco Recycle - Employee List", 14, 10);
 
-    // Add additional header information (optional)
     doc.setFontSize(12);
     doc.text("Generated on: " + new Date().toLocaleDateString(), 14, 20);
 
-    // Define table columns
     const tableColumn = [
       "Employee ID",
       "Name",
@@ -84,14 +89,13 @@ export default function Staf() {
 
   return (
     <>
-      <div className="flex justify-between items-center">
+      <div className="flex justify-between items-center mb-4">
         <Link to={"../add-employee"}>
           <button className="bg-green-500 text-white px-4 py-2 hover:bg-green-600 rounded shadow-md outline-none border-none select-none flex items-center">
             <IoPersonAddSharp className="mr-2" />
             Add Employee
           </button>
         </Link>
-        {/* Generate PDF Button */}
         <button
           onClick={generatePDF}
           className="bg-blue-500 text-white px-4 py-2 hover:bg-blue-600 rounded shadow-md outline-none border-none select-none flex items-center"
@@ -99,7 +103,20 @@ export default function Staf() {
           Generate PDF
         </button>
       </div>
-      <br />
+
+      {/* Search Input */}
+      <div className="relative mb-4">
+        <input
+          type="text"
+          placeholder="Search employees by name or email..."
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)} // Update the search term
+          className="border rounded px-4 py-2 shadow-md outline-none w-full"
+        />
+        <IoSearch className="absolute right-3 top-3 text-gray-500" />{" "}
+        {/* Search Icon */}
+      </div>
+
       <div className="bg-white px-4 pb-4 rounded-sm border border-gray-200 w-full pt-3">
         <strong className="font-medium text-xl text-sky-600">
           All Employees
@@ -120,15 +137,12 @@ export default function Staf() {
               </tr>
             </thead>
             <tbody>
-              {employees.map((employee) => (
+              {filteredEmployees.map((employee) => (
                 <tr key={employee.EmployeeId}>
                   <td>{employee.EmployeeId}</td>
                   <td>{employee.Email}</td>
                   <td>{employee.Name}</td>
-                  <td>
-                    {new Date(employee.JoinDate).toLocaleDateString()}
-                  </td>{" "}
-                  {/* Format date */}
+                  <td>{new Date(employee.JoinDate).toLocaleDateString()}</td>
                   <td>{employee.Street}</td>
                   <td>{employee.City}</td>
                   <td>{employee.PostalCode}</td>
@@ -152,6 +166,13 @@ export default function Staf() {
                   </td>
                 </tr>
               ))}
+              {filteredEmployees.length === 0 && (
+                <tr>
+                  <td colSpan="9" className="text-center text-red-500">
+                    No employees found.
+                  </td>
+                </tr>
+              )}
             </tbody>
           </table>
         </div>

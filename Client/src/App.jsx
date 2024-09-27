@@ -43,6 +43,7 @@ import {
   EditDailyWaste,
   UserManagement,
   DeleteUser,
+  Adduser,
 } from "./pages/index";
 
 import { action as registerAction } from "./pages/Register";
@@ -75,6 +76,7 @@ import { action as DriverprofileAction } from "./pages/DriverProfile";
 import { loader as DriverProfileLoader } from "./pages/DriverProfile";
 import { loader as UserManagementLoader } from "./pages/UserManagement";
 import { action as DeleteUserAction } from "./pages/DeleteUser";
+import { action as AdduserAction } from "./pages/Adduser";
 
 function App() {
   const router = createBrowserRouter([
@@ -218,6 +220,11 @@ function App() {
               loader: UserManagementLoader,
             },
             { path: "delete-user/:id", action: DeleteUserAction },
+            {
+              path: "add-user",
+              element: <Adduser />,
+              action: AdduserAction,
+            },
           ],
         },
 
