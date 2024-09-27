@@ -1,5 +1,5 @@
-import React, { useContext, createContext } from 'react';
-import { useLoaderData } from "react-router-dom";
+import React, { createContext, useContext, useState, useCallback } from 'react';
+import { useLoaderData } from 'react-router-dom';
 import AdminStatusGrid from '../Components/AdminStatusGrid';
 import RecentRequest from '../Components/RecentRequest';
 import { toast } from "react-toastify";
@@ -16,13 +16,23 @@ export const loader = async ({ request }) => {
   }
 };
 
-const allRecentRequestDetailsContext = createContext({ data: [] });
+const allRequestDetailsContext = createContext({ data: [], refetch: () => {} });
 
 const AllRecentRequest = () => {
-const { data } = useLoaderData();
+  const { data: initialData } = useLoaderData();
+  const [data, setData] = useState(initialData);
+
+  const refetch = useCallback(async () => {
+    try {
+      const { data: refreshedData } = await customFetch.get("/request/retriveRequest");
+      setData(refreshedData);
+    } catch (error) {
+      toast.error('Error refreshing data');
+    }
+  }, []);
 
   return (
-    <allRecentRequestDetailsContext.Provider value={{ data }}>
+    <allRequestDetailsContext.Provider value={{ data, refetch }}>
       <div className='flex flex-col gap-4'>
         <AdminStatusGrid />
 
@@ -35,9 +45,9 @@ const { data } = useLoaderData();
        
         
       </div>
-    </allRecentRequestDetailsContext.Provider>
+    </allRequestDetailsContext.Provider>
   );
 };
 
-export const useAllRecentRequest = () => useContext(allRecentRequestDetailsContext);
+export const useAllRecentRequest = () => useContext(allRequestDetailsContext);
 export default AllRecentRequest;

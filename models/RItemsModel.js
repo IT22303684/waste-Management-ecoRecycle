@@ -26,7 +26,7 @@ const recyclableItemSchema = new mongoose.Schema({
     status: {
         type: String,
         enum: Object.values(RITEM_STATUS),
-        default: 'pending',
+        default: 'available',
     },
     isSold: {
         type: Boolean,

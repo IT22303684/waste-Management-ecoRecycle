@@ -24,6 +24,7 @@ const VehicleSchema = new mongoose.Schema({
     Status: {
         type: String,
         required: true,
+        default: 'available',
     },
 });
 

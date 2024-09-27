@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { toast } from 'react-toastify';
 import { IoBuild, IoTrashSharp } from 'react-icons/io5';
 import { useAllRoutes } from '../pages/Route'; // Ensure this path is correct
@@ -6,52 +6,79 @@ import customFetch from '../utils/customFetch';
 import { Link } from 'react-router-dom';
 
 export default function RouteTable() {
-    const { data, setData } = useAllRoutes(); 
+    const { data, refetch } = useAllRoutes(); //kavidu
+    const [showConfirm, setShowConfirm] = useState({ visible: false, id: null });
+    const [searchTerm, setSearchTerm] = useState(''); // State to store the search term
 
-    const refreshData = async () => {
-        try {
-            const response = await customFetch.get('../retriveRoutePath');
-            setData(response.data);
-        } catch (error) {
-            console.error('Error refreshing data:', error.response ? error.response.data : error.message);
-            toast.error("Failed to refresh data");
-        }
+    // Handle showing the confirmation modal
+    const openConfirmModal = (id) => {
+        setShowConfirm({ visible: true, id });
+    };
+
+    // Handle closing the confirmation modal
+    const closeConfirmModal = () => {
+        setShowConfirm({ visible: false, id: null });
     };
 
     const handleDelete = async (id) => {
         try {
             await customFetch.delete(`/routePath/deleteRoutePath/${id}`);
             toast.success("Route deleted successfully!");
-            refreshData();
+            refetch();  // Call refetch directly after deleting
         } catch (error) {
             toast.error("Failed to delete route");
             console.error("Delete error", error);
+        } finally {
+            closeConfirmModal();
         }
     };
 
-    if (!data || data.length === 0) {
-        return <h1>No Items to display...</h1>;
-    }
+    // Filter data based on search term
+    const filteredData = data.filter((route) =>
+        route.CustomerName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        route.ContactNumber.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        route._id.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+
     
+
     return (
-        <div className="bg-white border border-gray-200 overflow-x-auto"> 
+        <div className="bg-white border border-gray-200 overflow-x-auto">
+            {/* Search Input */}
+            <div className="p-4">
+                <input
+                    type="text"
+                    placeholder="Search by Route Id, Customer Name, or Contact Number"
+                    className="px-4 py-2 border rounded w-full"
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)} // Update the search term
+                />
+            </div>
+
             <table className="min-w-[1000px] w-full text-gray-700">
-                
                 <thead>
+                    <tr>
+                        <th>Route Id</th>
+                        <th>Customer Name</th>
+                        <th>Contact Number</th>
+                        <th>Pickup Path</th>
+                        <th>Arrive Time</th>
+                        <th>Arrive Date</th>
+                        <th>Vehicle</th>
+                        <th>Status</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {/* Check if filteredData is empty */}
+                    {(!filteredData || filteredData.length === 0) ? (
                         <tr>
-                            <th>Route Id</th>
-                            <th>Customer Name</th>
-                            <th>Contact Number</th>
-                            <th>Pickup Path</th>
-                            <th>Arrive Time</th>
-                            <th>Arrive Date</th>
-                            <th>Vehicle</th>
-                            <th>Status</th>
-                            <th></th>
+                            <td colSpan="9" className="text-center py-4">
+                                <label>No Items to display</label>
+                            </td>
                         </tr>
-                    </thead>
-                    <tbody>
-                        {data.map((route) => (
+                    ) : (
+                        filteredData.map((route) => (
                             <tr key={route._id}>
                                 <td>{route._id}
                                     <div className='text-gray-300'>
@@ -62,10 +89,10 @@ export default function RouteTable() {
                                 <td>{route.CustomerName}</td>
                                 <td>{route.ContactNumber}</td>
                                 <td>
-                                    <a href={route.PickupPath} target="_blank" 
-                                    rel="noopener noreferrer" 
+                                    <a href={route.PickupPath} target="_blank"
+                                    rel="noopener noreferrer"
                                     className="text-blue-500 hover:underline"
-                                    title={route.PickupPath} >
+                                    title={route.PickupPath}>
                                         {route.PickupPath}
                                     </a>
                                 </td>
@@ -80,18 +107,43 @@ export default function RouteTable() {
                                                 <IoBuild />
                                             </button>
                                         </Link>
-                                        <button 
-                                            className='bg-red text-white px-4 py-2 hover:bg-red rounded shadow-md outline-none border-none select-none'
-                                            onClick={() => handleDelete(route._id)}
+                                        <button
+                                            className='bg-red text-white px-4 py-2 hover:bg-red-600 rounded shadow-md outline-none border-none select-none'
+                                            onClick={() => openConfirmModal(route._id)}
                                         >
                                             <IoTrashSharp />
                                         </button>
                                     </div>
                                 </td>
                             </tr>
-                        ))}
-                    </tbody>
-                </table>
-            </div>
+                        ))
+                    )}
+                </tbody>
+            </table>
+            {/* Confirmation Modal */}
+            {showConfirm.visible && (
+                <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50">
+                    <div className="bg-white p-6 rounded shadow-lg">
+                        <p className="mb-4 text-gray-700">
+                            Are you sure you want to delete this route?
+                        </p>
+                        <div className="flex justify-between">
+                            <button
+                                onClick={() => handleDelete(showConfirm.id)}
+                                className="px-4 py-2 bg-red text-white rounded hover:bg-red-600 transition-colors duration-200"
+                            >
+                                Yes
+                            </button>
+                            <button
+                                onClick={closeConfirmModal}
+                                className="px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600 transition-colors duration-200"
+                            >
+                                No
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
+        </div>
     );
 }

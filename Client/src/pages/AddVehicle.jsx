@@ -1,5 +1,26 @@
-import React from 'react';
-import { Form } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { Form, redirect, useLoaderData } from 'react-router-dom';
+import { toast } from 'react-toastify';
+import customFetch from '../utils/customFetch';
+import { useParams, useSearchParams } from 'react-router-dom';
+
+
+export const action = async ({ request }) => {
+  const formData = await request.formData();
+
+  try {
+    await customFetch.post('vehicle/addVehicle', Object.fromEntries(formData));
+    toast.success('Vehicle Added Successfully');
+    return redirect("../vehicle");
+  } catch (error) {
+    console.error(error);  // Log error for debugging
+    toast.error(error?.response?.data?.msg || 'An error occurred');
+    return redirect("../vehicle");
+  }
+};
+
+
+
 
 export default function AddVehicle() {
 
@@ -54,10 +75,10 @@ export default function AddVehicle() {
             <label className='text-lg font-medium'>Register Date</label>
             <input
               type='date'
-              name='RegisterDate'
+              name='AddDate'
               className='w-full border-2 border-gray-100 rounded-xl p-3 mt-1'
               value={today} 
-              readOnly={true}
+              readOnly={false}
             />
           </div>
           <div className='mt-4'>
@@ -66,6 +87,7 @@ export default function AddVehicle() {
             </button>
           </div>
         </Form>
+
       </div>
     </div>
   )

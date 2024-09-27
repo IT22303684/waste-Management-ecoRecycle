@@ -1,54 +1,55 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { IoBuild, IoTrashSharp } from 'react-icons/io5';
 import { Link } from 'react-router-dom';
-
-const vehicles = [
-  {
-    "VehicleNumber": "GC-001",
-    "VehicleName": "Garbage Truck",
-    "ChassiNumber": "GCX1234567890",
-    "VehicleCategory": "Heavy Duty",
-    "AddDate": "2024-05-15",
-    "Status": "Active"
-  },
-  {
-    "VehicleNumber": "GC-002",
-    "VehicleName": "Garbage Truck",
-    "ChassiNumber": "GCY0987654321",
-    "VehicleCategory": "Heavy Duty",
-    "AddDate": "2024-06-10",
-    "Status": "In Maintenance"
-  },
-  {
-    "VehicleNumber": "GC-003",
-    "VehicleName": "Garbage Truck",
-    "ChassiNumber": "GCZ5678901234",
-    "VehicleCategory": "Medium Duty",
-    "AddDate": "2024-07-01",
-    "Status": "Active"
-  },
-  {
-    "VehicleNumber": "GC-004",
-    "VehicleName": "Garbage Compactor",
-    "ChassiNumber": "GCA2345678901",
-    "VehicleCategory": "Compactor",
-    "AddDate": "2024-08-05",
-    "Status": "Active"
-  },
-  {
-    "VehicleNumber": "GC-005",
-    "VehicleName": "Garbage Truck",
-    "ChassiNumber": "GCB3456789012",
-    "VehicleCategory": "Heavy Duty",
-    "AddDate": "2024-09-12",
-    "Status": "Out of Service"
-  }
-];
+import customFetch from '../utils/customFetch';
+import { toast } from 'react-toastify';
 
 export default function VehicleTable() {
+  const [vehicles, setVehicles] = useState([]); // Manage vehicles in state
+  const [showConfirm, setShowConfirm] = useState({ visible: false, id: null }); // Manage confirmation modal state
+
+  // Fetch all vehicles initially
+  const fetchVehicles = async () => {
+    try {
+      const { data } = await customFetch.get("/vehicle/retrivevehicles");
+      setVehicles(data); // Update vehicles state with fetched data
+    } catch (error) {
+      console.error('Error fetching data:', error.response ? error.response.data : error.message);
+      toast.error("Failed to fetch vehicles");
+    }
+  };
+
+  useEffect(() => {
+    fetchVehicles(); // Fetch vehicles when the component mounts
+  }, []);
+
+  const handleDelete = async (id) => {
+    try {
+      await customFetch.delete(`/vehicle/deleteVehicle/${id}`);
+      toast.success("Vehicle deleted successfully!");
+      fetchVehicles(); // Re-fetch vehicles after successful deletion
+      setShowConfirm({ visible: false, id: null }); // Close the modal
+    } catch (error) {
+      toast.error("Failed to delete vehicle");
+      console.error("Delete error", error);
+    }
+  };
+
+  const openConfirmModal = (id) => {
+    setShowConfirm({ visible: true, id }); // Open modal and store the vehicle ID
+  };
+
+  const closeConfirmModal = () => {
+    setShowConfirm({ visible: false, id: null }); // Close modal without deleting
+  };
+
+  if (!vehicles || vehicles.length === 0) {
+    return <h1>No Items to display...</h1>;
+  }
+
   return (
     <div className='bg-white px-4 pb-4 rounded-sm border border-gray-200 w-full pt-3'>
-        <strong className=' font-medium text-xl text-orange-600 '>All Vehicels</strong>
+      <strong className='font-medium text-xl text-orange-600'>All Vehicles</strong>
       <div className='mt-3'>
         <table className='w-full text-gray-700'>
           <thead>
@@ -63,7 +64,7 @@ export default function VehicleTable() {
           </thead>
           <tbody>
             {vehicles.map((vehicle) => (
-              <tr key={vehicle.VehicleNumber}>
+              <tr key={vehicle._id}>
                 <td>{vehicle.VehicleNumber}</td>
                 <td>{vehicle.VehicleName}</td>
                 <td>{vehicle.ChassiNumber}</td>
@@ -71,12 +72,15 @@ export default function VehicleTable() {
                 <td>{vehicle.AddDate}</td>
                 <td>
                   <div className='flex flex-row gap-1'>
-                    <Link to={'../EditVehicle'}>
+                    <Link to={`../EditVehicle/${vehicle._id}`}>
                       <button className='bg-orange-500 text-white px-4 py-2 hover:bg-orange-600 rounded shadow-md outline-none border-none select-none'>
                         <IoBuild />
                       </button>
                     </Link>
-                    <button className='bg-red text-white px-4 py-2 hover:bg-red-600 rounded shadow-md outline-none border-none select-none'>
+                    <button 
+                      className='bg-red text-white px-4 py-2 hover:bg-red-600 rounded shadow-md outline-none border-none select-none'
+                      onClick={() => openConfirmModal(vehicle._id)}
+                    >
                       <IoTrashSharp />
                     </button>
                   </div>
@@ -86,6 +90,31 @@ export default function VehicleTable() {
           </tbody>
         </table>
       </div>
+
+      {/* Confirmation Modal */}
+      {showConfirm.visible && (
+        <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50">
+          <div className="bg-white p-6 rounded shadow-lg">
+            <p className="mb-4 text-gray-700">
+              Are you sure you want to delete this vehicle?
+            </p>
+            <div className="flex justify-between">
+              <button
+                onClick={() => handleDelete(showConfirm.id)}
+                className="px-4 py-2 bg-red text-white rounded hover:bg-red transition-colors duration-200"
+              >
+                Yes
+              </button>
+              <button
+                onClick={closeConfirmModal}
+                className="px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600 transition-colors duration-200"
+              >
+                No
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

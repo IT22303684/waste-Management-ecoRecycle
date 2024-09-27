@@ -29,8 +29,8 @@ import {
   EditRoute,
   AddVehicle,
   AddEmployee,
-  EditVehicle,
   EditEmployee,
+  EditVehicle,
 } from "./pages/index";
 
 import { action as registerAction } from "./pages/Register";
@@ -49,6 +49,10 @@ import { loader as AdminDashbordLoader } from "./pages/Dashbord";
 import { loader as RequestLoader } from "./pages/Dashbord";
 import { loader as addRouteLoader } from "./pages/AddRoute";
 import { action as addRouteAction } from "./pages/AddRoute";
+import { action as AddVehicleAction } from "./pages/AddVehicle";
+import { loader as vehicleLoader } from "./pages/Vehicle";
+import { loader as editVehicleLoader } from "./pages/EditVehicel";
+import { action as editVehicleAction } from "./pages/EditVehicel";
 
 function App() {
   const router = createBrowserRouter([
@@ -140,6 +144,8 @@ function App() {
             {
               path: "vehicle",
               element: <Vehicle />,
+              loader: vehicleLoader,
+              
             },
             {
               path: "item",
@@ -159,11 +165,14 @@ function App() {
             },
             {
               path: "AddVehicle",
-              element: <AddVehicle />
+              element: <AddVehicle />,
+              action: AddVehicleAction,
             },
             {
-              path: "EditVehicle",
-              element: <EditVehicle />
+              path: "EditVehicle/:id",
+              element: <EditVehicle />,
+              loader: editVehicleLoader,
+              action: editVehicleAction,
             },
             {
               path: "AddEmployee",

@@ -11,7 +11,7 @@ export const InsertRoutePath = async (req, res) => {
     }
 }
 
-export const RetriveAllRoutePath = async (req, res) => {
+export const RetriveAllRoutePath = async (req, res) => { //kavidu
     try {
         const routePaths = await RoutePath.find();
         res.json(routePaths);

@@ -1,52 +1,72 @@
-import React, { createContext, useContext } from 'react'
+import React, { createContext, useContext, useState, useCallback } from 'react';
 import { useLoaderData } from 'react-router-dom';
-import RequestStatusGrid from '../Components/RequestStatusGrid'
-import AprovedRequest from '../Components/AprovedRequest'
-import PendingRequest from '../Components/PendingRequest'
-import RejectedRequest from '../Components/RejectedRequest'
+import RequestStatusGrid from '../Components/RequestStatusGrid';
+import AprovedRequest from '../Components/AprovedRequest';
+import PendingRequest from '../Components/PendingRequest';
+import RejectedRequest from '../Components/RejectedRequest';
 import { toast } from "react-toastify";
 import customFetch from "../utils/customFetch";
 
-export const loader = async ({ request }) => {
+export const loader = async () => {
   try {
     const { data } = await customFetch.get("/request/retriveRequest");
-    console.log('data fetched :', data);
     return { data };
   } catch (error) {
     toast.error(error?.response?.data?.msg);
-    return { data: [] }; // Returning empty data on error
+    return { data: [] };
   }
 };
 
-const allRequestDetailsContext = createContext({ data: [] });
+const allRequestDetailsContext = createContext({ data: [], refetch: () => {} });
 
 const AllRequest = () => {
-const { data } = useLoaderData();
+  const { data: initialData } = useLoaderData();
+  const [data, setData] = useState(initialData);
+
+  const refetch = useCallback(async () => {
+    try {
+      const { data: refreshedData } = await customFetch.get("/request/retriveRequest");
+      setData(refreshedData);
+    } catch (error) {
+      toast.error('Error refreshing data');
+    }
+  }, []);
+
+  // Calculate counts based on the request statuses
+  const totalRequests = data.length;
+  const pendingRequests = data.filter(request => request.status === 'available').length;
+  const approvedRequests = data.filter(request => request.status === 'approved').length;
+  const rejectedRequests = data.filter(request => request.status === 'reject').length;
+  const doneRequests = data.filter(request => request.status === 'done').length;
+
 
   return (
-    <allRequestDetailsContext.Provider value={{ data }}>
-     <div className='flex flex-col gap-4'>
-        <RequestStatusGrid />
-
-        <div className='flex flex-col gap-4 w-full h-screen  overflow-y-auto '>
-          <div className='flex flex-row gap-4 w-full'>
-            <AprovedRequest />
+    <allRequestDetailsContext.Provider value={{ data, refetch }}>
+      <div className='flex flex-col gap-4 h-screen'>
+        <RequestStatusGrid 
+        total={totalRequests} 
+        pending={pendingRequests} 
+        approved={approvedRequests} 
+        rejected={rejectedRequests} 
+        done={doneRequests} 
+        />
+        <div className='flex flex-col gap-4 w-full overflow-y-auto'>
+          <div className='flex flex-col gap-4 w-full'>
+            <div className='bg-white shadow-md rounded-sm p-4 border'>
+              <AprovedRequest />
+            </div>
+            <div className='bg-white shadow-md rounded-sm p-4 border'>
+              <PendingRequest />
+            </div>
+            <div className='bg-white shadow-md rounded-sm p-4 border'>
+              <RejectedRequest />
+            </div>
           </div>
-          <div className='flex flex-row gap-4 w-full'>
-            <PendingRequest />
-          </div>
-          <div className='flex flex-row gap-4 w-full'>
-            <RejectedRequest />
-          </div>
-          <div className='flex flex-row gap-4 w-full mt-4'>
-            <RejectedRequest />
-          </div>
-        </div> 
-    </div>
+        </div>
+      </div>
     </allRequestDetailsContext.Provider>
   );
 };
 
 export const useAllRequest = () => useContext(allRequestDetailsContext);
 export default AllRequest;
-
