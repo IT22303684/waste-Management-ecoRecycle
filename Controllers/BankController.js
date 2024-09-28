@@ -3,9 +3,18 @@ import { StatusCodes } from "http-status-codes";
  
 export const createBank = async  (req, res) => {
     const obj = req.body;
- 
-  console.log(obj);
-  const newItem = await Bank.create(obj);
+    console.log("iddddddddd",req.body)
+
+  const { 'userId':  User_ID,'Account Number': Account_Number, 'Account Name': Account_Name, 'Bank Name': Bank_Name, 'Branch Code': Branch_Code } = req.body;
+
+const bankData = {
+  User_ID,
+ Account_Number,
+  Account_Name,
+  Bank_Name,
+  Branch_Code,
+};
+  const newItem = await Bank.create(bankData);
   console.log("newitem",newItem)
       res.status(StatusCodes.CREATED).json({newItem});
   };
@@ -14,7 +23,9 @@ export const createBank = async  (req, res) => {
 export const getBankById = async (req, res) => {
   try {
     const { id } = req.params;
-    const bankRecord = await Bank.findById(id);
+    console.log("getttttt",req.params)
+    const bankRecord = await Bank.findOne(id);
+    console.log("bank details", bankRecord)
     if (!bankRecord) {
       return res
         .status(StatusCodes.NOT_FOUND)
@@ -33,6 +44,8 @@ export const getBankById = async (req, res) => {
 export const updateBank = async (req, res) => {
   try {
     const { id } = req.params; // Extracting the _id from the request parameters
+    console.log("req.params  ", req.params)
+    console.log("req.body  ", req.body) 
     const bankRecord = await Bank.findByIdAndUpdate(id, req.body, {
       new: true,
     }); // Updating the bank record
@@ -55,8 +68,8 @@ export const updateBank = async (req, res) => {
 // Controller to delete a bank record by _id
 export const deleteBank = async (req, res) => {
   try {
-    const { id } = req.params;
-    const bankRecord = await Bank.findByIdAndDelete(id);
+    const { id } = req.params.id;
+    const bankRecord = await Bank.findByIdAndDelete(req.params.id);
     if (!bankRecord) {
       return res
         .status(StatusCodes.NOT_FOUND)

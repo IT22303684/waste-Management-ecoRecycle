@@ -1,5 +1,5 @@
-import React from "react";
-import { Link, useNavigation, useOutletContext } from "react-router-dom";
+import React, {useEffect,useState} from "react";
+import { Link, useNavigation, useOutletContext, useNavigate } from "react-router-dom";
 import { Form } from "react-router-dom";
 import { FormRow } from "../Components";
 import profileImg from "../assets/profile/profile.jpg";
@@ -11,14 +11,9 @@ import { FaUserCircle } from "react-icons/fa";
 
 export const action = async ({ request }) => {
   const formData = await request.formData();
-  const file = formData.get("avatar");
-  if (file && file.size > 500000) {
-    toast.error("File size should be less than 0.5mb");
-    return null;
-  }
-
+  console.log("ïnside",formData)
   try {
-    await customFetch.patch("/users/update-user", formData);
+    await customFetch.put(`/bank/${bankDetails._id}`, formData);
     toast.success("Bank Details updated successfully");
   } catch (error) {
     toast.error(error?.response?.data?.msg);
@@ -30,10 +25,47 @@ export const action = async ({ request }) => {
 
 const ViewBankDetails = () => {
   const { user } = useOutletContext();
-  console.log(user);
+  console.log("uuuuuuuuuuu ",user);
+
+  const fetchBankDetails = async (userId) => {
+    try {
+      const response = await customFetch.get(`/bank/${userId}`); // Replace with your API call
+      setBankDetails(response.data); // Store bank details in state
+      console.log("response", response.data)
+    } catch (error) {
+      console.log("Noooo response")
+
+      toast.error("Failed to fetch bank details");
+    }
+  };
+
+  // Fetch bank details when component mounts
+  useEffect(() => {
+    if (user?._id) {
+      fetchBankDetails(user._id); // Fetch data using userId
+    }
+  }, [user]);
+
+  const handleDelete = async () => { 
+    try {
+      await customFetch.delete( ); // DELETE request to your endpoint
+      navigate("/dashboard/Bank-Details");
+      toast.success("Bank details deleted successfully");
+      // Optionally redirect or update state after deletion
+    } catch (error) {
+      toast.error(error?.response?.data?.msg || "Failed to delete bank details");
+    }
+  };
 
   const navigation = useNavigation();
+  const navigate = useNavigate();
   const isSubmitting = navigation.state === "submitting";
+  const [bankDetails, setBankDetails] = useState({
+    accountnumber: "",
+    accountname: "",
+    bankname: "",
+    branchcode: ""
+  });
   return (
     <div>
       <div className="flex items-center justify-center">
@@ -53,38 +85,46 @@ const ViewBankDetails = () => {
                 <FormRow
                   type="text"
                   name="Account Number"
-                  // defaulyValue={user?.accountNumber}
+                  defaulyValue={bankDetails?.Account_Number}
                   className="w-full p-2 border border-gray-300 rounded-md placeholder:font-sans placeholder:font-light"
                   labelClass="text-xl text-gray-700 font-bold capitalize"
                 />
                 <FormRow
                   type="text"
                   name="Account Name"
-                  // defaulyValue={user?.accountName}
+                  defaulyValue={bankDetails?.Account_Name}
                   className="w-full p-2 border border-gray-300 rounded-md placeholder:font-sans placeholder:font-light"
                   labelClass="text-xl text-gray-700 font-bold capitalize"
                 />
                 <FormRow
                   type="text"
                   name="Bank Name"
-                  // defaulyValue={user?.bankName}
+                  defaulyValue={bankDetails?.Bank_Name}
                   className="w-full p-2 border border-gray-300 rounded-md placeholder:font-sans placeholder:font-light"
                   labelClass="text-xl text-gray-700 font-bold capitalize"
                 />
                 <FormRow
                   type="text"
                   name="Branch Code"
-                  // defaulyValue={user?.branchCode}
+                  defaulyValue={bankDetails?.Branch_Code}
                   className="w-full p-2 border border-gray-300 rounded-md placeholder:font-sans placeholder:font-light"
                   labelClass="text-xl text-gray-700 font-bold capitalize"
                 />
                 <div className="col-span-1 flex justify-start">
                   <button
-                    type="submit"
+                    type="button"
+                    style={{
+                      backgroundColor: '#f56565', // Tailwind's red-500
+                      color: 'white',
+                      padding: '0.5rem 1rem',
+                      borderRadius: '0.375rem',
+                      transition: 'background-color 0.2s ease-in-out',
+                    }}
                     className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition-colors duration-200"
                     disabled={isSubmitting}
+                    onClick={handleDelete}
                   >
-                    {isSubmitting ? "deleting..." : "Delete"}
+                  Delete
                   </button>
                   </div>
 
@@ -107,4 +147,3 @@ const ViewBankDetails = () => {
 };
 
 export default ViewBankDetails;
-

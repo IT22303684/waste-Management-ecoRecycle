@@ -7,7 +7,7 @@ import { createBank, getBankById, updateBank, deleteBank } from '../Controllers/
 console.log("ïnsideeeeeeee")
 // Define routes for bank-related operations
 router.post('/',createBank);
-router.get('/:id', getBankById);
+router.get('/:User_ID', getBankById);
 router.put('/:id', updateBank);
 router.delete('/:id', deleteBank);
  
