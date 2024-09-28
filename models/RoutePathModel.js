@@ -1,6 +1,21 @@
 import mongoose from 'mongoose';
 
+// generate unique RequestId
+var countRouteNumber = 0;
+const generateRequestId = () => {
+    const prefix = 'ROU';
+    const timestamp = Date.now().toString();
+    countRouteNumber++;  // Adding a random number for extra uniqueness
+    return `${prefix}-${timestamp}-${countRouteNumber}`;
+};
+
 const RoutePathSchema = new mongoose.Schema({
+    RouteId: {
+        type: String,
+        required: true,
+        unique: true,
+        default: generateRequestId,
+    },
     RequestId: {
         type: String,
         required: true,

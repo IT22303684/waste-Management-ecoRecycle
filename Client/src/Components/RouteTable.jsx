@@ -1,14 +1,16 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { toast } from 'react-toastify';
-import { IoBuild, IoTrashSharp } from 'react-icons/io5';
+import { IoBuild, IoTrashSharp, IoPrint } from 'react-icons/io5';
 import { useAllRoutes } from '../pages/Route'; // Ensure this path is correct
 import customFetch from '../utils/customFetch';
 import { Link } from 'react-router-dom';
+import { useReactToPrint } from 'react-to-print';
 
 export default function RouteTable() {
-    const { data, refetch } = useAllRoutes(); //kavidu
+    const { data, refetch } = useAllRoutes();
     const [showConfirm, setShowConfirm] = useState({ visible: false, id: null });
-    const [searchTerm, setSearchTerm] = useState(''); // State to store the search term
+    const [searchTerm, setSearchTerm] = useState('');
+    const tableRef = useRef();  // Reference to the table
 
     // Handle showing the confirmation modal
     const openConfirmModal = (id) => {
@@ -37,25 +39,41 @@ export default function RouteTable() {
     const filteredData = data.filter((route) =>
         route.CustomerName.toLowerCase().includes(searchTerm.toLowerCase()) ||
         route.ContactNumber.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        route._id.toLowerCase().includes(searchTerm.toLowerCase())
+        route.RouteId.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
-    
+    // Print function
+    const handlePrint = useReactToPrint({
+        content: () => tableRef.current,  // Reference to the table to be printed
+        documentTitle: "Route Details Report",
+    });
+
 
     return (
         <div className="bg-white border border-gray-200 overflow-x-auto">
             {/* Search Input */}
-            <div className="p-4">
+            <div className="p-4 no-print">
                 <input
                     type="text"
                     placeholder="Search by Route Id, Customer Name, or Contact Number"
                     className="px-4 py-2 border rounded w-full"
                     value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)} // Update the search term
+                    onChange={(e) => setSearchTerm(e.target.value)}
                 />
             </div>
 
-            <table className="min-w-[1000px] w-full text-gray-700">
+            {/* Print Button */}
+            <div className="p-2 no-print">
+                <button
+                    className="bg-gray-500 text-white px-4 text-xl py-2 rounded hover:bg-orange-600"
+                    onClick={handlePrint}
+                >
+                    <IoPrint />
+                </button>
+            </div>
+
+            {/* Table */}
+            <table ref={tableRef} className="min-w-[1000px] w-full text-gray-700">
                 <thead>
                     <tr>
                         <th>Route Id</th>
@@ -70,7 +88,6 @@ export default function RouteTable() {
                     </tr>
                 </thead>
                 <tbody>
-                    {/* Check if filteredData is empty */}
                     {(!filteredData || filteredData.length === 0) ? (
                         <tr>
                             <td colSpan="9" className="text-center py-4">
@@ -80,7 +97,7 @@ export default function RouteTable() {
                     ) : (
                         filteredData.map((route) => (
                             <tr key={route._id}>
-                                <td>{route._id}
+                                <td>{route.RouteId}
                                     <div className='text-gray-300'>
                                         request Id :
                                         <p>{route.RequestId}</p>
@@ -90,9 +107,9 @@ export default function RouteTable() {
                                 <td>{route.ContactNumber}</td>
                                 <td>
                                     <a href={route.PickupPath} target="_blank"
-                                    rel="noopener noreferrer"
-                                    className="text-blue-500 hover:underline"
-                                    title={route.PickupPath}>
+                                       rel="noopener noreferrer"
+                                       className="text-blue-500 hover:underline"
+                                       title={route.PickupPath}>
                                         {route.PickupPath}
                                     </a>
                                 </td>
@@ -120,6 +137,7 @@ export default function RouteTable() {
                     )}
                 </tbody>
             </table>
+
             {/* Confirmation Modal */}
             {showConfirm.visible && (
                 <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50">
