@@ -51,7 +51,9 @@ export {default as DriverDashboardlayout} from './DriverDashboardLayout'
 export {default as DriverDashboard} from './DriverDashboard'
 export {default as DriverProfile} from './DriverProfile'
 export {default as DailyWaste} from './DailyWaste'
+export { default as AddDailyWaste } from './AddDailyWaste';
 export {default as EditDailyWaste} from './EditDailyWaste'
+export {default as CollectedWaste} from './CollectedWaste'
 
 
 

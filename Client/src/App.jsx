@@ -44,6 +44,8 @@ import {
   UserManagement,
   DeleteUser,
   Adduser,
+  AddDailyWaste,
+  CollectedWaste,
 } from "./pages/index";
 
 import { action as registerAction } from "./pages/Register";
@@ -72,11 +74,18 @@ import { action as addCitemAction } from "./pages/AddcompanyItem";
 import { action as editcompanyItemAction } from "./pages/EditcompanyItem";
 import { loader as editcompanyItemLoader } from "./pages/EditcompanyItem";
 import { action as deleteCompanyItemAction } from "./pages/DeleteCompanyItem";
-import { action as DriverprofileAction } from "./pages/DriverProfile";
-import { loader as DriverProfileLoader } from "./pages/DriverProfile";
 import { loader as UserManagementLoader } from "./pages/UserManagement";
 import { action as DeleteUserAction } from "./pages/DeleteUser";
 import { action as AdduserAction } from "./pages/Adduser";
+
+import { action as DriverprofileAction } from "./pages/DriverProfile";
+import { loader as DriverProfileLoader } from "./pages/DriverProfile";
+import { action as addCollectedWaste } from "./pages/AddDailyWaste";
+import { action as EditWasteAction } from "./pages/EditDailyWaste";
+import { loader as EditWasteLoader } from "./pages/EditDailyWaste";
+import { loader as driverDashboardLoader } from "./pages/DriverDashboard";
+import { loader as dailyWasteLoader } from "./pages/DailyWaste";
+import { loader as collectedWasteLoader } from "./pages/CollectedWaste";
 
 function App() {
   const router = createBrowserRouter([
@@ -235,6 +244,7 @@ function App() {
             {
               index: true,
               element: <DriverDashboard />,
+              loader: driverDashboardLoader,
             },
             {
               path: "driver-profile",
@@ -245,10 +255,23 @@ function App() {
             {
               path: "daily-waste",
               element: <DailyWaste />,
+              loader: dailyWasteLoader,
             },
             {
-              path: "edit-daily-waste",
+              path: "collected-waste",
+              element: <CollectedWaste />,
+              loader: collectedWasteLoader,
+            },
+            {
+              path: "add-daily-waste",
+              element: <AddDailyWaste />,
+              action: addCollectedWaste,
+            },
+            {
+              path: "edit-daily-waste/:id",
               element: <EditDailyWaste />,
+              action: EditWasteAction,
+              loader: EditWasteLoader,
             },
           ],
         },

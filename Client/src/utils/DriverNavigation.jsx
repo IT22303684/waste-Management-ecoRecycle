@@ -1,4 +1,4 @@
-import { FaChartBar, FaPortrait, FaTable } from "react-icons/fa";
+import { FaChartBar, FaPortrait, FaTable, FaViadeo } from "react-icons/fa";
 
 export const DRIVER_DASHBOARD_SIDEBAR_UPPER_LINKS = [
   {
@@ -9,14 +9,20 @@ export const DRIVER_DASHBOARD_SIDEBAR_UPPER_LINKS = [
   },
   {
     key: "driver-profile",
-    lable: "Profile",
+    label: "Profile",
     path: "driver-profile",
     icon: <FaPortrait />,
   },
   {
     key: "daily-waste",
-    label: "Daily-Waste",
+    label: "Approved Request",
     path: "daily-waste",
     icon: <FaChartBar />,
+  },
+  {
+    key: "collected-waste",
+    label: "Collected Waste",
+    path: "collected-waste",
+    icon: <FaViadeo />,
   },
 ];

@@ -1,9 +1,12 @@
-import { useAllDriverRequest } from "../pages/DriverDashboard";
-import React, { useEffect, useState } from "react";
+import { useAllDriverRequest } from "../pages/DailyWaste";
+import React, { useEffect, useRef, useState } from "react";
 import customFetch from "../utils/customFetch";
 import { toast } from "react-toastify";
+import { Link } from "react-router-dom";
+import jsPDF from "jspdf";
+import html2canvas from "html2canvas";
 
-export default function DriverRequest() {
+export default function DriverApprovedRequest() {
   const { data, refetch, isLoading, isError } = useAllDriverRequest();
   const [showConfirm, setShowConfirm] = useState({
     visible: false,
@@ -11,6 +14,8 @@ export default function DriverRequest() {
     id: null,
   });
   const [refresh, setRefresh] = useState(false);
+
+  const componentRef = useRef();
 
   useEffect(() => {
     if (refresh) {
@@ -63,9 +68,19 @@ export default function DriverRequest() {
     }
   };
 
+  const printToPDF = () => {
+    const input = componentRef.current;
+    html2canvas(input).then((canvas) => {
+      const imgData = canvas.toDataURL("image/png");
+      const pdf = new jsPDF();
+      pdf.addImage(imgData, "PNG", 0, 0);
+      pdf.save("approved_requests.pdf");
+    });
+  };
+
   // Filter out scheduled routes
-  const scheduledRoute = Array.isArray(data)
-    ? data.filter((route) => route.Status === "Scheduled")
+  const approvedRoute = Array.isArray(data)
+    ? data.filter((route) => route.Status === "approved")
     : [];
 
   // Loading, Error, No Data handling
@@ -80,11 +95,12 @@ export default function DriverRequest() {
   return (
     <div className="w-full px-4 pt-3 pb-4 bg-white border border-gray-200 rounded-sm">
       <strong className="text-xl font-medium text-green-600">
-        Driver Request
+        {" "}
+        Approved Driver Request
       </strong>
 
       <div className="mt-3">
-        <table className="w-full text-gray-700">
+        <table className="w-full text-gray-700" ref={componentRef}>
           <thead>
             <tr>
               <th>Customer Id</th>
@@ -96,8 +112,8 @@ export default function DriverRequest() {
             </tr>
           </thead>
           <tbody>
-            {scheduledRoute.length > 0 ? (
-              scheduledRoute.map((route) => (
+            {approvedRoute.length > 0 ? (
+              approvedRoute.map((route) => (
                 <tr key={route._id} className="hover:bg-gray-100">
                   <td>{route.CustomerId}</td>
                   <td>{route.CustomerName}</td>
@@ -114,30 +130,13 @@ export default function DriverRequest() {
                   </td>
                   <td>{route.Status}</td>
                   <td className="flex flex-col gap-2">
-                    <button
-                      className="px-4 py-2 mr-3 text-white bg-green-500 border-none rounded shadow-md outline-none select-none hover:bg-green-700"
-                      onClick={() =>
-                        setShowConfirm({
-                          visible: true,
-                          type: "approve",
-                          id: route._id,
-                        })
-                      }
+                    <Link
+                      to={`/DriverDashboard/add-daily-waste?customerId=${route.CustomerId}&customerName=${route.CustomerName}`}
                     >
-                      Approve
-                    </button>
-                    <button
-                      className="px-4 py-2 mr-3 text-white border-none rounded shadow-md outline-none select-none bg-red hover:bg-red"
-                      onClick={() =>
-                        setShowConfirm({
-                          visible: true,
-                          type: "reject",
-                          id: route._id,
-                        })
-                      }
-                    >
-                      Reject
-                    </button>
+                      <button className="px-4 py-2 text-white bg-blue-500 border-none rounded shadow-md outline-none select-none hover:bg-blue-600">
+                        ADD WASTE
+                      </button>
+                    </Link>
                   </td>
                 </tr>
               ))
@@ -151,6 +150,13 @@ export default function DriverRequest() {
           </tbody>
         </table>
       </div>
+
+      <button
+        onClick={printToPDF}
+        className="px-4 py-2 mt-4 text-white bg-green-500 rounded"
+      >
+        Export to PDF
+      </button>
 
       {showConfirm.visible && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
