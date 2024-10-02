@@ -1,99 +1,154 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { Form, useNavigation, useOutletContext, useNavigate } from "react-router-dom";
 import { FormRow } from "../Components";
-import { useOutletContext, useNavigation, redirect, Form } from "react-router-dom";
-import hero from "../assets/Images/account.jpg";
 import { toast } from "react-toastify";
 import customFetch from "../utils/customFetch";
+import hero from "../assets/Images/account.jpg";
 
 export const action = async ({ request }) => {
   const formData = await request.formData();
+  const formObject = Object.fromEntries(formData);
 
-  // Convert formData entries into an object
-  const formObject = Object.fromEntries(formData.entries());
-
-  // User ID will be passed as part of the formData
-  console.log("Form Data with User ID:", formObject);
+  const isUpdate = formObject.id ? true : false;
 
   try {
-    await customFetch.post("/Bank", formObject);
-    toast.success("Bank Details added successfully");
-    return redirect("/dashboard/VBank-Details");
+    if (isUpdate) {
+      await customFetch.patch(`/bank/${formObject.id}`, formObject);
+      toast.success("Bank Details updated successfully");
+    } else {
+      await customFetch.post("/Bank", formObject);
+      toast.success("Bank Details added successfully");
+    }
+    return null;
   } catch (error) {
     toast.error(error?.response?.data?.msg);
     return error;
   }
 };
 
-const AddBankDetails = () => {
-  const { user } = useOutletContext(); // Get user context here
+const BankDetailsForm = () => {
+  const { user } = useOutletContext();
   const navigation = useNavigation();
+  const navigate = useNavigate();
   const isSubmitting = navigation.state === "submitting";
+  const [bankDetails, setBankDetails] = useState(null);
+
+  useEffect(() => {
+    if (user?._id) {
+      fetchBankDetails(user._id);
+    }
+  }, [user]);
+
+  const fetchBankDetails = async (userId) => {
+    try {
+      const User_ID = userId;
+      const response = await customFetch.get(`/bank/${User_ID}`);
+
+      setBankDetails({
+        _id: response.data._id,
+        Account_Number: response.data.Account_Number,
+        Account_Name: response.data.Account_Name,
+        Bank_Name: response.data.Bank_Name,
+        Branch_Code: response.data.Branch_Code,
+      });
+
+      console.warn("Bank details", bankDetails);
+
+    } catch (error) {
+      console.log("No existing bank details");
+      setBankDetails(null);
+    }
+  };
+
+  const handleDelete = async () => {
+    if (!bankDetails || !bankDetails._id) {
+      toast.error("No bank details to delete");
+      return;
+    }
+
+    try {
+      await customFetch.delete(`/bank/${bankDetails._id}`);
+      navigate("/dashboard/Bank-Details");
+      toast.success("Bank details deleted successfully");
+      setBankDetails(null);
+    } catch (error) {
+      toast.error(error?.response?.data?.msg || "Failed to delete bank details");
+    }
+  };
 
   return (
-    <div className="flex flex-col justify-center items-center">
-      <h3 className="font-mono mb-5 text-4xl font-bold text-center mt-4">
-        Add Bank Account Details
-      </h3>
-      <div>
-        <div className="flex flex-col items-center border p-4 w-[100%]">
-          <div className="mb-4">
-            <img
-              src={hero}
-              alt="profile"
-              className="w-48 h-48 rounded-full object-cover"
-            />
-          </div>
-        </div>
+    <div className="flex flex-col items-center justify-center">
+      <h2 className="font-mono mb-5 text-4xl font-bold text-center mt-4">
+        {bankDetails ? "Update Bank Details" : "Add Bank Details"}
+      </h2>
+      <div className="mb-4">
+        <img
+          src={hero}
+          alt="profile"
+          className="w-48 h-48 rounded-full object-cover"
+        />
       </div>
-      <div>
-        <Form method="post" className="border" encType="multipart/form-data">
-          <div className="border border-black flex  bg-DarkGunmetal space-x-4 space-y-10 flex-wrap rounded-xl p-4 shadow-2xl">
-            <FormRow
-              type="text"
-              name="Account Number"
-              label="accountnumber"
-              className="border mt-10   p-2 px-4 text-center text-white bg-zinc-600  border-zinc-600 placeholder:text-xs placeholder:text-center md:text-left placeholder:md:text-left focus:outline-none focus:bg-white focus:text-black"
-              labelClass="text-xl text-white font-bold ml-6 capitalize ml-2"
-            />
-            <FormRow
-              type="text"
-              name="Account Name"
-              label="accountname"
-              className="border p-2 px-4 text-center text-white bg-zinc-600  border-zinc-600 placeholder:text-xs placeholder:text-center md:text-left placeholder:md:text-left focus:outline-none focus:bg-white  focus:text-black"
-              labelClass="text-xl text-white font-bold capitalize ml-2"
-            />
-            <FormRow
-              type="text"
-              name="Bank Name"
-              label="bankname"
-              className="border  p-2 px-4 text-center text-white bg-zinc-600  border-zinc-600 placeholder:text-xs placeholder:text-center md:text-left placeholder:md:text-left focus:outline-none focus:bg-white  focus:text-black"
-              labelClass="text-xl text-white font-bold capitalize ml-2"
-            />
-            <FormRow
-              type="text"
-              name="Branch Code"
-              label="branchcode"
-              className="border p-2 px-4 text-center text-white bg-zinc-600  border-zinc-600 placeholder:text-xs placeholder:text-center md:text-left placeholder:md:text-left focus:outline-none focus:bg-white  focus:text-black"
-              labelClass="text-xl text-white font-bold capitalize ml-2"
-            />
-            
-            {/* Hidden field to pass only the user ID */}
-            <input type="hidden" name="userId" value={user._id} />
+      <Form method="post" className="grid grid-cols-2 gap-4 p-6" encType="multipart/form-data">
+        <input type="hidden" name="id" value={bankDetails?._id || ''} />
+        <input type="hidden" name="User_ID" value={user._id} />
 
-            <div className="ml-4 ">
-              <button
-                disabled={isSubmitting}
-                type="submit"
-                className="px-10 py-1 text-lg font-sans font-bold rounded-md text-zinc-800 bg-lime-500 hover:bg-lime-700 hover:text-white duration-500"
-              >
-                {isSubmitting ? "Submitting..." : "Submit"}
-              </button>
-            </div>
-          </div>
-        </Form>
-      </div>
+        <FormRow
+          type="text"
+          name="Account_Number"
+          labelText="Account Number"
+          defaulyValue={bankDetails?.Account_Number || ''}
+          className="w-full p-2 border border-gray-300 rounded-md"
+          labelClass="text-xl text-gray-700 font-bold capitalize"
+        />
+        <FormRow
+          type="text"
+          name="Account_Name"
+          labelText="Account Name"
+          defaulyValue={bankDetails?.Account_Name || ''}
+          className="w-full p-2 border border-gray-300 rounded-md"
+          labelClass="text-xl text-gray-700 font-bold capitalize"
+        />
+        <FormRow
+          type="text"
+          name="Bank_Name"
+          labelText="Bank Name"
+          defaulyValue={bankDetails?.Bank_Name || ''}
+          className="w-full p-2 border border-gray-300 rounded-md"
+          labelClass="text-xl text-gray-700 font-bold capitalize"
+        />
+        <FormRow
+          type="text"
+          name="Branch_Code"
+          labelText={"Branch Code"}
+          defaulyValue={bankDetails?.Branch_Code || ''}
+          className="w-full p-2 border border-gray-300 rounded-md"
+          labelClass="text-xl text-gray-700 font-bold capitalize"
+        />
+
+        <div className="col-span-1 flex justify-start">
+          {bankDetails && (
+            <button
+              type="button"
+              className="px-4 py-2 bg-orange-900 text-white rounded-md transition-colors duration-200"
+              onClick={handleDelete}
+            >
+              Delete
+            </button>
+          )}
+        </div>
+
+        <div className="col-span-1 flex justify-end">
+          <button
+            type="submit"
+            className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition-colors duration-200"
+            disabled={isSubmitting}
+          >
+            {isSubmitting ? "Submitting..." : (bankDetails?._id ? "Update" : "Submit")}
+          </button>
+        </div>
+      </Form>
     </div>
   );
 };
 
-export default AddBankDetails;
+export default BankDetailsForm;

@@ -1,4 +1,4 @@
-import React, {useEffect,useState} from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useNavigation, useOutletContext, useNavigate } from "react-router-dom";
 import { Form } from "react-router-dom";
 import { FormRow } from "../Components";
@@ -11,7 +11,7 @@ import { FaUserCircle } from "react-icons/fa";
 
 export const action = async ({ request }) => {
   const formData = await request.formData();
-  console.log("ïnside",formData)
+  console.log("ïnside", formData)
   try {
     await customFetch.put(`/bank/${bankDetails._id}`, formData);
     toast.success("Bank Details updated successfully");
@@ -25,7 +25,7 @@ export const action = async ({ request }) => {
 
 const ViewBankDetails = () => {
   const { user } = useOutletContext();
-  console.log("uuuuuuuuuuu ",user);
+  console.log("uuuuuuuuuuu ", user);
 
   const fetchBankDetails = async (userId) => {
     try {
@@ -46,9 +46,9 @@ const ViewBankDetails = () => {
     }
   }, [user]);
 
-  const handleDelete = async () => { 
+  const handleDelete = async () => {
     try {
-      await customFetch.delete( ); // DELETE request to your endpoint
+      await customFetch.delete(); // DELETE request to your endpoint
       navigate("/dashboard/Bank-Details");
       toast.success("Bank details deleted successfully");
       // Optionally redirect or update state after deletion
@@ -85,21 +85,21 @@ const ViewBankDetails = () => {
                 <FormRow
                   type="text"
                   name="Account Number"
-                  defaulyValue={bankDetails?.Account_Number}
+                  defaulyValue={bankDetails?.accountnumber}
                   className="w-full p-2 border border-gray-300 rounded-md placeholder:font-sans placeholder:font-light"
                   labelClass="text-xl text-gray-700 font-bold capitalize"
                 />
                 <FormRow
                   type="text"
                   name="Account Name"
-                  defaulyValue={bankDetails?.Account_Name}
+                  defaulyValue={bankDetails?.accountname}
                   className="w-full p-2 border border-gray-300 rounded-md placeholder:font-sans placeholder:font-light"
                   labelClass="text-xl text-gray-700 font-bold capitalize"
                 />
                 <FormRow
                   type="text"
                   name="Bank Name"
-                  defaulyValue={bankDetails?.Bank_Name}
+                  defaulyValue={bankDetails?.bankname}
                   className="w-full p-2 border border-gray-300 rounded-md placeholder:font-sans placeholder:font-light"
                   labelClass="text-xl text-gray-700 font-bold capitalize"
                 />
@@ -124,9 +124,9 @@ const ViewBankDetails = () => {
                     disabled={isSubmitting}
                     onClick={handleDelete}
                   >
-                  Delete
+                    Delete
                   </button>
-                  </div>
+                </div>
 
                 <div className="col-span-1 flex justify-end">
                   <button
