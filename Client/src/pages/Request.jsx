@@ -61,6 +61,7 @@ const AllRequest = () => {
             <div className='bg-white shadow-md rounded-sm p-4 border'>
               <RejectedRequest />
             </div>
+            <div className="h-40"></div> 
           </div>
         </div>
       </div>

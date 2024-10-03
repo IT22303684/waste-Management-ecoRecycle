@@ -11,7 +11,7 @@ export const InsertRoutePath = async (req, res) => {
     }
 }
 
-export const RetriveAllRoutePath = async (req, res) => { //kavidu
+export const RetriveAllRoutePath = async (req, res) => {
     try {
         const routePaths = await RoutePath.find();
         res.json(routePaths);
@@ -31,7 +31,7 @@ export const RetrieveSpecificRoutePath = async(req, res) => {
     }
 }
 
-export const UpdateRoutePath = async (req, res) => {
+export const UpdateRoutePath = async (req, res) => { //kavidu
     try {
         console.log("Updating Route with ID:", req.params.id);
 

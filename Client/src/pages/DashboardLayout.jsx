@@ -19,6 +19,10 @@ export const loader = async () => {
     if (role === "admin") {
       return redirect("/AdminDashboard");
     }
+
+    if (role === "Driver") {
+      return redirect("/DriverDashboard");
+    }
     return data;
   } catch (error) {
     return redirect("/");

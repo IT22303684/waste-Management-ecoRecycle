@@ -54,7 +54,7 @@ export default function RejectedRequest() {
             <tr>
               <th>Request Id</th>
               <th>Customer Name</th>
-              <th>Request Date</th>
+              <th>Request Date, Time</th>
               <th>Request Type</th>
               <th>Weight (KG)</th>
               <th>Request Address</th>
@@ -66,7 +66,7 @@ export default function RejectedRequest() {
               <tr key={request._id}>
                 <td>{request._id}</td>
                 <td>{request.name}</td>
-                <td>{new Date(request.requestDate).toLocaleDateString() || 'N/A'}</td>
+                <td>{request.requestDate}</td>
                 <td>{request.category}</td>
                 <td>{request.weight}</td>
                 <td>{request.Location}</td>

@@ -1,5 +1,3 @@
-
-
 export const  RITEM_CATEGORY = {
     PLASTIC : 'plastic',
     METAL : 'metal',
@@ -17,4 +15,3 @@ export const RITEM_STATUS = {
     AVAILABLE : 'available',
     DONE : 'done',
 }
-

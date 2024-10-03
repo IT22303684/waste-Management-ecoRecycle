@@ -2,17 +2,33 @@ import React, { useEffect, useState } from 'react';
 import { Form, redirect, useLoaderData } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import customFetch from '../utils/customFetch';
-import { useParams, useSearchParams } from 'react-router-dom';
 
-export const loader = async () => {
+// Loader function to fetch data
+export const loader = async ({ params, request }) => {
   try {
-    const vehicleResponse = await customFetch('vehicle/retrivevehicles');
+    const url = new URL(request.url);
+    const reqId = url.searchParams.get('reqId'); // Get request ID from query params
+
+    // Fetch customer and vehicle data in parallel
+    const [customerResponse, vehicleResponse, requestResponce] = await Promise.all([
+      customFetch(`/users/${params.id}`),  // Fetch customer details using `params.id`
+      customFetch(`/vehicle/retrivevehicles`),  // Fetch all vehicles
+      customFetch(`/request/retrieveSpecificRequest/${reqId}`),
+    ]);
+
+    console.log('Customer Data:', requestResponce.data);  // Log the customer data for debugging
+
+    // Return the fetched data
     return {
-      vehicles: vehicleResponse.data,
+      customer: customerResponse.data,  // Include customer data
+      vehicles: vehicleResponse.data,   // Include vehicle data
+      request: requestResponce.data,
+      reqId,  // Pass reqId for use in the form
+      cusId: params.id,
     };
   } catch (error) {
-    toast.error(error?.response?.data?.msg || 'Failed to load vehicle data');
-    return redirect('/AdminDashboard/request');
+    toast.error(error?.response?.data?.msg || 'Failed to load data');
+    return redirect("/AdminDashboard/request");  // Redirect in case of failure
   }
 };
 
@@ -51,20 +67,20 @@ export const action = async ({ request }) => {
   }
 };
 
-
 export default function AddRoute() {
-  const { vehicles } = useLoaderData();
+  const { vehicles, customer, request, reqId , cusId} = useLoaderData();  // Get customer, vehicle, and request ID from loader data
   const [vehicleOptions, setVehicleOptions] = useState([]);
-
-  const { Reqid } = useParams();
-  const [searchParams] = useSearchParams();
-  const cusId = searchParams.get('cusId');
 
   useEffect(() => {
     if (vehicles && Array.isArray(vehicles)) {
-      setVehicleOptions(vehicles);
+      setVehicleOptions(vehicles);  // Set vehicle options
     }
   }, [vehicles]);
+
+  // Check if customer data is still loading or missing
+  if (!customer) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <div className='bg-white w-full flex items-center justify-center flex-col min-h-screen mb-10'>
@@ -72,13 +88,14 @@ export default function AddRoute() {
         <h3 className='font-semibold text-green-600 text-3xl text-center'>ADD ROUTE</h3>
 
         <Form method="post">
+          {/* Display the Request ID */}
           <div className='mt-8'>
             <label className='text-lg font-medium'>Request ID</label>
             <input
               type='text'
               name='RequestId'
               className='w-full border-2 border-gray-100 rounded-xl p-3 mt-1'
-              value={Reqid}
+              value={reqId || ''}  // Use reqId from loader data with fallback
               readOnly
             />
           </div>
@@ -92,11 +109,14 @@ export default function AddRoute() {
               readOnly
             />
           </div>
+
+          {/* Display the Customer Name */}
           <div className='mt-8'>
             <label className='text-lg font-medium'>Contact Name</label>
             <input
               type='text'
               name='CustomerName'
+              defaultValue={customer.user.name+' '+customer.user.lastName}
               className='w-full border-2 border-gray-100 rounded-xl p-3 mt-1'
               placeholder='Enter Name'
             />
@@ -106,10 +126,15 @@ export default function AddRoute() {
             <input
               type='text'
               name='ContactNumber'
+              defaultValue={request.phoneNo}
               className='w-full border-2 border-gray-100 rounded-xl p-3 mt-1'
-              placeholder='Enter Number'
+              placeholder='Enter Name'
             />
           </div>
+
+          
+
+          {/* Google Maps Route Selection */}
           <div className="mt-8">
             <a
               href="https://www.google.com/maps"
@@ -120,6 +145,8 @@ export default function AddRoute() {
               Select New Route Pin From Google Map
             </a>
           </div>
+
+          {/* Pickup Path */}
           <div className='mt-8'>
             <label className='text-lg font-medium'>Pickup Path Pin</label>
             <input
@@ -129,6 +156,8 @@ export default function AddRoute() {
               placeholder='Enter Path'
             />
           </div>
+
+          {/* Arrive Date */}
           <div className='mt-4'>
             <label className='text-lg font-medium'>Arrive Date</label>
             <input
@@ -137,6 +166,8 @@ export default function AddRoute() {
               className='w-full border-2 border-gray-100 rounded-xl p-3 mt-1'
             />
           </div>
+
+          {/* Arrive Time */}
           <div className='mt-4'>
             <label className='text-lg font-medium'>Arrive Time</label>
             <input
@@ -145,6 +176,8 @@ export default function AddRoute() {
               className='w-full border-2 border-gray-100 rounded-xl p-3 mt-1'
             />
           </div>
+
+          {/* Vehicle Selection */}
           <div className='mt-4'>
             <label className='text-lg font-medium'>Vehicle</label>
             <select
@@ -162,6 +195,8 @@ export default function AddRoute() {
               )}
             </select>
           </div>
+
+          {/* Submit Button */}
           <div className='mt-4'>
             <button type='submit' className='bg-green-500 text-white font-bold py-4 rounded w-full hover:bg-green-700'>
               ADD

@@ -16,21 +16,39 @@ import {
   EditItems,
   AllItems,
   AdminDashboard,
-  AdminDashbordLayout, 
-  AdminDashbord, Request, 
-  Staf, 
-  Company, 
-  Item, 
-  Transaction, 
-  Vehicle, 
-  Route, 
-  AddRoute,
-  Test,
-  EditRoute,
+  AdminDashbordLayout,
+  AdminDashbord,
+  Request,
+  Staf,
+  Company,
+  Item,
+  Transaction,
+  Vehicle,
   AddVehicle,
-  AddEmployee,
-  EditEmployee,
   EditVehicle,
+  Route,
+  AddRoute,
+  EditRoute,
+  Test,
+  Paymentinfo,
+  AddEmployee,
+  Editemployee,
+  Addcompany,
+  EditCompany,
+  DeleteCompany,
+  AddcompanyItem,
+  EditcompanyItem,
+  DeleteCompanyItem,
+  DailyWaste,
+  DriverDashboard,
+  DriverDashboardlayout,
+  DriverProfile,
+  EditDailyWaste,
+  UserManagement,
+  DeleteUser,
+  Adduser,
+  AddDailyWaste,
+  CollectedWaste,
 } from "./pages/index";
 
 import { action as registerAction } from "./pages/Register";
@@ -42,17 +60,50 @@ import { loader as AllItemsLoader } from "./pages/AllItems";
 import { loader as editItemLoader } from "./pages/EditItems";
 import { action as editItemAction } from "./pages/EditItems";
 import { action as deleteItemAction } from "./pages/DeleteItem";
+import { loader as AdminDashboardLoader } from "./pages/AdminDashbordLayout";
+import { loader as userDasboardLoader } from "./pages/Dashboard";
+import { loader as EmployeeLoader } from "./pages/Staf";
+import { action as addEmployee } from "./pages/AddEmployee";
+import { action as DeleteEmploye } from "./pages/DeleteEmploye";
+import { action as editempAction } from "./pages/EditEmployee";
+import { loader as editEmpLoader } from "./pages/EditEmployee";
+import { loader as comapnyLoader } from "./pages/Company";
+import { action as AddCompanyAction } from "./pages/AddCompany";
+import { action as EditcomapnyAction } from "./pages/EditCompany";
+import { loader as EditcompanyLoader } from "./pages/EditCompany";
+import { action as DeleteCompanyAction } from "./pages/DeleteCompany";
+import { loader as itemLoader } from "./pages/Item";
+import { action as addCitemAction } from "./pages/AddcompanyItem";
+import { action as editcompanyItemAction } from "./pages/EditcompanyItem";
+import { loader as editcompanyItemLoader } from "./pages/EditcompanyItem";
+import { action as deleteCompanyItemAction } from "./pages/DeleteCompanyItem";
+import { loader as UserManagementLoader } from "./pages/UserManagement";
+import { action as DeleteUserAction } from "./pages/DeleteUser";
+import { action as AdduserAction } from "./pages/Adduser";
+
+import { action as DriverprofileAction } from "./pages/DriverProfile";
+import { loader as DriverProfileLoader } from "./pages/DriverProfile";
+import { action as addCollectedWaste } from "./pages/AddDailyWaste";
+import { action as EditWasteAction } from "./pages/EditDailyWaste";
+import { loader as EditWasteLoader } from "./pages/EditDailyWaste";
+import { loader as driverDashboardLoader } from "./pages/DriverDashboard";
+import { loader as dailyWasteLoader } from "./pages/DailyWaste";
+import { loader as collectedWasteLoader } from "./pages/CollectedWaste";
+
 import { loader as routeLoader } from "./pages/Route";
-import { loader as editRouteLoader } from "./pages/EditRoute";
-import { action as editRouteAction } from "./pages/EditRoute";
-import { loader as AdminDashbordLoader } from "./pages/Dashbord";
-import { loader as RequestLoader } from "./pages/Dashbord";
 import { loader as addRouteLoader } from "./pages/AddRoute";
+import { loader as editRouteLoader } from "./pages/EditRoute";
 import { action as addRouteAction } from "./pages/AddRoute";
-import { action as AddVehicleAction } from "./pages/AddVehicle";
+import { action as editRouteAction } from "./pages/EditRoute";
+
+import { loader as RequestLoader } from "./pages/Request";
+
 import { loader as vehicleLoader } from "./pages/Vehicle";
 import { loader as editVehicleLoader } from "./pages/EditVehicel";
+import { action as AddVehicleAction } from "./pages/AddVehicle";
 import { action as editVehicleAction } from "./pages/EditVehicel";
+
+
 
 function App() {
   const router = createBrowserRouter([
@@ -83,6 +134,7 @@ function App() {
             {
               index: true,
               element: <Dashboard />,
+              loader: userDasboardLoader,
             },
             {
               path: "Add-Items",
@@ -105,19 +157,22 @@ function App() {
               loader: editItemLoader,
               action: editItemAction,
             },
-            { path: "delete-item/:id",
-              action: deleteItemAction 
+            {
+              path: "payment-info",
+              element: <Paymentinfo />,
             },
+
+            { path: "delete-item/:id", action: deleteItemAction },
           ],
         },
         {
           path: "AdminDashboard",
-          element: <AdminDashbordLayout />,
+          element: <AdminDashbordLayout />, 
           children: [
             {
               index: true,
               element: <AdminDashbord />,
-              loader: AdminDashbordLoader,
+              loader: AdminDashboardLoader,
             },
             {
               path: "request",
@@ -132,10 +187,12 @@ function App() {
             {
               path: "staf",
               element: <Staf />,
+              loader: EmployeeLoader,
             },
             {
               path: "company",
               element: <Company />,
+              loader: comapnyLoader,
             },
             {
               path: "transaction",
@@ -145,14 +202,14 @@ function App() {
               path: "vehicle",
               element: <Vehicle />,
               loader: vehicleLoader,
-              
             },
             {
               path: "item",
               element: <Item />,
+              loader: itemLoader,
             },
             {
-              path: "addRoute/:Reqid",
+              path: "addRoute/:id",
               element: <AddRoute />,
               loader: addRouteLoader,
               action: addRouteAction,
@@ -175,14 +232,91 @@ function App() {
               action: editVehicleAction,
             },
             {
-              path: "AddEmployee",
-              element: <AddEmployee />
+              path: "add-employee",
+              element: <AddEmployee />,
+              action: addEmployee,
+            },
+            { path: "delete-employee/:id", action: DeleteEmploye },
+            {
+              path: "edit-employee/:id",
+              element: <Editemployee />,
+              action: editempAction,
+              loader: editEmpLoader,
             },
             {
-              path: "EditEmployee",
-              element: <EditEmployee />
-            }
-            
+              path: "edit-company/:id",
+              element: <EditCompany />,
+              action: EditcomapnyAction,
+              loader: EditcompanyLoader,
+            },
+            {
+              path: "add-company",
+              element: <Addcompany />,
+              action: AddCompanyAction,
+            },
+            { path: "delete-company/:id", action: DeleteCompanyAction },
+            {
+              path: "add-CItem",
+              element: <AddcompanyItem />,
+              action: addCitemAction,
+            },
+            {
+              path: "edit-CItem/:id",
+              element: <EditcompanyItem />,
+              action: editcompanyItemAction,
+              loader: editcompanyItemLoader,
+            },
+            { path: "delete-CItem/:id", action: deleteCompanyItemAction },
+            {
+              path: "user-management",
+              element: <UserManagement />,
+              loader: UserManagementLoader,
+            },
+            { path: "delete-user/:id", action: DeleteUserAction },
+            {
+              path: "add-user",
+              element: <Adduser />,
+              action: AdduserAction,
+            },
+          ],
+        },
+
+        {
+          path: "DriverDashboard",
+          element: <DriverDashboardlayout />,
+          children: [
+            {
+              index: true,
+              element: <DriverDashboard />,
+              loader: driverDashboardLoader,
+            },
+            {
+              path: "driver-profile",
+              element: <DriverProfile />,
+              action: DriverprofileAction,
+              loader: DriverProfileLoader,
+            },
+            {
+              path: "daily-waste",
+              element: <DailyWaste />,
+              loader: dailyWasteLoader,
+            },
+            {
+              path: "collected-waste",
+              element: <CollectedWaste />,
+              loader: collectedWasteLoader,
+            },
+            {
+              path: "add-daily-waste",
+              element: <AddDailyWaste />,
+              action: addCollectedWaste,
+            },
+            {
+              path: "edit-daily-waste/:id",
+              element: <EditDailyWaste />,
+              action: EditWasteAction,
+              loader: EditWasteLoader,
+            },
           ],
         },
       ],

@@ -6,7 +6,6 @@ import LogoutContainer from "./LogoutContainer";
 import logo from "../assets/logo/ecoRecycle.svg";
 
 function UserNavBar() {
-  const { user } = useLoaderData();
   return (
     <div className="shadow-2xl border-black flex-none  bg-sidebar">
       <div className="flex justify-around">

@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 
 function NavBar() {
   return (
-    <div>
+    <div className="bg-background">
       {/* nav container */}
       <nav className="relative container mx-auto pl-10 pr-10 pt-0 bg-background">
         <div className="flex justify-between items-center">

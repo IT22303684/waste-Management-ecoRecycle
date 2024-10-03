@@ -44,7 +44,7 @@ const Profile = () => {
           </h2>
           <div className="flex">
             {/* left div */}
-            <div className="flex flex-col items-center border p-4 w-[50%]">
+            <div className="flex flex-col items-center border p-4 w-[40%]">
               <div className="mb-4">
                 {user.avatar ? (
                   <img

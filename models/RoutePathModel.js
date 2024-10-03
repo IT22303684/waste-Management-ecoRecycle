@@ -56,4 +56,4 @@ const RoutePathSchema = new mongoose.Schema({
 });
 
 const RoutePath = mongoose.model("RoutePath", RoutePathSchema);
-export default RoutePath; 
+export default RoutePath;

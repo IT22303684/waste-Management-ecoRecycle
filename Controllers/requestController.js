@@ -33,4 +33,13 @@ export const UpdateRequestStatus = async (req, res) => {
   }
 };
 
+export const RetrieveSpecificRequest = async(req, res) => {
+  try{
+      const getSpecificRequest = await RItem.findById(req.params.id);
+      res.json(getSpecificRequest)
+  }catch(error){
+      console.error('Retrieve Specific Request Error:', error);
+      res.status(400).json({ msg: "Specific Request Route not found", error: error.message });
+  }
+}
 

@@ -28,8 +28,8 @@ const links = [
     icon: <MdQueryStats />,
   },
   {
-    text: "admin",
-    path: "admin",
+    text: "Payment Info",
+    path: "payment-info",
     icon: <MdAdminPanelSettings />,
   },
 ];

@@ -1,10 +1,11 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef } from 'react';
 import { toast } from 'react-toastify';
 import { IoBuild, IoTrashSharp, IoPrint } from 'react-icons/io5';
 import { useAllRoutes } from '../pages/Route'; // Ensure this path is correct
 import customFetch from '../utils/customFetch';
 import { Link } from 'react-router-dom';
-import { useReactToPrint } from 'react-to-print';
+import jsPDF from 'jspdf';
+import 'jspdf-autotable';
 
 export default function RouteTable() {
     const { data, refetch } = useAllRoutes();
@@ -42,15 +43,66 @@ export default function RouteTable() {
         route.RouteId.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
-    // Print function
-    const handlePrint = useReactToPrint({
-        content: () => tableRef.current,  // Reference to the table to be printed
-        documentTitle: "Route Details Report",
-    });
+    // PDF generation function
+    const generatePDF = () => {
+        const doc = new jsPDF();
 
+        doc.setFontSize(18);
+        doc.setTextColor(40);
+        doc.text("Eco Recycle - Route List", 14, 10);
+
+        doc.setFontSize(12);
+        doc.text("Generated on: " + new Date().toLocaleDateString(), 14, 20);
+
+        const tableColumn = [
+            "Route ID",
+            "Customer Name",
+            "Contact Number",
+            "Arrive Time",
+            "Arrive Date",
+            "Vehicle",
+            "Status"
+        ];
+
+        // Define table rows by mapping the route data
+        const tableRows = filteredData.map((route) => [
+            route.RouteId,
+            route.CustomerName,
+            route.ContactNumber,
+            route.ArriveTime,
+            route.ArriveDate,
+            route.Vehicle,
+            route.Status,
+        ]);
+
+        doc.autoTable({
+            head: [tableColumn],
+            body: tableRows,
+            startY: 30,
+            styles: {
+                fillColor: [255, 255, 255],
+                textColor: [0, 0, 0],
+            },
+            headStyles: {
+                fillColor: [22, 160, 133],
+                textColor: [255, 255, 255],
+            },
+            alternateRowStyles: {
+                fillColor: [240, 240, 240],
+            },
+            margin: { top: 30 },
+        });
+
+        // Save the PDF
+        doc.save("routes.pdf");
+    };
 
     return (
         <div className="bg-white border border-gray-200 overflow-x-auto">
+            <div className='m-4 text-xl text-green-600 '>
+                <h1>All Routes</h1>
+            </div>
+
             {/* Search Input */}
             <div className="p-4 no-print">
                 <input
@@ -62,13 +114,14 @@ export default function RouteTable() {
                 />
             </div>
 
-            {/* Print Button */}
-            <div className="p-2 no-print">
+            {/* Generate PDF Button */}
+            <div className="p-4 pt-2 pb-2">
                 <button
-                    className="bg-gray-500 text-white px-4 text-xl py-2 rounded hover:bg-orange-600"
-                    onClick={handlePrint}
+                    onClick={generatePDF}
+                    className="bg-blue-500 text-white px-4 py-2 hover:bg-blue-600 rounded shadow-md"
                 >
-                    <IoPrint />
+                    <IoPrint className="inline-block mr-2" />
+                    Generate Report
                 </button>
             </div>
 
@@ -79,7 +132,6 @@ export default function RouteTable() {
                         <th>Route Id</th>
                         <th>Customer Name</th>
                         <th>Contact Number</th>
-                        <th>Pickup Path</th>
                         <th>Arrive Time</th>
                         <th>Arrive Date</th>
                         <th>Vehicle</th>
@@ -97,22 +149,9 @@ export default function RouteTable() {
                     ) : (
                         filteredData.map((route) => (
                             <tr key={route._id}>
-                                <td>{route.RouteId}
-                                    <div className='text-gray-300'>
-                                        request Id :
-                                        <p>{route.RequestId}</p>
-                                    </div>
-                                </td>
+                                <td>{route.RouteId}</td>
                                 <td>{route.CustomerName}</td>
                                 <td>{route.ContactNumber}</td>
-                                <td>
-                                    <a href={route.PickupPath} target="_blank"
-                                       rel="noopener noreferrer"
-                                       className="text-blue-500 hover:underline"
-                                       title={route.PickupPath}>
-                                        {route.PickupPath}
-                                    </a>
-                                </td>
                                 <td>{route.ArriveTime}</td>
                                 <td>{route.ArriveDate}</td>
                                 <td>{route.Vehicle}</td>
@@ -120,12 +159,12 @@ export default function RouteTable() {
                                 <td>
                                     <div className='flex flex-row gap-1'>
                                         <Link to={`../editRoute/${route._id}`}>
-                                            <button className='bg-orange-500 text-white px-4 py-2 hover:bg-orange-600 rounded shadow-md outline-none border-none select-none'>
+                                            <button className='bg-orange-500 text-white px-4 py-2 hover:bg-orange-600 rounded shadow-md'>
                                                 <IoBuild />
                                             </button>
                                         </Link>
                                         <button
-                                            className='bg-red text-white px-4 py-2 hover:bg-red-600 rounded shadow-md outline-none border-none select-none'
+                                            className='bg-red text-white px-4 py-2 hover:bg-red-600 rounded shadow-md'
                                             onClick={() => openConfirmModal(route._id)}
                                         >
                                             <IoTrashSharp />
@@ -148,13 +187,13 @@ export default function RouteTable() {
                         <div className="flex justify-between">
                             <button
                                 onClick={() => handleDelete(showConfirm.id)}
-                                className="px-4 py-2 bg-red text-white rounded hover:bg-red-600 transition-colors duration-200"
+                                className="px-4 py-2 bg-red text-white rounded hover:bg-red-600"
                             >
                                 Yes
                             </button>
                             <button
                                 onClick={closeConfirmModal}
-                                className="px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600 transition-colors duration-200"
+                                className="px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600"
                             >
                                 No
                             </button>

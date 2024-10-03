@@ -9,7 +9,6 @@ import morgan from 'morgan';
 import mongoose from 'mongoose';
 import cookieParser from 'cookie-parser';
 import cloudinary from 'cloudinary';
-app.use(express.json());
 
 
 
@@ -19,12 +18,13 @@ app.use(express.json());
 import RItemRouter from './routes/RItemRouter.js';
 import authRouter from './routes/authRouter.js';
 import userRouter from './routes/userRouter.js';
+import CompanyRouter from './routes/CompanyRoute.js';
+import employeeRouter from './routes/EmployeeRoute.js'
+import CompanyItemRoute from './routes/CompanyItem.js'
+import collectedWasteRouter  from './routes/collectedWasteRoute.js'
 import routePathRouter from './routes/routePathRouter.js';
 import vehicleRouter from './routes/vehicleRouter.js';
 import requestRouter from './routes/requestRouter.js';
-
-
-
 
 //public
 import {dirname} from 'path';
@@ -56,7 +56,6 @@ if(process.env.NODE_ENV === 'development') {
 }
 
 
-
 app.use(express.static(path.resolve(__dirname, './Client/dist')));
 app.use(cookieParser());
 app.use(express.json());
@@ -73,14 +72,15 @@ app.get('/api/v1/test', (req, res) => {
 
 
 app.use('/api/v1/RItems', authenticateUser , RItemRouter);
-app.use('/api/v1/users',authenticateUser , userRouter);
+app.use('/api/v1/users' , authenticateUser, userRouter);
 app.use('/api/v1/auth', authRouter);
+app.use('/api/v1/Company', authenticateUser , CompanyRouter);
+app.use('/api/v1/employees', authenticateUser , employeeRouter);
+app.use('/api/v1/CItems',authenticateUser , CompanyItemRoute );
+app.use('/api/v1/waste', collectedWasteRouter);
 app.use('/api/v1/routePath', routePathRouter);
 app.use('/api/v1/vehicle', vehicleRouter);
 app.use('/api/v1/request', requestRouter);
-
-
-
 
 
 app.get('*', (req, res) => {

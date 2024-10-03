@@ -78,11 +78,10 @@ export default function PendingRequest() {
               <th>Request Id</th>
               <th></th>
               <th>Customer Name</th>
-              <th>Request Date</th>
+              <th>Request Date, Time</th>
               <th>Request Type</th>
               <th>Weight (KG)</th>
               <th>Request Address</th>
-              <th>Status</th>
               <th></th>
             </tr>
           </thead>
@@ -98,11 +97,10 @@ export default function PendingRequest() {
                   />
                 </td>
                 <td>{request.name}</td>
-                <td>{new Date(request.requestDate).toLocaleDateString() || 'N/A'}</td>
+                <td>{request.requestDate}</td>
                 <td>{request.category}</td>
                 <td>{request.weight}</td>
                 <td>{request.Location}</td>
-                <td>{RequestStatus(request.status)}</td>
                 <td className='flex flex-col gap-2'>
                   <button
                     className='bg-green-500 text-white px-4 py-2 hover:bg-green-700 rounded shadow-md'

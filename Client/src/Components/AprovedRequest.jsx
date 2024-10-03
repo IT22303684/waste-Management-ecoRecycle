@@ -24,7 +24,7 @@ export default function AprovedRequest() {
                     <tr>
                         <th>Request Id</th>
                         <th>Customer Id</th>
-                        <th>Request Date</th>
+                        <th>Request Date, Time</th>
                         <th>Request Type</th>
                         <th>Weight (KG)</th>
                         <th>Request Address</th>
@@ -36,12 +36,12 @@ export default function AprovedRequest() {
                     <tr key={request._id}>
                         <td>{request._id}</td>
                         <td>{request.createdBy}</td>
-                        <td>none</td>
+                        <td>{request.requestDate}</td>
                         <td>{request.category}</td>
                         <td>{request.weight}</td>
                         <td>{request.Location}</td>
                         <td>
-                        <Link to={`../addRoute/${request._id}?cusId=${request.createdBy}`}>
+                        <Link to={`../addRoute/${request.createdBy}?reqId=${request._id}`}>
                             <button className='bg-sky-500 mr-3 text-white px-4 py-2 hover:bg-green-700 rounded shadow-md outline-none border-none select-none'>
                                 ADD ROUTE
                             </button>
