@@ -1,16 +1,34 @@
 import React from "react";
-import { Form } from "react-router-dom";
+import { Form, redirect, useLoaderData } from "react-router-dom";
 import { toast } from "react-toastify";
 import customFetch from "../utils/customFetch";
 import { useNavigation } from "react-router-dom";
+import { useParams, useSearchParams } from "react-router-dom";
 
+export const loader = async ({ params }) => {
+  try {
+    const requestResponse = await customFetch(`/request/retriveRequest/${params.id}`);
+    // Call the second API using the CreatedBy as User_ID
+    const bankResponse = await customFetch(`/bank/${requestResponse.data.createdBy}`);
+
+    return {
+      request: requestResponse.data,
+      bank: bankResponse.data
+    };
+  } catch (error) {
+    toast.error(error?.response?.data?.msg || "Failed to load data");
+    return redirect("/AdminDashboard/request");
+  }
+};
 export const action = async ({ request }) => {
   const formData = await request.formData();
 
 };
 
-const Transaction = () => {
+export default function Transaction() {
+  const { request, bank } = useLoaderData();
   const navigation = useNavigation();
+  const { vehicles } = useLoaderData();
   const isSubmitting = navigation.state === "submitting";
 
   return (
@@ -30,6 +48,7 @@ const Transaction = () => {
               type="text"
               id="customerName"
               name="customerName"
+              value={request?.name}
               className="w-full p-1 text-xs border border-gray-300 rounded-md"
               required
             />
@@ -37,9 +56,10 @@ const Transaction = () => {
           <div className="form-group">
             <label htmlFor="requestDate" className="text-xs text-gray-700 font-semibold">Request Date:</label>
             <input
-              type="date"
+              // type="date"
               id="requestDate"
               name="requestDate"
+              value={request?.createdAt}
               className="w-full p-1 text-xs border border-gray-300 rounded-md"
               required
             />
@@ -90,6 +110,7 @@ const Transaction = () => {
               type="text"
               id="accountNumber"
               name="accountNumber"
+              value={bank?.Account_Number}
               className="w-full p-1 text-xs border border-gray-300 rounded-md"
               required
             />
@@ -100,6 +121,7 @@ const Transaction = () => {
               type="text"
               id="accountName"
               name="accountName"
+              value={bank?.Account_Name}
               className="w-full p-1 text-xs border border-gray-300 rounded-md"
               required
             />
@@ -110,6 +132,7 @@ const Transaction = () => {
               type="text"
               id="bankName"
               name="bankName"
+              value={bank?.Bank_Name}
               className="w-full p-1 text-xs border border-gray-300 rounded-md"
               required
             />
@@ -120,6 +143,7 @@ const Transaction = () => {
               type="text"
               id="branchCode"
               name="branchCode"
+              value={bank?.Branch_Code}
               className="w-full p-1 text-xs border border-gray-300 rounded-md"
               required
             />
@@ -139,4 +163,3 @@ const Transaction = () => {
   );
 };
 
-export default Transaction;
