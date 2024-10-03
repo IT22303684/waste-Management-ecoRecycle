@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import RequestStatus from '../utils/RequestStatus';
-import { useAllRecentRequest } from '../pages/Dashbord';
+import { useAllRequest } from '../pages/Request';
 import { toast } from 'react-toastify';
 import customFetch from '../utils/customFetch';
 
-export default function RecentRequest() {
-  const { data, refetch, isLoading, isError } = useAllRecentRequest();
+export default function PendingRequest() {
+  const { data, refetch, isLoading, isError } = useAllRequest();
   const [showConfirm, setShowConfirm] = useState({ visible: false, type: '', id: null });
   const [refresh, setRefresh] = useState(false); // Add refresh state to trigger updates
 
@@ -60,7 +60,7 @@ export default function RecentRequest() {
 
   if (pendingRequests.length === 0) {
     return (
-      <div className="flex items-center justify-center w-full  bg-gray-200">
+      <div className="flex items-center justify-center  bg-gray-200">
         <p className="text-xl font-semibold text-sky-500 bg-white px-6 py-4 rounded-lg  mt-4 mb-4">
           No Pending Request
         </p>

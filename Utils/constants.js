@@ -11,8 +11,10 @@ export const  RITEM_CATEGORY = {
 
 
 export const RITEM_STATUS = {
-    AVAILABLE : 'available',
     PENDING : 'pending',
-    SOLD : 'sold',
-    RECYCLED : 'recycled',
+    APPROVED : 'approved',
+    REJECT : 'reject',
+    AVAILABLE : 'available',
+    DONE : 'done',
 }
+

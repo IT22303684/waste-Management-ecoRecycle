@@ -1,12 +1,12 @@
 import {
 	HiOutlineViewGrid,
 	HiArrowNarrowDown,
-	HiOfficeBuilding ,
+	HiOfficeBuilding,
 	HiOutlineUsers,
 	HiOutlineDocumentText,
 	HiOutlineDocumentDownload,
 	HiTruck,
-	HiOutlineLocationMarker ,
+	HiOutlineLocationMarker,
 	HiOutlineQuestionMarkCircle,
 	HiCube
 } from 'react-icons/hi'
@@ -22,13 +22,13 @@ export const ADMIN_DASHBOARD_SIDEBAR_UPPER_LINKS = [
 		key: 'request',
 		label: 'Request',
 		path: '/AdminDashboard/request',
-		icon: <HiArrowNarrowDown  />
+		icon: <HiArrowNarrowDown />
 	},
 	{
 		key: 'route',
 		label: 'Route',
 		path: '/AdminDashboard/route',
-		icon: <HiOutlineLocationMarker   />
+		icon: <HiOutlineLocationMarker />
 	},
 	{
 		key: 'staf',
@@ -40,13 +40,13 @@ export const ADMIN_DASHBOARD_SIDEBAR_UPPER_LINKS = [
 		key: 'company',
 		label: 'Company',
 		path: '/AdminDashboard/company',
-		icon: <HiOfficeBuilding  />
+		icon: <HiOfficeBuilding />
 	},
 	{
 		key: 'item',
 		label: 'Item',
 		path: '/AdminDashboard/item',
-		icon: <HiCube  />
+		icon: <HiCube />
 	},
 	{
 		key: 'transactions',

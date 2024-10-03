@@ -1,67 +1,61 @@
 import React from 'react'
+import RequestStatus from '../utils/RequestStatus'
+import { useAllRequest } from '../pages/Request'
+import { Link } from 'react-router-dom';
 
-const aproveRequestData = [
-    {
-        requestId: '123',
-        customerName: 'dasun',
-        requestDate: '2024-08-19',
-        type: 'Iron',
-        requestQuentity: '5KG',
-        address: 'kirimetimulla, thelijjawila',
-        currentStatus: 'pending'
-    },
-    {
-        requestId: '456',
-        customerName: 'jinad',
-        requestDate: '2024-07-19',
-        type: 'plastic',
-        requestQuentity: '2KG',
-        address: 'kirimetimulla, thelijjawila',
-        currentStatus: 'pending'
-    }
-]
 
 export default function AprovedRequest() {
-  return (
-    <div className='bg-white px-4  pb-4 rounded-sm border border-gray-200 w-full'>
-        <strong className='text-gray-700 font-medium'>Aproved Request</strong>
 
-        <div className='mt-3'>
-            <table className='w-full text-gray-700'>
-                <thead>
-                    <tr>
-                        <th>Request Id</th>
-                        <th>Customer Name</th>
-                        <th>Request Date</th>
-                        <th>Request Type</th>
-                        <th>Quentity</th>
-                        <th>Request Address</th>
-                        <th></th>
-                    </tr>
-                </thead>
-                <tbody>
-                {aproveRequestData.map((request)=>(
-                    <tr key={request.requestId}>
-                        <td>{request.requestId}</td>
-                        <td>{request.customerName}</td>
-                        <td>{request.requestDate}</td>
-                        <td>{request.type}</td>
-                        <td>{request.requestQuentity}</td>
-                        <td>{request.address}</td>
-                        <td>
-                            <button className='bg-sky-500 mr-3 text-white px-4 py-2 hover:sky-green-700 rounded shadow-md outline-none border-none select-none'>
-                                ADD ROUTE
-                            </button>
-                            
-                        </td>
-                    </tr>
-                ))}
+    const { data } = useAllRequest();
 
-                </tbody>
+    const aproveRequest = data ? data.filter(request => request.status == 'approved') : [];
 
-            </table>
+    if (!data || data.length === 0) {
+        return <h1>No Items to display...</h1>;
+    }
 
+    return (
+        <div className='bg-white px-4  pb-4 rounded-sm border border-gray-200 w-full  pt-3'>
+            <strong className=' font-medium text-xl text-green-600'>Aproved Request</strong>
+
+            <div className='mt-3'>
+                <table className='w-full text-gray-700'>
+                    <thead>
+                        <tr>
+                            <th>Request Id</th>
+                            <th>Customer Id</th>
+                            <th>Request Date</th>
+                            <th>Request Type</th>
+                            <th>Weight (KG)</th>
+                            <th>Request Address</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {aproveRequest.map((request) => (
+                            <tr key={request._id}>
+                                <td>{request._id}</td>
+                                <td>{request.createdBy}</td>
+                                <td>none</td>
+                                <td>{request.category}</td>
+                                <td>{request.weight}</td>
+                                <td>{request.Location}</td>
+                                <td>
+                                    <Link to={`../addRoute/${request._id}?cusId=${request.createdBy}`}>
+                                        <button className='bg-sky-500 mr-3 text-white px-4 py-2 hover:bg-green-700 rounded shadow-md outline-none border-none select-none'>
+                                            ADD ROUTE
+                                        </button>
+                                    </Link>
+
+                                </td>
+                            </tr>
+                        ))}
+
+                    </tbody>
+
+                </table>
+
+            </div>
         </div>
-    </div>
-  )
+    )
 }

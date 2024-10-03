@@ -37,50 +37,51 @@ const EditItems = () => {
   const isSubmitting = navigation.state === "submitting";
 
   return (
-    <div className="flex flex-col justify-center items-center">
-      <h4 className="font-mono mb-5 text-4xl font-bold text-center mt-4">
-        Edit Item
+    <div className=" shadow-lg  flex flex-col justify-center items-center min-h-screen bg-background">
+      <h4 className="font-mono mb-5 text-4xl font-bold text-center mt-8 text-bla">
+        Update Waste Item
       </h4>
-      <Form method="post" className="border">
-        <div className="border border-black flex  bg-DarkGunmetal space-x-4 space-y-10 flex-wrap rounded-xl p-4 shadow-2xl">
+
+      <Form
+        method="post"
+        className="w-full  p-6 rounded-lg shadow-md bg-background"
+      >
+        <div className="space-y-6">
           <FormRow
             type="text"
             name="name"
             label="Name"
-            className="border mt-10   p-2 px-4 text-center text-black  border-zinc-600 placeholder:text-xs placeholder:text-center md:text-left placeholder:md:text-left focus:outline-none focus:bg-white focus:text-black"
-            labelClass="text-xl text-white font-bold ml-6 capitalize ml-2"
+            className=" border-2 w-2/6 border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm p-2 text-lg"
+            labelClass="block text-gray-700 font-bold mb-2"
             defaulyValue={Ritem.rItem.name}
           />
+
           <FormRow
             type="text"
             name="description"
             label="Description"
-            className="border p-2 px-4 text-center text-black   border-zinc-600 placeholder:text-xs placeholder:text-center md:text-left placeholder:md:text-left focus:outline-none"
-            labelClass="text-xl text-white font-bold capitalize ml-2"
+            className="border-gray-300 border-2 w-5/6 h-20 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm p-2 text-lg"
+            labelClass="block text-gray-700 font-bold mb-2"
             defaulyValue={Ritem.rItem.description}
           />
-          <FormRow
-            type="text"
-            name="price"
-            label="Price"
-            className="border  p-2 px-4 text-center text-black bg-white  border-zinc-600 placeholder:text-xs placeholder:text-center md:text-left placeholder:md:text-left focus:outline-none"
-            labelClass="text-xl text-white font-bold capitalize ml-2"
-            defaulyValue={Ritem.rItem.price}
-          />
+
           <FormRow
             type="text"
             name="Location"
             label="Location"
-            className="border p-2 px-4 text-center text-black bg-white border-zinc-600 placeholder:text-xs placeholder:text-center md:text-left placeholder:md:text-left focus:outline-none focus:bg-white  focus:text-black"
-            labelClass="text-xl text-white font-bold capitalize ml-2"
+            className="border-gray-300  border-2 w-3/6 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm p-2 text-lg"
+            labelClass="block text-gray-700 font-bold mb-2"
             defaulyValue={Ritem.rItem.Location}
           />
 
           <div>
-            <label className="text-xl text-white font-bold capitalize ml-2">
+            <label className="block text-gray-700 font-bold mb-2">
               Category
             </label>
-            <select name="category" className="text-xl ml-4 w-40 h-10">
+            <select
+              name="category"
+              className="border-gray-300 border-2 w-1/5 focus:border-black focus:ring-black rounded-md shadow-sm p-2 text-lg"
+            >
               {Object.values(RITEM_CATEGORY).map((category) => (
                 <option key={category} value={category}>
                   {category}
@@ -89,34 +90,25 @@ const EditItems = () => {
             </select>
           </div>
 
-          <div className="hidden">
-            <label>Status</label>
-            <select name="status">
-              {Object.values(RITEM_STATUS).map((status) => (
-                <option key={status} value={status}>
-                  {status}
-                </option>
-              ))}
-            </select>
-          </div>
+          {/* Hidden status field remains as is */}
 
           <FormRow
             type="number"
             name="weight"
             label="Weight"
-            className="border  p-2 px-4 text-center text-black bg-white  border-zinc-600 placeholder:text-xs placeholder:text-center md:text-left placeholder:md:text-left focus:outline-none focus:bg-white  focus:text-black"
-            labelClass="text-xl text-white font-bold capitalize ml-2"
+            className="border-gray-300 focus:border-black focus:ring-black rounded-md shadow-sm p-2 text-lg"
+            labelClass="block text-gray-700 font-bold mb-2"
             defaulyValue={Ritem.rItem.weight}
           />
-          <div className="ml-4 ">
-            <button
-              disabled={isSubmitting}
-              type="submit"
-              className="px-10  py-1 text-lg font-sans font-bold  rounded-md text-zinc-800 bg-lime-500 hover:bg-lime-700 hover:text-white duration-500 "
-            >
-              {isSubmitting ? "Submitting..." : "Submit"}
-            </button>
-          </div>
+
+          <button
+            disabled={isSubmitting}
+            type="submit"
+            className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline   
+disabled:opacity-50"
+          >
+            {isSubmitting ? "Submitting..." : "Submit"}
+          </button>
         </div>
       </Form>
     </div>

@@ -20,17 +20,20 @@ import {
   AllItems,
   AdminDashboard,
   AdminDashbordLayout,
-  AdminDashbord,
-  Request,
+  AdminDashbord, Request,
   Staf,
   Company,
   Item,
   Transaction,
-  CompletedPayments,
   Vehicle,
   Route,
   AddRoute,
   Test,
+  EditRoute,
+  AddVehicle,
+  AddEmployee,
+  EditEmployee,
+  EditVehicle,
 } from "./pages/index";
 
 import { action as registerAction } from "./pages/Register";
@@ -46,6 +49,17 @@ import { loader as editItemLoader } from "./pages/EditItems";
 import { action as editItemAction } from "./pages/EditItems";
 import { action as deleteItemAction } from "./pages/DeleteItem";
 import { loader as AdminDashboardLoader } from "./pages/AdminDashbordLayout";
+import { loader as routeLoader } from "./pages/Route";
+import { loader as editRouteLoader } from "./pages/EditRoute";
+import { action as editRouteAction } from "./pages/EditRoute";
+import { loader as AdminDashbordLoader } from "./pages/Dashbord";
+import { loader as RequestLoader } from "./pages/Dashbord";
+import { loader as addRouteLoader } from "./pages/AddRoute";
+import { action as addRouteAction } from "./pages/AddRoute";
+import { action as AddVehicleAction } from "./pages/AddVehicle";
+import { loader as vehicleLoader } from "./pages/Vehicle";
+import { loader as editVehicleLoader } from "./pages/EditVehicel";
+import { action as editVehicleAction } from "./pages/EditVehicel";
 
 function App() {
   const router = createBrowserRouter([
@@ -83,23 +97,6 @@ function App() {
               action: addRitemAction,
             },
             {
-              path: "VBank-Details",
-              element: <ViewBankDetails />,
-              action: viewBankDetails,
-            },
-            {
-              path: "Bank-Details",
-              element: <AddBankDetails />,
-              action: addBankDetails,
-            },
-            // {
-            //   path: "my-earning",
-            //   element: <MyEarning />,
-            //   action: myEarning,
-            // },
-            
-
-            {
               path: "all-items",
               element: <AllItems />,
               loader: AllItemsLoader,
@@ -115,25 +112,30 @@ function App() {
               loader: editItemLoader,
               action: editItemAction,
             },
-            { path: "delete-item/:id", action: deleteItemAction },
+            {
+              path: "delete-item/:id",
+              action: deleteItemAction
+            },
           ],
         },
         {
           path: "AdminDashboard",
           element: <AdminDashbordLayout />,
-          loader: AdminDashboardLoader,
           children: [
             {
               index: true,
               element: <AdminDashbord />,
+              loader: AdminDashbordLoader,
             },
             {
               path: "request",
               element: <Request />,
+              loader: RequestLoader,
             },
             {
               path: "route",
               element: <Route />,
+              loader: routeLoader,
             },
             {
               path: "staf",
@@ -148,17 +150,47 @@ function App() {
               element: <Transaction />,
             },
             {
-              path: "completedpayments",
-              element: <CompletedPayments />,
-            },
-            {
               path: "vehicle",
               element: <Vehicle />,
+              loader: vehicleLoader,
+
             },
             {
               path: "item",
               element: <Item />,
             },
+            {
+              path: "addRoute/:Reqid",
+              element: <AddRoute />,
+              loader: addRouteLoader,
+              action: addRouteAction,
+            },
+            {
+              path: "editRoute/:id",
+              element: <EditRoute />,
+              loader: editRouteLoader,
+              action: editRouteAction,
+            },
+            {
+              path: "AddVehicle",
+              element: <AddVehicle />,
+              action: AddVehicleAction,
+            },
+            {
+              path: "EditVehicle/:id",
+              element: <EditVehicle />,
+              loader: editVehicleLoader,
+              action: editVehicleAction,
+            },
+            {
+              path: "AddEmployee",
+              element: <AddEmployee />
+            },
+            {
+              path: "EditEmployee",
+              element: <EditEmployee />
+            }
+
           ],
         },
       ],
