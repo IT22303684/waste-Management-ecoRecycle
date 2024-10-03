@@ -1,14 +1,51 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Form, redirect, useLoaderData } from "react-router-dom";
 import { toast } from "react-toastify";
 import customFetch from "../utils/customFetch";
 import { useNavigation } from "react-router-dom";
 import { useParams, useSearchParams } from "react-router-dom";
+import { Document, Page, Text, View, StyleSheet, pdf } from '@react-pdf/renderer';
+import { saveAs } from 'file-saver';
+
+// Styles for PDF
+const styles = StyleSheet.create({
+  page: { padding: 30 },
+  title: { fontSize: 24, marginBottom: 10 },
+  section: { margin: 10, padding: 10 },
+  row: { flexDirection: 'row', marginBottom: 5 },
+  label: { width: 150 },
+  value: { flex: 1 },
+});
+
+// PDF Document component
+const PaymentPDF = ({ data }) => (
+  <Document>
+    <Page size="A4" style={styles.page}>
+      <Text style={styles.title}>Payment Details</Text>
+      <View style={styles.section}>
+        {Object.entries(data).map(([key, value]) => (
+          <View style={styles.row} key={key}>
+            <Text style={styles.label}>{key}:</Text>
+            <Text style={styles.value}>{value}</Text>
+          </View>
+        ))}
+      </View>
+    </Page>
+  </Document>
+);
+
+const typeMultipliers = {
+  "plastic": 10,
+  "metal": 15,
+  "glass": 20,
+  "paper": 25,
+  "organic": 30,
+  "other": 35,
+};
 
 export const loader = async ({ params }) => {
   try {
     const requestResponse = await customFetch(`/request/retriveRequest/${params.id}`);
-    // Call the second API using the CreatedBy as User_ID
     const bankResponse = await customFetch(`/bank/${requestResponse.data.createdBy}`);
 
     return {
@@ -20,16 +57,49 @@ export const loader = async ({ params }) => {
     return redirect("/AdminDashboard/request");
   }
 };
+
 export const action = async ({ request }) => {
   const formData = await request.formData();
-
 };
 
 export default function Transaction() {
   const { request, bank } = useLoaderData();
   const navigation = useNavigation();
-  const { vehicles } = useLoaderData();
   const isSubmitting = navigation.state === "submitting";
+
+  // Function to generate and download the PDF
+  const handleDownloadPDF = async () => {
+    const data = {
+      customerName: request?.name,
+      requestDate: request?.createdAt,
+      requestType: request?.category,
+      weight: request?.weight,
+      requestAddress: request?.Location,
+      fullAmount: fullAmount,
+      accountNumber: bank?.Account_Number,
+      accountName: bank?.Account_Name,
+      bankName: bank?.Bank_Name,
+      branchCode: bank?.Branch_Code,
+    };
+
+    const pdfBlob = await pdf(<PaymentPDF data={data} />).toBlob();
+    saveAs(pdfBlob, `payment_details_${request?.name}.pdf`);
+  };
+
+  // State to hold the calculated full amount
+  const [fullAmount, setFullAmount] = useState(request?.fullAmount || 0);
+
+  // Function to calculate the full amount
+  const calculateFullAmount = () => {
+    const multiplier = typeMultipliers[request?.category] || 0; // Get multiplier for request type
+    const calculatedAmount = multiplier * (request?.weight || 0); // Multiply with weight
+    setFullAmount(calculatedAmount); // Set the calculated amount
+  };
+
+  // Recalculate full amount whenever the request type or weight changes
+  useEffect(() => {
+    calculateFullAmount();
+  }, [request?.category, request?.weight]);
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100 mt-[-20px]">
@@ -70,6 +140,7 @@ export default function Transaction() {
               type="text"
               id="requestType"
               name="requestType"
+              value={request?.category}
               className="w-full p-1 text-xs border border-gray-300 rounded-md"
               required
             />
@@ -80,6 +151,7 @@ export default function Transaction() {
               type="number"
               id="weight"
               name="weight"
+              value={request?.weight}
               className="w-full p-1 text-xs border border-gray-300 rounded-md"
               required
             />
@@ -90,6 +162,7 @@ export default function Transaction() {
               type="text"
               id="requestAddress"
               name="requestAddress"
+              value={request?.Location}
               className="w-full p-1 text-xs border border-gray-300 rounded-md"
               required
             />
@@ -100,6 +173,7 @@ export default function Transaction() {
               type="number"
               id="fullAmount"
               name="fullAmount"
+              value={fullAmount}
               className="w-full p-1 text-xs border border-gray-300 rounded-md"
               required
             />
@@ -155,6 +229,14 @@ export default function Transaction() {
               disabled={isSubmitting}
             >
               {isSubmitting ? "Submitting..." : "Submit"}
+            </button>
+            {/* Download PDF button */}
+            <button
+              type="button"
+              onClick={handleDownloadPDF}
+              className="ml-3 px-3 py-1 bg-green-500 text-white rounded-md hover:bg-green-600 transition-colors duration-200 text-xs"
+            >
+              Download PDF
             </button>
           </div>
         </Form>
