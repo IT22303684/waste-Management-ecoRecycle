@@ -29,11 +29,11 @@ const links = [
     path: "Bank-Details",
     icon: <IoBag />,
   },
-  {
-    text: "View Bank Account Details",
-    path: "VBank-Details",
-    icon: <IoBagCheckOutline />,
-  },
+  // {
+  //   text: "View Bank Account Details",
+  //   path: "VBank-Details",
+  //   icon: <IoBagCheckOutline />,
+  // },
   // {
   //   text: "My Earnings",
   //   path: "my-earning",

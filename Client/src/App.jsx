@@ -97,6 +97,11 @@ function App() {
               action: addRitemAction,
             },
             {
+              path: "Bank-Details",
+              element: <AddBankDetails />,
+              action: addBankDetails,
+            },
+            {
               path: "all-items",
               element: <AllItems />,
               loader: AllItemsLoader,
