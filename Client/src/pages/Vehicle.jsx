@@ -4,6 +4,7 @@ import { toast } from "react-toastify";
 import customFetch from "../utils/customFetch";
 import VehicleTable from '../Components/VehicleTable' 
 import { Link } from 'react-router-dom';
+import { IoCar  } from "react-icons/io5";
 
 
 export const loader = async ({ request }) => {
@@ -31,9 +32,10 @@ const AllVehicles = () => {
     <div>
           <div className='mt-4'>
 
-            <Link to={'../AddVehicle'}>
-              <button type='submit' className='bg-orange-400 text-white font-bold py-4 rounded w-1/2 hover:bg-orange-600'>
-                Add New Vehicle
+            <Link to={"../AddVehicle"}>
+              <button className="bg-orange-500 text-white px-4 py-2 hover:bg-orange-600 rounded shadow-md outline-none border-none select-none flex items-center">
+                <IoCar  className="mr-2" />
+                Add Vehicle
               </button>
             </Link>
             

@@ -22,7 +22,6 @@ export const loader = async () => {
 
 const allRouteDetailsContext = createContext({ data: [], refetch: () => {} });
 
-//kavidu
 const AllRoutes = () => {
   const { data: initialData } = useLoaderData();
   const [data, setData] = useState(initialData);

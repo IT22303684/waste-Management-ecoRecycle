@@ -7,7 +7,7 @@ import { useNavigate } from 'react-router-dom';
 export default function RejectedRequest() {
   const { data, refetch } = useAllRequest();
   const [showConfirm, setShowConfirm] = useState({ visible: false, id: null });
-  const [isRefreshing, setIsRefreshing] = useState(false); // Add state to track refresh
+  const [isRefreshing, setIsRefreshing] = useState(false); 
   const navigate = useNavigate();
 
   // Function to handle approval after validation
@@ -18,10 +18,10 @@ export default function RejectedRequest() {
       });
       if (response.status === 200) {
         toast.success('Request approved successfully');
-        setShowConfirm({ visible: false, id: null }); // Close confirmation modal
-        setIsRefreshing(true); // Trigger refresh state
-        await refetch(); // Ensure refetch completes
-        setIsRefreshing(false); // Set refresh state back
+        setShowConfirm({ visible: false, id: null }); 
+        setIsRefreshing(true); 
+        await refetch(); 
+        setIsRefreshing(false);
       } else {
         throw new Error('Update failed with status code: ' + response.status);
       }
@@ -53,7 +53,9 @@ export default function RejectedRequest() {
           <thead>
             <tr>
               <th>Request Id</th>
-              <th>Customer Name</th>
+              <th></th>
+              <th>Title</th>
+              <th>Discription</th>
               <th>Request Date, Time</th>
               <th>Request Type</th>
               <th>Weight (KG)</th>
@@ -63,14 +65,22 @@ export default function RejectedRequest() {
           </thead>
           <tbody>
             {rejectedRequest.map((request) => (
-              <tr key={request._id}>
-                <td>{request._id}</td>
+              <tr className='hover:bg-gray-50' key={request._id}>
+                <td>REQ{request._id.slice(0, 6)}</td>
+                <td>
+                  <img
+                    src={request.itemPhoto || 'default-placeholder.jpg'}
+                    alt="Request"
+                    className="object-fill rounded h-12 w-12 transform hover:scale-105 hover:h-28 hover:w-28 duration-200"
+                  />
+                </td>
                 <td>{request.name}</td>
+                <td>{request.description}</td>
                 <td>{request.requestDate}</td>
                 <td>{request.category}</td>
                 <td>{request.weight}</td>
                 <td>{request.Location}</td>
-                <td className='flex flex-col gap-2'>
+                <td>
                   <button
                     className='bg-green-500 text-white px-4 py-2 hover:bg-green-700 rounded shadow-md outline-none border-none select-none'
                     onClick={() => setShowConfirm({ visible: true, id: request._id })}

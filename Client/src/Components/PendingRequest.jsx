@@ -7,12 +7,12 @@ import customFetch from '../utils/customFetch';
 export default function PendingRequest() {
   const { data, refetch, isLoading, isError } = useAllRequest();
   const [showConfirm, setShowConfirm] = useState({ visible: false, type: '', id: null });
-  const [refresh, setRefresh] = useState(false); // Add refresh state to trigger updates
+  const [refresh, setRefresh] = useState(false); 
 
   // Function to trigger a refresh of data after update
   const handleRefresh = async () => {
-    setRefresh((prev) => !prev); // Toggle refresh state to force re-render and refetch
-    await refetch(); // Call refetch function after toggling refresh state
+    setRefresh((prev) => !prev); 
+    await refetch();
   };
 
   // Function to handle approval
@@ -22,7 +22,7 @@ export default function PendingRequest() {
       if (response.status === 200) {
         toast.success('Request approved successfully');
         setShowConfirm({ visible: false, type: '', id: null });
-        handleRefresh(); // Trigger data refresh
+        handleRefresh(); 
       } else {
         throw new Error('Update failed');
       }
@@ -38,7 +38,7 @@ export default function PendingRequest() {
       if (response.status === 200) {
         toast.success('Request rejected successfully');
         setShowConfirm({ visible: false, type: '', id: null });
-        handleRefresh(); // Trigger data refresh
+        handleRefresh();
       } else {
         throw new Error('Update failed');
       }
@@ -49,7 +49,7 @@ export default function PendingRequest() {
 
   const pendingRequests = Array.isArray(data) ? data.filter((request) => request.status === 'available') : [];
 
-  // Loading, Error, No Data handling
+
   if (isLoading) {
     return <h1>Loading...</h1>;
   }
@@ -77,7 +77,8 @@ export default function PendingRequest() {
             <tr>
               <th>Request Id</th>
               <th></th>
-              <th>Customer Name</th>
+              <th>Title</th>
+              <th>Discription</th>
               <th>Request Date, Time</th>
               <th>Request Type</th>
               <th>Weight (KG)</th>
@@ -88,7 +89,7 @@ export default function PendingRequest() {
           <tbody>
             {pendingRequests.map((request) => (
               <tr className='hover:bg-gray-50' key={request._id}>
-                <td>{request._id}</td>
+                <td>REQ{request._id.slice(0, 6)}</td>
                 <td>
                   <img
                     src={request.itemPhoto || 'default-placeholder.jpg'}
@@ -97,6 +98,7 @@ export default function PendingRequest() {
                   />
                 </td>
                 <td>{request.name}</td>
+                <td>{request.description}</td>
                 <td>{request.requestDate}</td>
                 <td>{request.category}</td>
                 <td>{request.weight}</td>

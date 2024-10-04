@@ -191,6 +191,17 @@ export const validateUpdateEmployee = withValidationError([
 ]);
 
 
+//----------------------- validate route --------------------------------
+export const validateRoute = withValidationError([
+    body('ArriveTime').notEmpty().withMessage('Arrive time is required'),
+    body('PickupPath').notEmpty().withMessage('Pickup path is required').isURL().withMessage('Pickup path must be a valid URL'),
+    body('ArriveDate').notEmpty().withMessage('Arrive date is required'),
+    body('Vehicle').notEmpty().withMessage('vehicle is required'), 
+]);
+
+
+//-----------------------------------------------------------------------------
+
 export const validateCompanyItem= withValidationError([
 
     body('name').notEmpty().withMessage('name is required'),

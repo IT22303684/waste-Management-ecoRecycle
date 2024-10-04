@@ -101,8 +101,8 @@ export default function RouteTableApproved() {
 
     return (
         <div className="bg-white border border-gray-200 overflow-x-auto">
-            <div className='m-4 text-xl text-green-600 '>
-                <h1>Approved Routes</h1>
+            <div className='m-4 text-xl text-sky-600 '>
+                <h1> Driver Approved Routes</h1>
             </div>
 
             {/* Search Input */}

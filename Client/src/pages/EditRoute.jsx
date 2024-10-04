@@ -49,7 +49,7 @@ export default function EditRoute() {
   useEffect(() => {
     if (vehicles && Array.isArray(vehicles)) {
       setVehicleOptions(vehicles);
-      console.log('Vehicle Options:', vehicles); // Debugging
+      //console.log('Vehicle Options:', vehicles); // Debugging
     }
   }, [vehicles]);
 

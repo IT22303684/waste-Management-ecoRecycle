@@ -16,14 +16,14 @@ export const loader = async ({ params, request }) => {
       customFetch(`/request/retrieveSpecificRequest/${reqId}`),
     ]);
 
-    console.log('Customer Data:', requestResponce.data);  // Log the customer data for debugging
+    //console.log('Customer Data:', requestResponce.data);  // Log the customer data for debugging
 
     // Return the fetched data
     return {
-      customer: customerResponse.data,  // Include customer data
-      vehicles: vehicleResponse.data,   // Include vehicle data
+      customer: customerResponse.data,
+      vehicles: vehicleResponse.data,
       request: requestResponce.data,
-      reqId,  // Pass reqId for use in the form
+      reqId,
       cusId: params.id,
     };
   } catch (error) {
@@ -43,7 +43,7 @@ export const action = async ({ request }) => {
     await customFetch.post('routePath/addRoutePath', Object.fromEntries(formData));
     toast.success('Route Added Successfully');
 
-    // Ensure Reqid exists before attempting to update status
+    //  update status in request
     if (Reqid) {
       try {
         const response = await customFetch.put(`/request/updateRequestStatus/${Reqid}`, {
@@ -68,7 +68,7 @@ export const action = async ({ request }) => {
 };
 
 export default function AddRoute() {
-  const { vehicles, customer, request, reqId , cusId} = useLoaderData();  // Get customer, vehicle, and request ID from loader data
+  const { vehicles, customer, request, reqId , cusId} = useLoaderData();
   const [vehicleOptions, setVehicleOptions] = useState([]);
 
   useEffect(() => {
@@ -88,25 +88,27 @@ export default function AddRoute() {
         <h3 className='font-semibold text-green-600 text-3xl text-center'>ADD ROUTE</h3>
 
         <Form method="post">
-          {/* Display the Request ID */}
+          {/* Request ID */}
           <div className='mt-8'>
-            <label className='text-lg font-medium'>Request ID</label>
+            
             <input
               type='text'
               name='RequestId'
               className='w-full border-2 border-gray-100 rounded-xl p-3 mt-1'
               value={reqId || ''}  // Use reqId from loader data with fallback
               readOnly
+              hidden
             />
           </div>
           <div className='mt-8'>
-            <label className='text-lg font-medium'>Customer ID</label>
+            {/* customer ID */}
             <input
               type='text'
               name='CustomerId'
               className='w-full border-2 border-gray-100 rounded-xl p-3 mt-1'
               value={cusId}
               readOnly
+              hidden
             />
           </div>
 
@@ -119,8 +121,10 @@ export default function AddRoute() {
               defaultValue={customer.user.name+' '+customer.user.lastName}
               className='w-full border-2 border-gray-100 rounded-xl p-3 mt-1'
               placeholder='Enter Name'
+              readOnly
             />
           </div>
+          {/* Display the Phone number */}
           <div className='mt-8'>
             <label className='text-lg font-medium'>Contact Number</label>
             <input
@@ -129,6 +133,7 @@ export default function AddRoute() {
               defaultValue={request.phoneNo}
               className='w-full border-2 border-gray-100 rounded-xl p-3 mt-1'
               placeholder='Enter Name'
+              re
             />
           </div>
 
@@ -140,7 +145,7 @@ export default function AddRoute() {
               href="https://www.google.com/maps"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-block p-2 w-1/2 border-2 border-gray-700 text-gray-700 font-bold py-4 rounded hover:bg-sky-400 hover:text-white hover:no-underline text-center"
+              className="inline-block p-2 w-1/2 border-2 border-gray-700 text-gray-700 font-bold py-4 rounded hover:bg-green-500 hover:text-white hover:no-underline text-center"
             >
               Select New Route Pin From Google Map
             </a>

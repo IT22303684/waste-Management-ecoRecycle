@@ -27,7 +27,7 @@ export default function RouteTableSheduled() {
         try {
             await customFetch.delete(`/routePath/deleteRoutePath/${id}`);
             toast.success("Route deleted successfully!");
-            refetch();  // Call refetch directly after deleting
+            refetch();  
         } catch (error) {
             toast.error("Failed to delete route");
             console.error("Delete error", error);
@@ -53,7 +53,7 @@ export default function RouteTableSheduled() {
 
         doc.setFontSize(18);
         doc.setTextColor(40);
-        doc.text("Eco Recycle - Approved Route List", 14, 10);
+        doc.text("Eco Recycle - Sheduled Route List", 14, 10);
 
         doc.setFontSize(12);
         doc.text("Generated on: " + new Date().toLocaleDateString(), 14, 20);
@@ -67,7 +67,7 @@ export default function RouteTableSheduled() {
             "Vehicle",
         ];
 
-        // Define table rows by mapping the approved route data
+        // table rows by mapping the approved route data
         const tableRows = approvedData.map((route) => [
             route.RouteId,
             route.CustomerName,
@@ -101,7 +101,7 @@ export default function RouteTableSheduled() {
 
     return (
         <div className="bg-white border border-gray-200 overflow-x-auto">
-            <div className='m-4 text-xl text-green-600 '>
+            <div className='m-4 text-xl text-gray-600 '>
                 <h1>Sheduled Routes</h1>
             </div>
 
