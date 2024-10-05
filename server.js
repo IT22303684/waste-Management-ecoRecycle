@@ -24,6 +24,7 @@ import CompanyRouter from './routes/CompanyRoute.js';
 import routePathRouter from './routes/routePathRouter.js';
 import vehicleRouter from './routes/vehicleRouter.js';
 import requestRouter from './routes/requestRouter.js';
+import paymentRouter from './routes/paymentRouter.js';
 
 
 
@@ -80,6 +81,7 @@ app.use('/api/v1/auth', authRouter);
 app.use('/api/v1/routePath', routePathRouter);
 app.use('/api/v1/vehicle', vehicleRouter);
 app.use('/api/v1/request', requestRouter);
+app.use('/api/v1/payment', paymentRouter);
 
 
 
