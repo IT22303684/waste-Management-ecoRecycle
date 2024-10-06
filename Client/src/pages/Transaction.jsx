@@ -60,7 +60,42 @@ export const loader = async ({ params }) => {
 
 export const action = async ({ request }) => {
   const formData = await request.formData();
+  const formObject = Object.fromEntries(formData);
+
+  try {
+    const response = await customFetch.post('/payment', {
+      amount: Number(formObject.fullAmount),
+      category: formObject.requestType,
+      weight: Number(formObject.weight),
+      status: 'Success',
+      bank: {
+        accountNumber: formObject.accountNumber,
+        accountName: formObject.accountName,
+        bankName: formObject.bankName,
+        branchCode: formObject.branchCode
+      },
+      user: {
+        name: formObject.customerName,
+        address: formObject.requestAddress
+      }
+    });
+
+    console.log("Response", response); // Check the response
+
+    if (response.status === 201) {
+      toast.success("Payment record created successfully");
+      // navigate("/AdminDashboard/request");
+      return { success: true };
+    } else {
+      throw new Error("Failed to create payment record");
+    }
+  } catch (error) {
+    console.error("Error in action", error); // Debug errors
+    toast.error(error.message || "An error occurred while submitting the form");
+    return { success: false, error: error.message };
+  }
 };
+
 
 export default function Transaction() {
   const { request, bank } = useLoaderData();
@@ -118,9 +153,10 @@ export default function Transaction() {
               type="text"
               id="customerName"
               name="customerName"
-              value={request?.name}
+              defaultValue={request?.name}
               className="w-full p-1 text-xs border border-gray-300 rounded-md"
               required
+              readOnly
             />
           </div>
           <div className="form-group">
@@ -129,9 +165,10 @@ export default function Transaction() {
               // type="date"
               id="requestDate"
               name="requestDate"
-              value={request?.createdAt}
+              defaultValue={request?.createdAt}
               className="w-full p-1 text-xs border border-gray-300 rounded-md"
               required
+              readOnly
             />
           </div>
           <div className="form-group">
@@ -140,9 +177,10 @@ export default function Transaction() {
               type="text"
               id="requestType"
               name="requestType"
-              value={request?.category}
+              defaultValue={request?.category}
               className="w-full p-1 text-xs border border-gray-300 rounded-md"
               required
+              readOnly
             />
           </div>
           <div className="form-group">
@@ -151,9 +189,10 @@ export default function Transaction() {
               type="number"
               id="weight"
               name="weight"
-              value={request?.weight}
+              defaultValue={request?.weight}
               className="w-full p-1 text-xs border border-gray-300 rounded-md"
               required
+              readOnly
             />
           </div>
           <div className="form-group">
@@ -162,9 +201,10 @@ export default function Transaction() {
               type="text"
               id="requestAddress"
               name="requestAddress"
-              value={request?.Location}
+              defaultValue={request?.Location}
               className="w-full p-1 text-xs border border-gray-300 rounded-md"
               required
+              readOnly
             />
           </div>
           <div className="form-group">
@@ -176,6 +216,7 @@ export default function Transaction() {
               value={fullAmount}
               className="w-full p-1 text-xs border border-gray-300 rounded-md"
               required
+              readOnly
             />
           </div>
           <div className="form-group">
@@ -184,9 +225,10 @@ export default function Transaction() {
               type="text"
               id="accountNumber"
               name="accountNumber"
-              value={bank?.Account_Number}
+              defaultValue={bank?.Account_Number}
               className="w-full p-1 text-xs border border-gray-300 rounded-md"
               required
+              readOnly
             />
           </div>
           <div className="form-group">
@@ -195,9 +237,10 @@ export default function Transaction() {
               type="text"
               id="accountName"
               name="accountName"
-              value={bank?.Account_Name}
+              defaultValue={bank?.Account_Name}
               className="w-full p-1 text-xs border border-gray-300 rounded-md"
               required
+              readOnly
             />
           </div>
           <div className="form-group">
@@ -206,9 +249,10 @@ export default function Transaction() {
               type="text"
               id="bankName"
               name="bankName"
-              value={bank?.Bank_Name}
+              defaultValue={bank?.Bank_Name}
               className="w-full p-1 text-xs border border-gray-300 rounded-md"
               required
+              readOnly
             />
           </div>
           <div className="form-group">
@@ -217,9 +261,10 @@ export default function Transaction() {
               type="text"
               id="branchCode"
               name="branchCode"
-              value={bank?.Branch_Code}
+              defaultValue={bank?.Branch_Code}
               className="w-full p-1 text-xs border border-gray-300 rounded-md"
               required
+              readOnly
             />
           </div>
           <div className="col-span-2 flex justify-center mt-2">

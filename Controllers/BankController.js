@@ -21,8 +21,7 @@ export const createBank = async (req, res) => {
 // Controller to get a bank record by User_ID
 export const getBankById = async (req, res) => {
   try {
-    const { id } = req.params;
-    const bankRecord = await Bank.findOne(id);
+    const bankRecord = await Bank.findOne({ User_ID: req.params.User_ID });
     if (!bankRecord) {
       return res
         .status(StatusCodes.NOT_FOUND)

@@ -48,12 +48,12 @@ export const ADMIN_DASHBOARD_SIDEBAR_UPPER_LINKS = [
 		path: '/AdminDashboard/item',
 		icon: <HiCube />
 	},
-	{
-		key: 'transactions',
-		label: 'Transactions',
-		path: '/AdminDashboard/transaction',
-		icon: <HiOutlineDocumentText />
-	},
+	// {
+	// 	key: 'transactions',
+	// 	label: 'Transactions',
+	// 	path: '/AdminDashboard/transaction',
+	// 	icon: <HiOutlineDocumentText />
+	// },
 	{
 		key: 'completedpayments',
 		label: 'CompletedPayments',

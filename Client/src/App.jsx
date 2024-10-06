@@ -61,6 +61,7 @@ import { loader as vehicleLoader } from "./pages/Vehicle";
 import { loader as editVehicleLoader } from "./pages/EditVehicel";
 import { action as editVehicleAction } from "./pages/EditVehicel";
 import { loader as transactionLoader } from "./pages/Transaction";
+import { action as transactionAction } from "./pages/Transaction";
 
 function App() {
   const router = createBrowserRouter([
@@ -155,6 +156,7 @@ function App() {
               path: "transaction/:id",
               element: <Transaction />,
               loader: transactionLoader,
+              action: transactionAction,
             },
             {
               path: "vehicle",
