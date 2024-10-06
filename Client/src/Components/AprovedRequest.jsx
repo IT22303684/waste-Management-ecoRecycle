@@ -46,7 +46,7 @@ export default function AprovedRequest() {
                                             ADD ROUTE
                                         </button>
                                     </Link>
-                                    <Link to={`../transaction/${request._id}?cusId=${request.createdBy}`}>
+                                    <Link to={`../payment/${request._id}?cusId=${request.createdBy}`}>
                                         <button className='bg-green-500 text-white px-4 py-2 hover:bg-green-700 rounded shadow-md outline-none border-none select-none'>
                                             PAYMENT
                                         </button>

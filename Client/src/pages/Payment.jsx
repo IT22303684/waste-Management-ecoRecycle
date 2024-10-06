@@ -47,14 +47,18 @@ export const loader = async ({ params }) => {
   try {
     const requestResponse = await customFetch(`/request/retriveRequest/${params.id}`);
     const bankResponse = await customFetch(`/bank/${requestResponse.data.createdBy}`);
-
     return {
       request: requestResponse.data,
       bank: bankResponse.data
     };
   } catch (error) {
-    toast.error(error?.response?.data?.msg || "Failed to load data");
+    if (error?.response?.status === 404) {
+      toast.error("Bank details not found");
+    } else {
+      toast.error(error?.response?.data?.msg || "Failed to load data");
+    }
     return redirect("/AdminDashboard/request");
+
   }
 };
 
@@ -63,7 +67,7 @@ export const action = async ({ request }) => {
   const formObject = Object.fromEntries(formData);
 
   try {
-    const response = await customFetch.post('/payment', {
+    const response = await customFetch.post('/payments', {
       amount: Number(formObject.fullAmount),
       category: formObject.requestType,
       weight: Number(formObject.weight),
@@ -96,8 +100,7 @@ export const action = async ({ request }) => {
   }
 };
 
-
-export default function Transaction() {
+export default function Payment() {
   const { request, bank } = useLoaderData();
   const navigation = useNavigation();
   const isSubmitting = navigation.state === "submitting";
@@ -289,4 +292,5 @@ export default function Transaction() {
     </div>
   );
 };
+
 

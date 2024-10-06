@@ -81,7 +81,7 @@ app.use('/api/v1/auth', authRouter);
 app.use('/api/v1/routePath', routePathRouter);
 app.use('/api/v1/vehicle', vehicleRouter);
 app.use('/api/v1/request', requestRouter);
-app.use('/api/v1/payment', paymentRouter);
+app.use('/api/v1/payments', paymentRouter);
 
 
 

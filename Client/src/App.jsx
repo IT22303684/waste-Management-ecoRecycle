@@ -34,6 +34,7 @@ import {
   AddEmployee,
   EditEmployee,
   EditVehicle,
+  Payment,
 } from "./pages/index";
 
 import { action as registerAction } from "./pages/Register";
@@ -60,8 +61,9 @@ import { action as AddVehicleAction } from "./pages/AddVehicle";
 import { loader as vehicleLoader } from "./pages/Vehicle";
 import { loader as editVehicleLoader } from "./pages/EditVehicel";
 import { action as editVehicleAction } from "./pages/EditVehicel";
-import { loader as transactionLoader } from "./pages/Transaction";
-import { action as transactionAction } from "./pages/Transaction";
+import { loader as paymentLoader } from "./pages/Payment";
+import { action as paymentAction } from "./pages/Payment";
+import { loader as transactionLoader } from "./pages/Transactions";
 
 function App() {
   const router = createBrowserRouter([
@@ -153,10 +155,10 @@ function App() {
               element: <Company />,
             },
             {
-              path: "transaction/:id",
-              element: <Transaction />,
-              loader: transactionLoader,
-              action: transactionAction,
+              path: "payment/:id",
+              element: <Payment />,
+              loader: paymentLoader,
+              action: paymentAction,
             },
             {
               path: "vehicle",
@@ -167,6 +169,11 @@ function App() {
             {
               path: "item",
               element: <Item />,
+            },
+            {
+              path: "transactions",
+              element: <Transaction />,
+              loader: transactionLoader,
             },
             {
               path: "addRoute/:Reqid",
