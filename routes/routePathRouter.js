@@ -6,7 +6,7 @@ const router = Router();
 router.post('/addRoutePath',validateRoute, InsertRoutePath);
 router.get('/retriveRoutePath', RetriveAllRoutePath);
 router.get('/retriveSpecificRoutePath/:id', RetrieveSpecificRoutePath); //kavidu
-router.put('/updateRoutePath/:id',validateRoute, UpdateRoutePath);
+router.put('/updateRoutePath/:id', UpdateRoutePath);
 router.delete('/deleteRoutePath/:id', DeleteRoutePath);
 
 export default router;

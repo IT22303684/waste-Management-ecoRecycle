@@ -18,7 +18,7 @@ const FormRow = ({
         id={name}
         name={name}
         defaultValue={defaulyValue || ""}
-        required
+        
         className={className}
       />
       <br /> <br />

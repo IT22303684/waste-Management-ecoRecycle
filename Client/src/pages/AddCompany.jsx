@@ -73,7 +73,7 @@ function AddCompany() {
               id="address"
               className="w-full border-2 border-gray-100 rounded-xl p-3 mt-1"
               placeholder="Address"
-              required
+              
             />
           </div>
           <div className="mt-8">
@@ -97,7 +97,7 @@ function AddCompany() {
               id="stocklimit"
               className="w-full border-2 border-gray-100 rounded-xl p-3 mt-1"
               placeholder="Stock Limit"
-              required
+              
             />
           </div>
 
