@@ -16,8 +16,6 @@ export const loader = async ({ params, request }) => {
       customFetch(`/request/retrieveSpecificRequest/${reqId}`),
     ]);
 
-    //console.log('Customer Data:', requestResponce.data);  // Log the customer data for debugging
-
     // Return the fetched data
     return {
       customer: customerResponse.data,
@@ -49,8 +47,7 @@ export const action = async ({ request }) => {
         const response = await customFetch.put(`/request/updateRequestStatus/${Reqid}`, {
           status: 'done',
         });
-        if (response.status === 200) {
-        } else {
+        if (response.status !== 200) {
           throw new Error('Update failed with status code: ' + response.status);
         }
       } catch (error) {
@@ -68,13 +65,19 @@ export const action = async ({ request }) => {
 };
 
 export default function AddRoute() {
-  const { vehicles, customer, request, reqId , cusId} = useLoaderData();
+  const { vehicles, customer, request, reqId, cusId } = useLoaderData();
   const [vehicleOptions, setVehicleOptions] = useState([]);
+  const [minDate, setMinDate] = useState('');
 
   useEffect(() => {
     if (vehicles && Array.isArray(vehicles)) {
       setVehicleOptions(vehicles);  // Set vehicle options
     }
+
+    // Set the minimum date to today
+    const today = new Date();
+    const formattedToday = today.toISOString().split("T")[0];  // Format as yyyy-mm-dd
+    setMinDate(formattedToday);
   }, [vehicles]);
 
   // Check if customer data is still loading or missing
@@ -90,7 +93,6 @@ export default function AddRoute() {
         <Form method="post">
           {/* Request ID */}
           <div className='mt-8'>
-            
             <input
               type='text'
               name='RequestId'
@@ -118,12 +120,13 @@ export default function AddRoute() {
             <input
               type='text'
               name='CustomerName'
-              defaultValue={customer.user.name+' '+customer.user.lastName}
+              defaultValue={customer.user.name + ' ' + customer.user.lastName}
               className='w-full border-2 border-gray-100 rounded-xl p-3 mt-1'
               placeholder='Enter Name'
               readOnly
             />
           </div>
+
           {/* Display the Phone number */}
           <div className='mt-8'>
             <label className='text-lg font-medium'>Contact Number</label>
@@ -132,12 +135,9 @@ export default function AddRoute() {
               name='ContactNumber'
               defaultValue={request.phoneNo}
               className='w-full border-2 border-gray-100 rounded-xl p-3 mt-1'
-              placeholder='Enter Name'
-              re
+              placeholder='Enter Contact Number'
             />
           </div>
-
-          
 
           {/* Google Maps Route Selection */}
           <div className="mt-8">
@@ -168,6 +168,7 @@ export default function AddRoute() {
             <input
               type='date'
               name='ArriveDate'
+              min={minDate}  // Set the minimum date to today
               className='w-full border-2 border-gray-100 rounded-xl p-3 mt-1'
             />
           </div>

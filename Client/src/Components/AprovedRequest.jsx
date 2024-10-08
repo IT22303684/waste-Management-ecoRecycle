@@ -23,10 +23,12 @@ export default function AprovedRequest() {
                 <thead>
                     <tr>
                         <th>Request Id</th>
+                        <th></th>
+                        <th>Title</th>
                         <th>Request Date, Time</th>
                         <th>Request Type</th>
                         <th>Weight (KG)</th>
-                        <th>Request Address</th>
+                        <th>Location</th>
                         <th></th>
                     </tr>
                 </thead>
@@ -34,6 +36,14 @@ export default function AprovedRequest() {
                 {aproveRequest.map((request)=>(
                     <tr key={request._id}>
                         <td>REQ{request._id.slice(0, 6)}</td>
+                        <td>
+                        <img
+                            src={request.itemPhoto || 'default-placeholder.jpg'}
+                            alt="Request"
+                            className="object-fill rounded h-12 w-12 transform hover:scale-105 hover:h-28 hover:w-28 duration-200"
+                        />
+                        </td>
+                        <td>{request.name}</td>
                         <td>{request.requestDate}</td>
                         <td>{request.category}</td>
                         <td>{request.weight}</td>

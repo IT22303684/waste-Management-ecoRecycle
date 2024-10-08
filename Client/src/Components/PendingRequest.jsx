@@ -82,7 +82,7 @@ export default function PendingRequest() {
               <th>Request Date, Time</th>
               <th>Request Type</th>
               <th>Weight (KG)</th>
-              <th>Request Address</th>
+              <th>Location</th>
               <th></th>
             </tr>
           </thead>

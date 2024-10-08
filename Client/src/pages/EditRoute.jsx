@@ -44,6 +44,7 @@ export const action = async ({ request, params }) => {
 export default function EditRoute() {
   const { route, vehicles } = useLoaderData();
   const [vehicleOptions, setVehicleOptions] = useState([]);
+  const [minDate, setMinDate] = useState('');
 
   // Populate vehicle options when data is fetched
   useEffect(() => {
@@ -51,6 +52,11 @@ export default function EditRoute() {
       setVehicleOptions(vehicles);
       //console.log('Vehicle Options:', vehicles); // Debugging
     }
+
+     // Set the minimum date to today
+     const today = new Date();
+     const formattedToday = today.toISOString().split("T")[0];  // Format as yyyy-mm-dd
+     setMinDate(formattedToday);
   }, [vehicles]);
 
   if (!route) {
@@ -112,6 +118,7 @@ export default function EditRoute() {
             <input
               type='date'
               name='ArriveDate'
+              min={minDate} 
               defaultValue={route.ArriveDate}
               className='w-full border-2 border-gray-100 rounded-xl p-3 mt-1'
             />
