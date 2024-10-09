@@ -6,6 +6,7 @@ import { RITEM_CATEGORY, RITEM_STATUS } from "../../../Utils/constants";
 import { Form, useNavigation, redirect } from "react-router-dom";
 import { toast } from "react-toastify";
 import customFetch from "../utils/customFetch";
+import { useState } from "react";
 
 export const loader = async ({ params }) => {
   try {
@@ -36,6 +37,21 @@ const EditItems = () => {
   const navigation = useNavigation();
   const isSubmitting = navigation.state === "submitting";
 
+  // State to manage the weight error
+  const [weightError, setWeightError] = useState("");
+
+  // Validation function to check weight
+  const validateForm = (event) => {
+    const weight = event.target.weight.value;
+
+    if (weight <= 0) {
+      setWeightError("Weight must be greater than zero.");
+      event.preventDefault(); // Prevent form submission
+    } else {
+      setWeightError(""); // Clear the error if validation passes
+    }
+  };
+
   return (
     <div className=" shadow-lg  flex flex-col justify-center items-center min-h-screen bg-gray-200">
       <h4 className="font-mono mb-5 text-4xl font-bold text-center mt-8 text-bla">
@@ -45,6 +61,7 @@ const EditItems = () => {
       <Form
         method="post"
         className="w-full  p-6 rounded-lg shadow-md bg-gray-200"
+        onSubmit={validateForm}
       >
         <div className="space-y-6">
           <FormRow
@@ -74,6 +91,15 @@ const EditItems = () => {
             defaulyValue={Ritem.rItem.Location}
           />
 
+          <FormRow
+            type="tel"
+            name="phoneNo"
+            label="Location"
+            className="border-gray-300  border-2 w-3/6 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm p-2 text-lg"
+            labelClass="block text-gray-700 font-bold mb-2"
+            defaulyValue={Ritem.rItem.phoneNo}
+          />
+
           <div>
             <label className="block text-gray-700 font-bold mb-2">
               Category
@@ -100,6 +126,10 @@ const EditItems = () => {
             labelClass="block text-gray-700 font-bold mb-2"
             defaulyValue={Ritem.rItem.weight}
           />
+
+          {weightError && (
+            <p className="text-red text-sm font-semibold">{weightError}</p>
+          )}
 
           <button
             disabled={isSubmitting}

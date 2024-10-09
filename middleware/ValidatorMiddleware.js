@@ -40,6 +40,7 @@ export const validateRItem = withValidationError([
     body('category').isIn(Object.values(RITEM_CATEGORY)).withMessage('Item Type is invalid'),
     body('description').notEmpty().withMessage('description is required'),
     body('Location').notEmpty().withMessage('Location is required'),
+    body('phoneNo').isMobilePhone('si-LK').withMessage('Phone number is invalid'),
    
 ]);
 

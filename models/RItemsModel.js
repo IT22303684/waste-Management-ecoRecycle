@@ -28,6 +28,10 @@ const recyclableItemSchema = new mongoose.Schema({
         enum: Object.values(RITEM_STATUS),
         default: 'available',
     },
+    phoneNo:{
+        type: String,
+        required: true,
+    },
     isSold: {
         type: Boolean,
         default: false,
