@@ -24,9 +24,21 @@ export {default as Staf } from './Staf'
 export {default as Company } from './Company'
 export {default as Item } from './Item'
 export {default as Transaction } from './Transaction'
+
+
 export {default as Vehicle } from './Vehicle'
+export {default as AddVehicle} from './AddVehicle'
+export {default as EditVehicle} from './EditVehicel'
+
+
+
 export {default as Route } from './Route'
 export {default as AddRoute } from './AddRoute'
+export {default as EditRoute } from './EditRoute'
+
+
+
+
 export {default as Test } from './Test'
 export {default as AddEmployee} from './AddEmployee'
 export {default as DeleteEmploye} from './DeleteEmploye'

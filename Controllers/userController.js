@@ -89,4 +89,28 @@ export const deleteUser = async (req, res) => {
             error: error.message
         });
     }
-};
+
+
+export const getUserById = async (req, res) => {
+    const { id } = req.params; // Get the user ID from the request parameters
+  
+    try {
+      // Query the user by ID from the database
+      const user = await User.findById(id);
+  
+      // Check if the user was found
+      if (!user) {
+        return res.status(StatusCodes.NOT_FOUND).json({ msg: "User not found" });
+      }
+  
+      // Return user details in the response
+      res.status(StatusCodes.OK).json({ user });
+    } catch (error) {
+      // Return error if something goes wrong (e.g., invalid ID format)
+      res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ 
+        msg: "Failed to retrieve user",
+        error: error.message
+      });
+    }
+  };
+

@@ -1,19 +1,18 @@
-
 import React, { useState } from 'react';
 import RequestStatus from '../utils/RequestStatus';
-import { useAllRecentRequest } from '../pages/Dashbord';
+import { useAllRequest } from '../pages/Request';
 import { toast } from 'react-toastify';
 import customFetch from '../utils/customFetch';
 
-export default function RecentRequest() {
-  const { data, refetch, isLoading, isError } = useAllRecentRequest();
+export default function PendingRequest() {
+  const { data, refetch, isLoading, isError } = useAllRequest();
   const [showConfirm, setShowConfirm] = useState({ visible: false, type: '', id: null });
-  const [refresh, setRefresh] = useState(false); // Add refresh state to trigger updates
+  const [refresh, setRefresh] = useState(false); 
 
   // Function to trigger a refresh of data after update
   const handleRefresh = async () => {
-    setRefresh((prev) => !prev); // Toggle refresh state to force re-render and refetch
-    await refetch(); // Call refetch function after toggling refresh state
+    setRefresh((prev) => !prev); 
+    await refetch();
   };
 
   // Function to handle approval
@@ -23,7 +22,7 @@ export default function RecentRequest() {
       if (response.status === 200) {
         toast.success('Request approved successfully');
         setShowConfirm({ visible: false, type: '', id: null });
-        handleRefresh(); // Trigger data refresh
+        handleRefresh(); 
       } else {
         throw new Error('Update failed');
       }
@@ -39,7 +38,7 @@ export default function RecentRequest() {
       if (response.status === 200) {
         toast.success('Request rejected successfully');
         setShowConfirm({ visible: false, type: '', id: null });
-        handleRefresh(); // Trigger data refresh
+        handleRefresh();
       } else {
         throw new Error('Update failed');
       }
@@ -50,7 +49,7 @@ export default function RecentRequest() {
 
   const pendingRequests = Array.isArray(data) ? data.filter((request) => request.status === 'available') : [];
 
-  // Loading, Error, No Data handling
+
   if (isLoading) {
     return <h1>Loading...</h1>;
   }
@@ -61,7 +60,7 @@ export default function RecentRequest() {
 
   if (pendingRequests.length === 0) {
     return (
-      <div className="flex items-center justify-center w-full  bg-gray-200">
+      <div className="flex items-center justify-center  bg-gray-200">
         <p className="text-xl font-semibold text-sky-500 bg-white px-6 py-4 rounded-lg  mt-4 mb-4">
           No Pending Request
         </p>
@@ -78,19 +77,19 @@ export default function RecentRequest() {
             <tr>
               <th>Request Id</th>
               <th></th>
-              <th>Customer Name</th>
-              <th>Request Date</th>
+              <th>Title</th>
+              <th>Discription</th>
+              <th>Request Date, Time</th>
               <th>Request Type</th>
               <th>Weight (KG)</th>
-              <th>Request Address</th>
-              <th>Status</th>
+              <th>Location</th>
               <th></th>
             </tr>
           </thead>
           <tbody>
             {pendingRequests.map((request) => (
               <tr className='hover:bg-gray-50' key={request._id}>
-                <td>{request._id}</td>
+                <td>REQ{request._id.slice(0, 6)}</td>
                 <td>
                   <img
                     src={request.itemPhoto || 'default-placeholder.jpg'}
@@ -99,11 +98,11 @@ export default function RecentRequest() {
                   />
                 </td>
                 <td>{request.name}</td>
-                <td>{new Date(request.requestDate).toLocaleDateString() || 'N/A'}</td>
+                <td>{request.description}</td>
+                <td>{request.requestDate}</td>
                 <td>{request.category}</td>
                 <td>{request.weight}</td>
                 <td>{request.Location}</td>
-                <td>{RequestStatus(request.status)}</td>
                 <td className='flex flex-col gap-2'>
                   <button
                     className='bg-green-500 text-white px-4 py-2 hover:bg-green-700 rounded shadow-md'
@@ -150,76 +149,4 @@ export default function RecentRequest() {
       )}
     </div>
   );
-=======
-import React from 'react'
-import RequestStatus from '../utils/RequestStatus'
-
-const recentRequestData = [
-    {
-        requestId: '123',
-        customerName: 'dasun',
-        requestDate: '2024-08-19',
-        type: 'Iron',
-        requestQuentity: '5KG',
-        address: 'kirimetimulla, thelijjawila',
-        currentStatus: 'pending'
-    },
-    {
-        requestId: '456',
-        customerName: 'jinad',
-        requestDate: '2024-07-19',
-        type: 'plastic',
-        requestQuentity: '2KG',
-        address: 'kirimetimulla, thelijjawila',
-        currentStatus: 'pending'
-    }
-]
-
-
-export default function RecentRequest() {
-  return (
-    <div className='bg-white px-4  pb-4 rounded-sm border border-gray-200 w-full'>
-        <strong className='text-gray-700 font-medium'>Recent Request</strong>
-
-        <div className='mt-3'>
-            <table className='w-full text-gray-700'>
-                <thead>
-                    <tr>
-                        <th>Request Id</th>
-                        <th>Customer Name</th>
-                        <th>Request Date</th>
-                        <th>Request Type</th>
-                        <th>Quentity</th>
-                        <th>Request Address</th>
-                        <th>Status</th>
-                        <th></th>
-                    </tr>
-                </thead>
-                <tbody>
-                {recentRequestData.map((request)=>(
-                    <tr key={request.requestId}>
-                        <td>{request.requestId}</td>
-                        <td>{request.customerName}</td>
-                        <td>{request.requestDate}</td>
-                        <td>{request.type}</td>
-                        <td>{request.requestQuentity}</td>
-                        <td>{request.address}</td>
-                        <td>{RequestStatus(request.currentStatus)}</td>
-                        <td>
-                            <button className='bg-green-500 mr-3 text-white px-4 py-2 hover:bg-green-700 rounded shadow-md outline-none border-none select-none'>
-                                Aprove
-                            </button>
-                            <button className='bg-red text-white px-4 py-2 hover:bg-red-700 rounded shadow-md outline-none border-none select-none'>
-                                Reject
-                            </button>
-                        </td>
-                    </tr>
-                ))}
-
-                </tbody>
-
-            </table>
-
-        </div>
-    </div>
-  )
+}

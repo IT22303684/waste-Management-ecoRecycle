@@ -29,8 +29,14 @@ const recyclableItemSchema = new mongoose.Schema({
         default: 'available',
     },
     phoneNo:{
+        type: Number,
+        required: true,
+    },
+    requestDate: {
         type: String,
         required: true,
+        default: () => new Date().toLocaleString()
+
     },
     isSold: {
         type: Boolean,

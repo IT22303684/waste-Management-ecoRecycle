@@ -1,14 +1,13 @@
-
 import React, { useState, useRef } from 'react';
 import { toast } from 'react-toastify';
-import { IoBuild, IoTrashSharp, IoPrint } from 'react-icons/io5';
+import { IoBuild, IoTrashSharp, IoPrint, IoChatbubbleEllipses } from 'react-icons/io5';
 import { useAllRoutes } from '../pages/Route'; // Ensure this path is correct
 import customFetch from '../utils/customFetch';
 import { Link } from 'react-router-dom';
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
 
-export default function RouteTable() {
+export default function RouteTableSheduled() {
     const { data, refetch } = useAllRoutes();
     const [showConfirm, setShowConfirm] = useState({ visible: false, id: null });
     const [searchTerm, setSearchTerm] = useState('');
@@ -28,7 +27,7 @@ export default function RouteTable() {
         try {
             await customFetch.delete(`/routePath/deleteRoutePath/${id}`);
             toast.success("Route deleted successfully!");
-            refetch();  // Call refetch directly after deleting
+            refetch();  
         } catch (error) {
             toast.error("Failed to delete route");
             console.error("Delete error", error);
@@ -37,12 +36,16 @@ export default function RouteTable() {
         }
     };
 
-    // Filter data based on search term
-    const filteredData = data.filter((route) =>
-        route.CustomerName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        route.ContactNumber.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        route.RouteId.toLowerCase().includes(searchTerm.toLowerCase())
-    );
+    // Filter data based on search term and status 'approved'
+    const approvedData = data
+        ? data.filter(
+              (route) =>
+                  route.Status === 'Scheduled' &&
+                  (route.CustomerName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                      route.ContactNumber.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                      route.RouteId.toLowerCase().includes(searchTerm.toLowerCase()))
+          )
+        : [];
 
     // PDF generation function
     const generatePDF = () => {
@@ -50,7 +53,7 @@ export default function RouteTable() {
 
         doc.setFontSize(18);
         doc.setTextColor(40);
-        doc.text("Eco Recycle - Route List", 14, 10);
+        doc.text("Eco Recycle - Sheduled Route List", 14, 10);
 
         doc.setFontSize(12);
         doc.text("Generated on: " + new Date().toLocaleDateString(), 14, 20);
@@ -62,18 +65,16 @@ export default function RouteTable() {
             "Arrive Time",
             "Arrive Date",
             "Vehicle",
-            "Status"
         ];
 
-        // Define table rows by mapping the route data
-        const tableRows = filteredData.map((route) => [
+        // table rows by mapping the approved route data
+        const tableRows = approvedData.map((route) => [
             route.RouteId,
             route.CustomerName,
             route.ContactNumber,
             route.ArriveTime,
             route.ArriveDate,
             route.Vehicle,
-            route.Status,
         ]);
 
         doc.autoTable({
@@ -95,13 +96,22 @@ export default function RouteTable() {
         });
 
         // Save the PDF
-        doc.save("routes.pdf");
+        doc.save("sheduled_routes.pdf");
     };
+
+   // Send WhatsApp message function
+   const handleWhatsappMessage = (route) => {
+    const message = `Hello ${route.CustomerName}, your route is scheduled to arrive on ${route.ArriveDate} at ${route.ArriveTime}. Vehicle: ${route.Vehicle}. If you have any changes regarding your pickup time and date, please contact us directly for assistance. -ecoRecycle-`;
+    const phoneNumber = route.ContactNumber;
+    const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
+    
+    window.open(whatsappUrl, '_blank');
+};
 
     return (
         <div className="bg-white border border-gray-200 overflow-x-auto">
-            <div className='m-4 text-xl text-green-600 '>
-                <h1>All Routes</h1>
+            <div className='m-4 text-xl text-gray-600 '>
+                <h1>Sheduled Routes</h1>
             </div>
 
             {/* Search Input */}
@@ -135,21 +145,20 @@ export default function RouteTable() {
                         <th>Contact Number</th>
                         <th>Arrive Time</th>
                         <th>Arrive Date</th>
-
                         <th>Vehicle</th>
                         <th>Status</th>
                         <th></th>
                     </tr>
                 </thead>
                 <tbody>
-                    {(!filteredData || filteredData.length === 0) ? (
+                    {approvedData.length === 0 ? (
                         <tr>
-                            <td colSpan="9" className="text-center py-4">
-                                <label>No Items to display</label>
+                            <td colSpan="8" className="text-center py-4">
+                                <label>No approved routes found</label>
                             </td>
                         </tr>
                     ) : (
-                        filteredData.map((route) => (
+                        approvedData.map((route) => (
                             <tr key={route._id}>
                                 <td>{route.RouteId}</td>
                                 <td>{route.CustomerName}</td>
@@ -170,6 +179,12 @@ export default function RouteTable() {
                                             onClick={() => openConfirmModal(route._id)}
                                         >
                                             <IoTrashSharp />
+                                        </button>
+                                        <button
+                                            className='bg-green-500 hover:bg-green-600 text-white px-4 py-2 hover:bg-red-600 rounded shadow-md'
+                                            onClick={() => handleWhatsappMessage(route)}
+                                        >
+                                            <IoChatbubbleEllipses />
                                         </button>
                                     </div>
                                 </td>
@@ -205,6 +220,4 @@ export default function RouteTable() {
             )}
         </div>
     );
-
-
 }

@@ -24,6 +24,10 @@ import CompanyItemRoute from './routes/CompanyItem.js'
 import collectedWasteRouter  from './routes/collectedWasteRoute.js'
 import routePathRouter from './routes/routePathRouter.js';
 
+import vehicleRouter from './routes/vehicleRouter.js';
+import requestRouter from './routes/requestRouter.js';
+
+
 //public
 import {dirname} from 'path';
 import {fileURLToPath} from 'url';
@@ -70,13 +74,17 @@ app.get('/api/v1/test', (req, res) => {
 
 
 app.use('/api/v1/RItems', authenticateUser , RItemRouter);
-app.use('/api/v1/users',authenticateUser , userRouter);
+app.use('/api/v1/users' , authenticateUser, userRouter);
 app.use('/api/v1/auth', authRouter);
 app.use('/api/v1/Company', authenticateUser , CompanyRouter);
 app.use('/api/v1/employees', authenticateUser , employeeRouter);
 app.use('/api/v1/CItems',authenticateUser , CompanyItemRoute );
 app.use('/api/v1/waste', collectedWasteRouter);
 app.use('/api/v1/routePath', routePathRouter);
+
+app.use('/api/v1/vehicle', vehicleRouter);
+app.use('/api/v1/request', requestRouter);
+
 
 
 app.get('*', (req, res) => {

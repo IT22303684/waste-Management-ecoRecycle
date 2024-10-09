@@ -62,6 +62,7 @@ const EditItems = () => {
         method="post"
         className="w-full  p-6 rounded-lg shadow-md bg-gray-200"
         onSubmit={validateForm}
+
       >
         <div className="space-y-6">
           <FormRow
@@ -130,6 +131,7 @@ const EditItems = () => {
           {weightError && (
             <p className="text-red text-sm font-semibold">{weightError}</p>
           )}
+
 
           <button
             disabled={isSubmitting}

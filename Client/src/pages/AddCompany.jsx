@@ -98,6 +98,7 @@ function AddCompany() {
               className="w-full border-2 border-gray-100 rounded-xl p-3 mt-1"
               placeholder="Stock Limit"
               required
+
             />
           </div>
 

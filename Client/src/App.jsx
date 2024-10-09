@@ -24,8 +24,12 @@ import {
   Item,
   Transaction,
   Vehicle,
+  AddVehicle,
+  EditVehicle,
   Route,
   AddRoute,
+  EditRoute,
+
   Test,
   Paymentinfo,
   AddEmployee,
@@ -86,6 +90,20 @@ import { loader as EditWasteLoader } from "./pages/EditDailyWaste";
 import { loader as driverDashboardLoader } from "./pages/DriverDashboard";
 import { loader as dailyWasteLoader } from "./pages/DailyWaste";
 import { loader as collectedWasteLoader } from "./pages/CollectedWaste";
+
+import { loader as routeLoader } from "./pages/Route";
+import { loader as addRouteLoader } from "./pages/AddRoute";
+import { loader as editRouteLoader } from "./pages/EditRoute";
+import { action as addRouteAction } from "./pages/AddRoute";
+import { action as editRouteAction } from "./pages/EditRoute";
+
+import { loader as RequestLoader } from "./pages/Request";
+
+import { loader as vehicleLoader } from "./pages/Vehicle";
+import { loader as editVehicleLoader } from "./pages/EditVehicel";
+import { action as AddVehicleAction } from "./pages/AddVehicle";
+import { action as editVehicleAction } from "./pages/EditVehicel";
+
 
 function App() {
   const router = createBrowserRouter([
@@ -149,20 +167,26 @@ function App() {
         },
         {
           path: "AdminDashboard",
-          element: <AdminDashbordLayout />,
-          loader: AdminDashboardLoader,
+          element: <AdminDashbordLayout />, 
+
           children: [
             {
               index: true,
               element: <AdminDashbord />,
+              loader: AdminDashboardLoader,
+
             },
             {
               path: "request",
               element: <Request />,
+              loader: RequestLoader,
+
             },
             {
               path: "route",
               element: <Route />,
+              loader: routeLoader,
+
             },
             {
               path: "staf",
@@ -181,6 +205,8 @@ function App() {
             {
               path: "vehicle",
               element: <Vehicle />,
+              loader: vehicleLoader,
+
             },
             {
               path: "item",
@@ -188,6 +214,30 @@ function App() {
               loader: itemLoader,
             },
             {
+              path: "addRoute/:id",
+              element: <AddRoute />,
+              loader: addRouteLoader,
+              action: addRouteAction,
+            },
+            {
+              path: "editRoute/:id",
+              element: <EditRoute />,
+              loader: editRouteLoader,
+              action: editRouteAction,
+            },
+            {
+              path: "AddVehicle",
+              element: <AddVehicle />,
+              action: AddVehicleAction,
+            },
+            {
+              path: "EditVehicle/:id",
+              element: <EditVehicle />,
+              loader: editVehicleLoader,
+              action: editVehicleAction,
+            },
+            {
+
               path: "add-employee",
               element: <AddEmployee />,
               action: addEmployee,

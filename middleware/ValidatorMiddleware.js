@@ -41,6 +41,7 @@ export const validateRItem = withValidationError([
     body('description').notEmpty().withMessage('description is required'),
     body('Location').notEmpty().withMessage('Location is required'),
     body('phoneNo').isMobilePhone('si-LK').withMessage('Phone number is invalid'),
+
    
 ]);
 
@@ -188,6 +189,16 @@ export const validateUpdateEmployee = withValidationError([
     body('PostalCode').notEmpty().withMessage('phone is required'),
    body('Type').notEmpty().withMessage('Type is Required'),
    
+]);
+
+
+
+//----------------------- validate route --------------------------------
+export const validateRoute = withValidationError([
+    body('ArriveTime').notEmpty().withMessage('Arrive time is required'),
+    body('PickupPath').notEmpty().withMessage('Pickup path is required').isURL().withMessage('Pickup path must be a valid URL'),
+    body('ArriveDate').notEmpty().withMessage('Arrive date is required'),
+    body('Vehicle').notEmpty().withMessage('vehicle is required'), 
 ]);
 
 

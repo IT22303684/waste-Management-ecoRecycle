@@ -58,6 +58,7 @@ const AddItems = () => {
         className="w-full  p-6 bg-gray-200 rounded-lg "
         encType="multipart/form-data"
         onSubmit={validateForm}
+
       >
         <div className="space-y-6">
           <FormRow
@@ -74,6 +75,7 @@ const AddItems = () => {
             className="border-gray-300 border-2 w-5/6 h-20 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm p-2 text-lg"
             labelClass="block text-gray-700 font-bold mb-2"
           />
+          
           <FormRow
             type="text"
             name="Location"
@@ -90,7 +92,6 @@ const AddItems = () => {
             className="border-gray-300  border-2 w-2/6 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm p-2 text-lg"
             labelClass="block text-gray-700 font-bold mb-2"
           />
-
           <div>
             <label className="block text-gray-700 font-bold mb-2">
               Category
@@ -114,6 +115,7 @@ const AddItems = () => {
             className="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm p-2 text-lg"
             labelClass="block text-gray-700 font-bold mb-2"
           />
+
           {/* Display error message if validation fails */}
           {weightError && (
             <p className="text-red text-sm font-semibold">{weightError}</p>
