@@ -18,17 +18,20 @@ export default function AprovedRequest() {
     <div className='bg-white px-4  pb-4 rounded-sm border border-gray-200 w-full  pt-3'>
         <strong className=' font-medium text-xl text-green-600'>Aproved Request</strong>
 
+
         <div className='mt-3'>
             <table className='w-full text-gray-700'>
                 <thead>
                     <tr>
                         <th>Request Id</th>
+
                         <th></th>
                         <th>Title</th>
                         <th>Request Date, Time</th>
                         <th>Request Type</th>
                         <th>Weight (KG)</th>
                         <th>Location</th>
+
                         <th></th>
                     </tr>
                 </thead>
@@ -54,6 +57,7 @@ export default function AprovedRequest() {
                                 ADD ROUTE
                             </button>
                         </Link>
+
                             
                         </td>
                     </tr>

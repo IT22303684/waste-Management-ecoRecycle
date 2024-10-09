@@ -36,6 +36,7 @@ const recyclableItemSchema = new mongoose.Schema({
         type: String,
         required: true,
         default: () => new Date().toLocaleString()
+
     },
     isSold: {
         type: Boolean,

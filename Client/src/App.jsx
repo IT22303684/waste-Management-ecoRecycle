@@ -29,6 +29,7 @@ import {
   Route,
   AddRoute,
   EditRoute,
+
   Test,
   Paymentinfo,
   AddEmployee,
@@ -104,7 +105,6 @@ import { action as AddVehicleAction } from "./pages/AddVehicle";
 import { action as editVehicleAction } from "./pages/EditVehicel";
 
 
-
 function App() {
   const router = createBrowserRouter([
     {
@@ -168,21 +168,25 @@ function App() {
         {
           path: "AdminDashboard",
           element: <AdminDashbordLayout />, 
+
           children: [
             {
               index: true,
               element: <AdminDashbord />,
               loader: AdminDashboardLoader,
+
             },
             {
               path: "request",
               element: <Request />,
               loader: RequestLoader,
+
             },
             {
               path: "route",
               element: <Route />,
               loader: routeLoader,
+
             },
             {
               path: "staf",
@@ -202,6 +206,7 @@ function App() {
               path: "vehicle",
               element: <Vehicle />,
               loader: vehicleLoader,
+
             },
             {
               path: "item",
@@ -232,6 +237,7 @@ function App() {
               action: editVehicleAction,
             },
             {
+
               path: "add-employee",
               element: <AddEmployee />,
               action: addEmployee,

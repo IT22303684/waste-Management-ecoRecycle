@@ -23,8 +23,10 @@ import employeeRouter from './routes/EmployeeRoute.js'
 import CompanyItemRoute from './routes/CompanyItem.js'
 import collectedWasteRouter  from './routes/collectedWasteRoute.js'
 import routePathRouter from './routes/routePathRouter.js';
+
 import vehicleRouter from './routes/vehicleRouter.js';
 import requestRouter from './routes/requestRouter.js';
+
 
 //public
 import {dirname} from 'path';
@@ -79,8 +81,10 @@ app.use('/api/v1/employees', authenticateUser , employeeRouter);
 app.use('/api/v1/CItems',authenticateUser , CompanyItemRoute );
 app.use('/api/v1/waste', collectedWasteRouter);
 app.use('/api/v1/routePath', routePathRouter);
+
 app.use('/api/v1/vehicle', vehicleRouter);
 app.use('/api/v1/request', requestRouter);
+
 
 
 app.get('*', (req, res) => {

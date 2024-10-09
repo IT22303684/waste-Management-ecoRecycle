@@ -1,3 +1,4 @@
+
 import React, { useState, useRef } from 'react';
 import { toast } from 'react-toastify';
 import { IoBuild, IoTrashSharp, IoPrint } from 'react-icons/io5';
@@ -134,6 +135,7 @@ export default function RouteTable() {
                         <th>Contact Number</th>
                         <th>Arrive Time</th>
                         <th>Arrive Date</th>
+
                         <th>Vehicle</th>
                         <th>Status</th>
                         <th></th>
@@ -203,4 +205,6 @@ export default function RouteTable() {
             )}
         </div>
     );
+
+
 }

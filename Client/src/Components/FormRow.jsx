@@ -7,6 +7,7 @@ const FormRow = ({
   defaulyValue,
   className,
   labelClass,
+  readOnly,
 }) => {
   return (
     <div>
@@ -20,6 +21,7 @@ const FormRow = ({
         defaultValue={defaulyValue || ""}
         
         className={className}
+        readOnly={readOnly}
       />
       <br /> <br />
     </div>

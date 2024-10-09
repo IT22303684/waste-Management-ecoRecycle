@@ -40,7 +40,8 @@ export const validateRItem = withValidationError([
     body('category').isIn(Object.values(RITEM_CATEGORY)).withMessage('Item Type is invalid'),
     body('description').notEmpty().withMessage('description is required'),
     body('Location').notEmpty().withMessage('Location is required'),
-    body('phoneNo').isMobilePhone("si-LK").withMessage('phone number is invalid'),
+    body('phoneNo').isMobilePhone('si-LK').withMessage('Phone number is invalid'),
+
    
 ]);
 
@@ -191,6 +192,7 @@ export const validateUpdateEmployee = withValidationError([
 ]);
 
 
+
 //----------------------- validate route --------------------------------
 export const validateRoute = withValidationError([
     body('ArriveTime').notEmpty().withMessage('Arrive time is required'),
@@ -199,8 +201,6 @@ export const validateRoute = withValidationError([
     body('Vehicle').notEmpty().withMessage('vehicle is required'), 
 ]);
 
-
-//-----------------------------------------------------------------------------
 
 export const validateCompanyItem= withValidationError([
 

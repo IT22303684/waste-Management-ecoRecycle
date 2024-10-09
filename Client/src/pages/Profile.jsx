@@ -75,6 +75,7 @@ const Profile = () => {
                   defaulyValue={user?.name}
                   className="w-full p-2 border border-gray-300 rounded-md placeholder:font-sans placeholder:font-light"
                   labelClass="text-xl text-gray-700 font-bold capitalize"
+                  readOnly={true}
                 />
                 <FormRow
                   type="text"
@@ -82,6 +83,7 @@ const Profile = () => {
                   defaulyValue={user?.lastName}
                   className="w-full p-2 border border-gray-300 rounded-md placeholder:font-sans placeholder:font-light"
                   labelClass="text-xl text-gray-700 font-bold capitalize"
+                  readOnly={true}
                 />
                 <FormRow
                   type="text"
@@ -96,6 +98,7 @@ const Profile = () => {
                   defaulyValue={user?.email}
                   className="w-full p-2 border border-gray-300 rounded-md placeholder:font-sans placeholder:font-light"
                   labelClass="text-xl text-gray-700 font-bold capitalize"
+                  readOnly={true}
                 />
 
                 <div className="col-span-2">
