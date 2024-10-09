@@ -89,6 +89,7 @@ export const deleteUser = async (req, res) => {
             error: error.message
         });
     }
+};
 
 
 export const getUserById = async (req, res) => {
@@ -113,4 +114,3 @@ export const getUserById = async (req, res) => {
       });
     }
   };
-

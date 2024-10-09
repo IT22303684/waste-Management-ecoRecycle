@@ -86,57 +86,20 @@ function RecycleItem({
             </button>
           </Link>
 
-            <div>
-              <p
-                className={`text-lg text-white mt-2 border w-[85%]  text-center rounded-lg inline-block font-semibold ${
-                  category === "plastic"
-                    ? "bg-green-600"
-                    : category === "metal"
-                    ? "bg-gray-500"
-                    : category === "paper"
-                    ? "bg-yellow-600"
-                    : category === "glass"
-                    ? "bg-blue-600"
-                    : category === "wood"
-                    ? "bg-red-700"
-                    : "bg-gray-600"
-                }`}
-              >
-                {category}
-              </p>
-              <p className="text-sm text-white flex-1 inline-block bg-gray-500 p-2 mt-2 rounded-lg shadow-lg ">
-                {status}
-              </p>
-            </div>
-            <p className="text-sm text-gray-600 text-pretty text-left mt-2  ">
-              {description}
-            </p>
-            <div className=" flex justify-between border ">
-              <p className=" text-black ml-5 text-lg">{Location}</p>
-            </div>
-            <div className="border-black  flex ">
-              <Link to={`../edit-items/${_id}`}>
-                <button className="bg-red-600 text-white bg-green-500 p-2 rounded-lg mt-2 ml-2 shadow-lg hover:opacity-80 transition hover:translate-y-0.5 duration-150   ">
-                  Edit items
-                </button>
-              </Link>
-              <Form
-                method="post"
-                action={`../delete-item/${_id}`}
-                onSubmit={handleDeleteClick}
-              >
-                <button
-                  disabled={isDeleting}
-                  className="bg-red-600 text-white bg-red p-2 rounded-lg mt-2 ml-2 shadow-lg hover:opacity-80 transition hover:translate-y-0.5 duration-150 "
-                >
-                  <span className="text-black">
-                    {isDeleting ? "Deleting.." : "Delete"}
-                  </span>
-                </button>
-              </Form>
-            </div>
-          </div>
-
+          <Form
+            method="post"
+            action={`../delete-item/${_id}`}
+            onSubmit={handleDeleteClick}
+          >
+            <button
+              disabled={isDeleting}
+              className="bg-red-600 text-white bg-red p-2 rounded-lg mt-2 ml-2 shadow-lg hover:opacity-80 transition hover:translate-y-0.5 duration-150 "
+            >
+              <span className="text-black">
+                {isDeleting ? "Deleting.." : "Delete"}
+              </span>
+            </button>
+          </Form>
         </div>
       </div>
     </div>
