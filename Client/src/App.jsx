@@ -49,6 +49,7 @@ import {
   Adduser,
   AddDailyWaste,
   CollectedWaste,
+  Payment,
 } from "./pages/index";
 
 import { action as registerAction } from "./pages/Register";
@@ -103,6 +104,12 @@ import { loader as editVehicleLoader } from "./pages/EditVehicel";
 import { action as AddVehicleAction } from "./pages/AddVehicle";
 import { action as editVehicleAction } from "./pages/EditVehicel";
 
+
+import { loader as transactionLoader } from "./pages/Transaction";
+
+import { loader as paymentLoader } from "./pages/Payment";
+
+import { action as paymentInfoAction } from "./pages/PaymentInfo";
 
 
 function App() {
@@ -160,6 +167,7 @@ function App() {
             {
               path: "payment-info",
               element: <Paymentinfo />,
+              action: paymentInfoAction,
             },
 
             { path: "delete-item/:id", action: deleteItemAction },
@@ -197,6 +205,12 @@ function App() {
             {
               path: "transaction",
               element: <Transaction />,
+              loader: transactionLoader,
+            },
+            {
+              path: "payment/:id",
+              element: <Payment />,
+              loader: paymentLoader,
             },
             {
               path: "vehicle",

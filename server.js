@@ -25,6 +25,9 @@ import collectedWasteRouter  from './routes/collectedWasteRoute.js'
 import routePathRouter from './routes/routePathRouter.js';
 import vehicleRouter from './routes/vehicleRouter.js';
 import requestRouter from './routes/requestRouter.js';
+import BankRouter from './routes/BankRouter.js';
+import paymentRouter from './routes/paymentRouter.js';
+
 
 //public
 import {dirname} from 'path';
@@ -81,6 +84,8 @@ app.use('/api/v1/waste', collectedWasteRouter);
 app.use('/api/v1/routePath', routePathRouter);
 app.use('/api/v1/vehicle', vehicleRouter);
 app.use('/api/v1/request', requestRouter);
+app.use('/api/v1/Bank', BankRouter);
+app.use('/api/v1/payments', paymentRouter);
 
 
 app.get('*', (req, res) => {
