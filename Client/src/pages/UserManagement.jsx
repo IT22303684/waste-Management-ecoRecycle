@@ -7,6 +7,7 @@ import { Form } from "react-router-dom";
 import { jsPDF } from "jspdf";
 import autoTable from "jspdf-autotable";
 import { IoSearch } from "react-icons/io5";
+import { base64url } from "../../../Utils/base64url";
 
 // Loader to fetch all users
 export const loader = async () => {
@@ -34,12 +35,36 @@ function UserManagement() {
   const generatePDF = () => {
     const doc = new jsPDF();
 
+    // Adding a frame around the PDF content
+    const pageWidth = doc.internal.pageSize.getWidth();
+    const pageHeight = doc.internal.pageSize.getHeight();
+    doc.rect(5, 5, pageWidth - 10, pageHeight - 10);
+
+    // Adding a company logo to the header
+    doc.addImage(base64url, "PNG", 10, 10, 50, 20);
+
     doc.setFontSize(18);
     doc.setTextColor(40);
-    doc.text("Eco Recycle - All Users", 14, 10);
+    doc.text("Eco Recycle Company", 70, 15);
 
     doc.setFontSize(12);
-    doc.text("All Users", 14, 16); // Title
+    doc.setTextColor(80);
+    doc.text("Eco Recycle, 123 Green Street, Recycle City, 54321", 70, 22);
+
+    doc.setFontSize(12);
+    doc.text("Generated on: " + new Date().toLocaleDateString(), 70, 29);
+
+    doc.setFontSize(12);
+    doc.setTextColor(80);
+    doc.text("Contact: info@ecorecycle.com", 14, 45);
+    doc.text("Phone: +94 772931811", 14, 50);
+    doc.text("Website: www.ecorecycle.com", 14, 55);
+
+    doc.setFontSize(16);
+    doc.setTextColor(34, 153, 84);
+    doc.text("User List", 14, 70);
+
+    const startY = 75;
 
     const tableColumn = [
       "User ID",
@@ -66,20 +91,33 @@ function UserManagement() {
     doc.autoTable({
       head: [tableColumn],
       body: tableRows,
-      startY: 30,
+      startY: startY,
       styles: {
         fillColor: [255, 255, 255],
         textColor: [0, 0, 0],
       },
       headStyles: {
-        fillColor: [22, 160, 133],
+        fillColor: [34, 153, 84],
         textColor: [255, 255, 255],
+        fontStyle: "bold",
       },
       alternateRowStyles: {
-        fillColor: [240, 240, 240],
+        fillColor: [234, 248, 239],
       },
-      margin: { top: 30 },
+      margin: { top: startY },
     });
+
+    // Footer
+    const footerY = doc.internal.pageSize.getHeight() - 30;
+    doc.setFontSize(10);
+    doc.setTextColor(80);
+    doc.text("All rights reserved © Eco Recycle Company", 14, footerY);
+    doc.text(
+      `Page ${doc.internal.getNumberOfPages()}`,
+      pageWidth - 30,
+      footerY,
+      { align: "right" }
+    );
 
     doc.save("Users.pdf"); // Save the PDF
   };
@@ -125,9 +163,12 @@ function UserManagement() {
           Generate PDF
         </button>
       </div>
-      <div className="bg-white px-4 pb-4 rounded-sm border border-gray-200 w-full pt-3">
+      <div className="bg-white px-4 pb-4 rounded-sm border border-gray-200 w-full pt-3 mb-16">
         <strong className="font-medium text-xl text-sky-600">All Users</strong>
-        <div className="overflow-y-auto mt-3" style={{ maxHeight: "600px" }}>
+        <div
+          className="overflow-y-auto mt-3"
+          style={{ maxHeight: "600px", paddingBottom: "50px" }}
+        >
           <table className="min-w-full text-gray-700">
             <thead>
               <tr>

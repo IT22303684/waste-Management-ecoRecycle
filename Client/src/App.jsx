@@ -50,6 +50,10 @@ import {
   AddDailyWaste,
   CollectedWaste,
   Payment,
+  TimeTable,
+  AddTimeTable,
+  deleteTimeTable,
+  EditTimeTable,
 } from "./pages/index";
 
 import { action as registerAction } from "./pages/Register";
@@ -105,11 +109,18 @@ import { action as AddVehicleAction } from "./pages/AddVehicle";
 import { action as editVehicleAction } from "./pages/EditVehicel";
 
 
+
 import { loader as transactionLoader } from "./pages/Transaction";
 
 import { loader as paymentLoader } from "./pages/Payment";
 
 import { action as paymentInfoAction } from "./pages/PaymentInfo";
+
+
+import { loader as TimeTableLoader } from "./pages/TimeTable";
+import { action as deleteTimeTableAction } from "./pages/DeleteTimeTable";
+import { loader as EditTimeTableLoader } from "./pages/EditTimeTable";
+import { action as EditTimeTableAction } from "./pages/EditTimeTable";
 
 
 function App() {
@@ -175,7 +186,8 @@ function App() {
         },
         {
           path: "AdminDashboard",
-          element: <AdminDashbordLayout />, 
+          element: <AdminDashbordLayout />,
+
           children: [
             {
               index: true,
@@ -291,6 +303,22 @@ function App() {
               path: "add-user",
               element: <Adduser />,
               action: AdduserAction,
+            },
+            {
+              path: "time-table",
+              element: <TimeTable />,
+              loader: TimeTableLoader,
+            },
+            {
+              path: "add-time-table",
+              element: <AddTimeTable />,
+            },
+            { path: "delete-time-table/:id", action: deleteTimeTableAction },
+            {
+              path: "edit-timetable/:id",
+              element: <EditTimeTable />,
+              action: EditTimeTableAction,
+              loader: EditTimeTableLoader,
             },
           ],
         },

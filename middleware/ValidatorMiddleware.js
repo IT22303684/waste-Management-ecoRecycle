@@ -6,6 +6,7 @@ import RItem from '../models/RItemsModel.js'
 import Company from '../models/CompanyModel.js';
 import emp from '../models/Employee.js'
 import cItems from '../models/CompanyItemsModel.js'
+import TimeTable from '../models/TimeTable.js';
 
 import mongoose, { mongo } from 'mongoose';
 
@@ -40,7 +41,8 @@ export const validateRItem = withValidationError([
     body('category').isIn(Object.values(RITEM_CATEGORY)).withMessage('Item Type is invalid'),
     body('description').notEmpty().withMessage('description is required'),
     body('Location').notEmpty().withMessage('Location is required'),
-    body('phoneNo').isMobilePhone("si-LK").withMessage('phone number is invalid'),
+    body('phoneNo').isMobilePhone('si-LK').withMessage('Phone number is invalid'),
+
    
 ]);
 
@@ -191,6 +193,7 @@ export const validateUpdateEmployee = withValidationError([
 ]);
 
 
+
 //----------------------- validate route --------------------------------
 export const validateRoute = withValidationError([
     body('ArriveTime').notEmpty().withMessage('Arrive time is required'),
@@ -199,8 +202,6 @@ export const validateRoute = withValidationError([
     body('Vehicle').notEmpty().withMessage('vehicle is required'), 
 ]);
 
-
-//-----------------------------------------------------------------------------
 
 export const validateCompanyItem= withValidationError([
 
@@ -227,6 +228,25 @@ export const validateCompanyItemParam = withValidationError([
 )
     
 ]);
+
+
+export const validateTimeTable = [
+    body('EmployeeName').notEmpty().withMessage('Employee Name is required'),
+    body('Date').notEmpty().withMessage('Date is required').isDate().withMessage('Invalid date format'),
+    body('Task').notEmpty().withMessage('Task is required'),
+];
+
+export const validateTimeTableIdParam = [
+    param('id').custom(async (value) => {
+        const isValid = mongoose.Types.ObjectId.isValid(value);
+
+        if (!isValid) throw new BadRequestError('Invalid MongoDB id');
+
+        const timeTable = await TimeTable.findById(value);
+
+        if (!timeTable) throw new NotFoundError(`TimeTable with id ${value} not found`);
+    }),
+];
 
 
 

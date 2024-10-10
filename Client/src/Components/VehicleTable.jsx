@@ -1,14 +1,15 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { IoBuild, IoTrashSharp, IoPrint } from 'react-icons/io5';
-import { Link } from 'react-router-dom';
-import customFetch from '../utils/customFetch';
-import { toast } from 'react-toastify';
-import jsPDF from 'jspdf';
-import 'jspdf-autotable';
+import React, { useState, useEffect, useRef } from "react";
+import { IoBuild, IoTrashSharp, IoPrint } from "react-icons/io5";
+import { Link } from "react-router-dom";
+import customFetch from "../utils/customFetch";
+import { toast } from "react-toastify";
+import jsPDF from "jspdf";
+import "jspdf-autotable";
+import { base64url } from "../../../Utils/base64url";
 
 export default function VehicleTable() {
   const [vehicles, setVehicles] = useState([]);
-  const [searchTerm, setSearchTerm] = useState(''); // State for search input
+  const [searchTerm, setSearchTerm] = useState(""); // State for search input
   const [showConfirm, setShowConfirm] = useState({ visible: false, id: null });
   const tableRef = useRef(); // Reference for the table
 
@@ -18,7 +19,10 @@ export default function VehicleTable() {
       const { data } = await customFetch.get("/vehicle/retrivevehicles");
       setVehicles(data);
     } catch (error) {
-      console.error('Error fetching data:', error.response ? error.response.data : error.message);
+      console.error(
+        "Error fetching data:",
+        error.response ? error.response.data : error.message
+      );
       toast.error("Failed to fetch vehicles");
     }
   };
@@ -59,12 +63,44 @@ export default function VehicleTable() {
   const generatePDF = () => {
     const doc = new jsPDF();
 
-    doc.setFontSize(18);
-    doc.text("Vehicle List", 14, 10);
-    doc.setFontSize(12);
-    doc.text("Generated on: " + new Date().toLocaleDateString(), 14, 20);
+    // Adding a frame around the PDF content
+    const pageWidth = doc.internal.pageSize.getWidth();
+    const pageHeight = doc.internal.pageSize.getHeight();
+    doc.rect(5, 5, pageWidth - 10, pageHeight - 10);
 
-    const tableColumn = ["Vehicle Number", "Vehicle Name", "Chassi Number", "Vehicle Category", "Register Date"];
+    // Adding a company logo to the header
+    doc.addImage(base64url, "PNG", 10, 10, 50, 20);
+
+    doc.setFontSize(18);
+    doc.setTextColor(40);
+    doc.text("Eco Recycle Company", 70, 15);
+
+    doc.setFontSize(12);
+    doc.setTextColor(80);
+    doc.text("Eco Recycle, 123 Green Street, Recycle City, 54321", 70, 22);
+
+    doc.setFontSize(12);
+    doc.text("Generated on: " + new Date().toLocaleDateString(), 70, 29);
+
+    doc.setFontSize(12);
+    doc.setTextColor(80);
+    doc.text("Contact: info@ecorecycle.com", 14, 45);
+    doc.text("Phone: +94 772931811", 14, 50);
+    doc.text("Website: www.ecorecycle.com", 14, 55);
+
+    doc.setFontSize(16);
+    doc.setTextColor(34, 153, 84);
+    doc.text("Vehicle List", 14, 70);
+
+    const startY = 75;
+
+    const tableColumn = [
+      "Vehicle Number",
+      "Vehicle Name",
+      "Chassi Number",
+      "Vehicle Category",
+      "Register Date",
+    ];
     const tableRows = filteredVehicles.map((vehicle) => [
       vehicle.VehicleNumber,
       vehicle.VehicleName,
@@ -76,19 +112,30 @@ export default function VehicleTable() {
     doc.autoTable({
       head: [tableColumn],
       body: tableRows,
-      startY: 30,
-      styles: { fillColor: [255, 255, 255] },
-      headStyles: { fillColor: [22, 160, 133], textColor: [255, 255, 255] },
-      alternateRowStyles: { fillColor: [240, 240, 240] },
-      margin: { top: 30 },
+      startY: startY,
+      styles: {
+        fillColor: [255, 255, 255],
+        textColor: [0, 0, 0],
+      },
+      headStyles: {
+        fillColor: [34, 153, 84],
+        textColor: [255, 255, 255],
+        fontStyle: "bold",
+      },
+      alternateRowStyles: {
+        fillColor: [234, 248, 239],
+      },
+      margin: { top: startY },
     });
 
     doc.save("vehicle_list.pdf");
   };
 
   return (
-    <div className='bg-white px-4 pb-4 rounded-sm border border-gray-200 w-full pt-3'>
-      <strong className='font-medium text-xl text-orange-600'>All Vehicles</strong>
+    <div className="bg-white px-4 pb-4 rounded-sm border border-gray-200 w-full pt-3">
+      <strong className="font-medium text-xl text-orange-600">
+        All Vehicles
+      </strong>
 
       {/* Search Input */}
       <div className="mt-4 mb-4">
@@ -113,7 +160,7 @@ export default function VehicleTable() {
       </div>
 
       {/* Vehicle Table */}
-      <table ref={tableRef} className='w-full text-gray-700'>
+      <table ref={tableRef} className="w-full text-gray-700">
         <thead>
           <tr>
             <th>Vehicle Number</th>
@@ -127,7 +174,9 @@ export default function VehicleTable() {
         <tbody>
           {filteredVehicles.length === 0 ? (
             <tr>
-              <td colSpan="6" className="text-center py-4">No vehicles found</td>
+              <td colSpan="6" className="text-center py-4">
+                No vehicles found
+              </td>
             </tr>
           ) : (
             filteredVehicles.map((vehicle) => (
@@ -138,14 +187,14 @@ export default function VehicleTable() {
                 <td>{vehicle.VehicleCategory}</td>
                 <td>{vehicle.AddDate}</td>
                 <td>
-                  <div className='flex gap-1'>
+                  <div className="flex gap-1">
                     <Link to={`../EditVehicle/${vehicle._id}`}>
-                      <button className='bg-orange-500 text-white px-4 py-2 hover:bg-orange-600 rounded shadow-md'>
+                      <button className="bg-orange-500 text-white px-4 py-2 hover:bg-orange-600 rounded shadow-md">
                         <IoBuild />
                       </button>
                     </Link>
                     <button
-                      className='bg-red text-white px-4 py-2 hover:bg-red-600 rounded shadow-md'
+                      className="bg-red text-white px-4 py-2 hover:bg-red-600 rounded shadow-md"
                       onClick={() => openConfirmModal(vehicle._id)}
                     >
                       <IoTrashSharp />
@@ -162,7 +211,9 @@ export default function VehicleTable() {
       {showConfirm.visible && (
         <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50">
           <div className="bg-white p-6 rounded shadow-lg">
-            <p className="mb-4 text-gray-700">Are you sure you want to delete this vehicle?</p>
+            <p className="mb-4 text-gray-700">
+              Are you sure you want to delete this vehicle?
+            </p>
             <div className="flex justify-between">
               <button
                 onClick={() => handleDelete(showConfirm.id)}
