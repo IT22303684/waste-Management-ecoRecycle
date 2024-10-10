@@ -54,6 +54,8 @@ export {default as UserManagement} from './UserManagement'
 export {default as DeleteUser} from './DeleteUser'
 export {default as Adduser} from './Adduser'
 
+export {default as Payment} from './Payment'
+
 
 
 

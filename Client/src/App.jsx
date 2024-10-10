@@ -49,6 +49,7 @@ import {
   Adduser,
   AddDailyWaste,
   CollectedWaste,
+  Payment,
   TimeTable,
   AddTimeTable,
   deleteTimeTable,
@@ -107,10 +108,20 @@ import { loader as editVehicleLoader } from "./pages/EditVehicel";
 import { action as AddVehicleAction } from "./pages/AddVehicle";
 import { action as editVehicleAction } from "./pages/EditVehicel";
 
+
+
+import { loader as transactionLoader } from "./pages/Transaction";
+
+import { loader as paymentLoader } from "./pages/Payment";
+
+import { action as paymentInfoAction } from "./pages/PaymentInfo";
+
+
 import { loader as TimeTableLoader } from "./pages/TimeTable";
 import { action as deleteTimeTableAction } from "./pages/DeleteTimeTable";
 import { loader as EditTimeTableLoader } from "./pages/EditTimeTable";
 import { action as EditTimeTableAction } from "./pages/EditTimeTable";
+
 
 function App() {
   const router = createBrowserRouter([
@@ -167,6 +178,7 @@ function App() {
             {
               path: "payment-info",
               element: <Paymentinfo />,
+              action: paymentInfoAction,
             },
 
             { path: "delete-item/:id", action: deleteItemAction },
@@ -205,6 +217,12 @@ function App() {
             {
               path: "transaction",
               element: <Transaction />,
+              loader: transactionLoader,
+            },
+            {
+              path: "payment/:id",
+              element: <Payment />,
+              loader: paymentLoader,
             },
             {
               path: "vehicle",
