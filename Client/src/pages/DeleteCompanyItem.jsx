@@ -6,7 +6,7 @@ import { confirmModel } from "../Components";
 
 export const action = async ({ params }) => {
   const confirmDelete = window.confirm(
-    "Are you sure you want to delete this employee?"
+    "Are you sure you want to delete this Item?"
   );
 
   if (!confirmDelete) {

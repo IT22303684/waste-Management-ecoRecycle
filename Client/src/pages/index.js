@@ -17,6 +17,7 @@ export { default as Paymentinfo} from './PaymentInfo'
 
 
 
+
 export {default as AdminDashbordLayout } from './AdminDashbordLayout'
 export {default as AdminDashbord } from './Dashbord'
 export {default as Request } from './Request'
@@ -24,6 +25,7 @@ export {default as Staf } from './Staf'
 export {default as Company } from './Company'
 export {default as Item } from './Item'
 export {default as Transaction } from './Transaction'
+
 
 export {default as Vehicle } from './Vehicle'
 export {default as AddVehicle} from './AddVehicle'
@@ -34,6 +36,7 @@ export {default as EditVehicle} from './EditVehicel'
 export {default as Route } from './Route'
 export {default as AddRoute } from './AddRoute'
 export {default as EditRoute } from './EditRoute'
+
 
 
 
@@ -59,6 +62,7 @@ export {default as Payment} from './Payment'
 
 
 
+
 export {default as DriverDashboardlayout} from './DriverDashboardLayout'
 export {default as DriverDashboard} from './DriverDashboard'
 export {default as DriverProfile} from './DriverProfile'
@@ -69,3 +73,7 @@ export {default as CollectedWaste} from './CollectedWaste'
 
 
 
+export {default as TimeTable} from './TimeTable'
+export {default as AddTimeTable} from './AddTimeTable'
+export {default as deleteTimeTable} from './DeleteTimeTable'
+export {default as EditTimeTable} from './EditTimeTable'

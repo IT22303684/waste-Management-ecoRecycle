@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { useLoaderData } from "react-router-dom";
 import { Form, Link } from "react-router-dom";
-import { IoBuild, IoTrashSharp, IoSearch } from "react-icons/io5";
+import { IoBuild, IoTrashSharp, IoSearch, IoTimeSharp } from "react-icons/io5";
 import customFetch from "../utils/customFetch";
 import { toast } from "react-toastify";
 import { IoPersonAddSharp } from "react-icons/io5";
 import jsPDF from "jspdf";
 import html2canvas from "html2canvas";
 import "jspdf-autotable";
+import { base64url } from "../../../Utils/base64url";
 
 export const loader = async () => {
   try {
@@ -39,12 +40,36 @@ export default function Staf() {
   const generatePDF = () => {
     const doc = new jsPDF();
 
+    // Adding a frame around the PDF content
+    const pageWidth = doc.internal.pageSize.getWidth();
+    const pageHeight = doc.internal.pageSize.getHeight();
+    doc.rect(5, 5, pageWidth - 10, pageHeight - 10);
+
+    // Adding a company logo to the header
+    doc.addImage(base64url, "PNG", 10, 10, 50, 20);
+
     doc.setFontSize(18);
     doc.setTextColor(40);
-    doc.text("Eco Recycle - Employee List", 14, 10);
+    doc.text("Eco Recycle Company", 70, 15);
 
     doc.setFontSize(12);
-    doc.text("Generated on: " + new Date().toLocaleDateString(), 14, 20);
+    doc.setTextColor(80);
+    doc.text("Eco Recycle, 123 Green Street, Recycle City, 54321", 70, 22);
+
+    doc.setFontSize(12);
+    doc.text("Generated on: " + new Date().toLocaleDateString(), 70, 29);
+
+    doc.setFontSize(12);
+    doc.setTextColor(80);
+    doc.text("Contact: info@ecorecycle.com", 14, 45);
+    doc.text("Phone: +94 772931811", 14, 50);
+    doc.text("Website: www.ecorecycle.com", 14, 55);
+
+    doc.setFontSize(16);
+    doc.setTextColor(34, 153, 84);
+    doc.text("Employee List", 14, 70);
+
+    const startY = 75;
 
     const tableColumn = [
       "Employee ID",
@@ -55,7 +80,6 @@ export default function Staf() {
       "Type",
     ];
 
-    // Define table rows by mapping the employees' data
     const tableRows = employees.map((employee) => [
       employee.EmployeeId,
       employee.Name,
@@ -68,22 +92,34 @@ export default function Staf() {
     doc.autoTable({
       head: [tableColumn],
       body: tableRows,
-      startY: 30,
+      startY: startY,
       styles: {
         fillColor: [255, 255, 255],
         textColor: [0, 0, 0],
       },
       headStyles: {
-        fillColor: [22, 160, 133],
+        fillColor: [34, 153, 84],
         textColor: [255, 255, 255],
+        fontStyle: "bold",
       },
       alternateRowStyles: {
-        fillColor: [240, 240, 240],
+        fillColor: [234, 248, 239],
       },
-      margin: { top: 30 },
+      margin: { top: startY },
     });
 
-    // Save the PDF
+    // Footer
+    const footerY = doc.internal.pageSize.getHeight() - 30;
+    doc.setFontSize(10);
+    doc.setTextColor(80);
+    doc.text("All rights reserved © Eco Recycle Company", 14, footerY);
+    doc.text(
+      `Page ${doc.internal.getNumberOfPages()}`,
+      pageWidth - 30,
+      footerY,
+      { align: "right" }
+    );
+
     doc.save("employees.pdf");
   };
 
@@ -96,6 +132,7 @@ export default function Staf() {
             Add Employee
           </button>
         </Link>
+
         <button
           onClick={generatePDF}
           className="bg-blue-500 text-white px-4 py-2 hover:bg-blue-600 rounded shadow-md outline-none border-none select-none flex items-center"
@@ -103,6 +140,12 @@ export default function Staf() {
           Generate PDF
         </button>
       </div>
+      <Link to={"../time-table"}>
+        <button className="bg-purple-400 text-white px-4 mb-4 py-2 hover:bg-purple-800 rounded shadow-md outline-none border-none select-none flex items-center">
+          <IoTimeSharp className="mr-2" />
+          View TimeTable
+        </button>
+      </Link>
 
       {/* Search Input */}
       <div className="relative mb-4">

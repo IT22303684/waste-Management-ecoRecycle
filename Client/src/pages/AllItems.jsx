@@ -22,7 +22,6 @@ const AllItems = () => {
   console.log(data);
   return (
     <allRecycleItemsContext.Provider value={{ data }}>
-      <SearchContainer />
       <RecycleItemContainer />
     </allRecycleItemsContext.Provider>
   );

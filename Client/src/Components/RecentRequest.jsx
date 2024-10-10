@@ -1,12 +1,16 @@
-import React, { useState } from 'react';
-import RequestStatus from '../utils/RequestStatus';
-import { useAllRecentRequest } from '../pages/Dashbord';
-import { toast } from 'react-toastify';
-import customFetch from '../utils/customFetch';
+import React, { useState } from "react";
+import RequestStatus from "../utils/RequestStatus";
+import { useAllRecentRequest } from "../pages/Dashbord";
+import { toast } from "react-toastify";
+import customFetch from "../utils/customFetch";
 
 export default function RecentRequest() {
   const { data, refetch, isLoading, isError } = useAllRecentRequest();
-  const [showConfirm, setShowConfirm] = useState({ visible: false, type: '', id: null });
+  const [showConfirm, setShowConfirm] = useState({
+    visible: false,
+    type: "",
+    id: null,
+  });
   const [refresh, setRefresh] = useState(false); // Add refresh state to trigger updates
 
   // Function to trigger a refresh of data after update
@@ -18,36 +22,48 @@ export default function RecentRequest() {
   // Function to handle approval
   const handleApprove = async (id) => {
     try {
-      const response = await customFetch.put(`/request/updateRequestStatus/${id}`, { status: 'approved' });
+      const response = await customFetch.put(
+        `/request/updateRequestStatus/${id}`,
+        { status: "approved" }
+      );
       if (response.status === 200) {
-        toast.success('Request approved successfully');
-        setShowConfirm({ visible: false, type: '', id: null });
+        toast.success("Request approved successfully");
+        setShowConfirm({ visible: false, type: "", id: null });
         handleRefresh(); // Trigger data refresh
       } else {
-        throw new Error('Update failed');
+        throw new Error("Update failed");
       }
     } catch (error) {
-      toast.error(error?.response?.data?.msg || 'An error occurred during approval.');
+      toast.error(
+        error?.response?.data?.msg || "An error occurred during approval."
+      );
     }
   };
 
   // Function to handle rejection
   const handleReject = async (id) => {
     try {
-      const response = await customFetch.put(`/request/updateRequestStatus/${id}`, { status: 'reject' });
+      const response = await customFetch.put(
+        `/request/updateRequestStatus/${id}`,
+        { status: "reject" }
+      );
       if (response.status === 200) {
-        toast.success('Request rejected successfully');
-        setShowConfirm({ visible: false, type: '', id: null });
+        toast.success("Request rejected successfully");
+        setShowConfirm({ visible: false, type: "", id: null });
         handleRefresh(); // Trigger data refresh
       } else {
-        throw new Error('Update failed');
+        throw new Error("Update failed");
       }
     } catch (error) {
-      toast.error(error?.response?.data?.msg || 'An error occurred during rejection.');
+      toast.error(
+        error?.response?.data?.msg || "An error occurred during rejection."
+      );
     }
   };
 
-  const pendingRequests = Array.isArray(data) ? data.filter((request) => request.status === 'available') : [];
+  const pendingRequests = Array.isArray(data)
+    ? data.filter((request) => request.status === "available")
+    : [];
 
   // Loading, Error, No Data handling
   if (isLoading) {
@@ -68,11 +84,13 @@ export default function RecentRequest() {
     );
   }
   return (
-    <div className='bg-white px-4 pb-4 rounded-sm border border-gray-200 w-full pt-3'>
-      <strong className='font-medium text-xl text-sky-600'>Pending Requests</strong>
+    <div className="bg-white px-4 pb-4 rounded-sm border border-gray-200 w-full pt-3">
+      <strong className="font-medium text-xl text-sky-600">
+        Pending Requests
+      </strong>
 
-      <div className='mt-3'>
-        <table className='w-full text-gray-700'>
+      <div className="mt-3">
+        <table className="w-full text-gray-700">
           <thead>
             <tr>
               <th>Request Id</th>
@@ -88,31 +106,45 @@ export default function RecentRequest() {
           </thead>
           <tbody>
             {pendingRequests.map((request) => (
-              <tr className='hover:bg-gray-50' key={request._id}>
+              <tr className="hover:bg-gray-50" key={request._id}>
                 <td>{request._id}</td>
                 <td>
                   <img
-                    src={request.itemPhoto || 'default-placeholder.jpg'}
+                    src={request.itemPhoto || "default-placeholder.jpg"}
                     alt="Request"
                     className="object-fill rounded h-12 w-12 transform hover:scale-105 hover:h-28 hover:w-28 duration-200"
                   />
                 </td>
                 <td>{request.name}</td>
-                <td>{new Date(request.requestDate).toLocaleDateString() || 'N/A'}</td>
+                <td>
+                  {new Date(request.requestDate).toLocaleDateString() || "N/A"}
+                </td>
                 <td>{request.category}</td>
                 <td>{request.weight}</td>
                 <td>{request.Location}</td>
                 <td>{RequestStatus(request.status)}</td>
-                <td className='flex flex-col gap-2'>
+                <td className="flex flex-col gap-2">
                   <button
-                    className='bg-green-500 text-white px-4 py-2 hover:bg-green-700 rounded shadow-md'
-                    onClick={() => setShowConfirm({ visible: true, type: 'approve', id: request._id })}
+                    className="bg-green-500 text-white px-4 py-2 hover:bg-green-700 rounded shadow-md"
+                    onClick={() =>
+                      setShowConfirm({
+                        visible: true,
+                        type: "approve",
+                        id: request._id,
+                      })
+                    }
                   >
                     Approve
                   </button>
                   <button
-                    className='bg-red text-white px-4 py-2 hover:bg-red-700 rounded shadow-md'
-                    onClick={() => setShowConfirm({ visible: true, type: 'reject', id: request._id })}
+                    className="bg-red text-white px-4 py-2 hover:bg-red-700 rounded shadow-md"
+                    onClick={() =>
+                      setShowConfirm({
+                        visible: true,
+                        type: "reject",
+                        id: request._id,
+                      })
+                    }
                   >
                     Reject
                   </button>
@@ -132,13 +164,19 @@ export default function RecentRequest() {
             </p>
             <div className="flex justify-between">
               <button
-                onClick={() => (showConfirm.type === 'approve' ? handleApprove(showConfirm.id) : handleReject(showConfirm.id))}
+                onClick={() =>
+                  showConfirm.type === "approve"
+                    ? handleApprove(showConfirm.id)
+                    : handleReject(showConfirm.id)
+                }
                 className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600 transition-colors duration-200"
               >
                 Yes
               </button>
               <button
-                onClick={() => setShowConfirm({ visible: false, type: '', id: null })}
+                onClick={() =>
+                  setShowConfirm({ visible: false, type: "", id: null })
+                }
                 className="px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600 transition-colors duration-200"
               >
                 No
