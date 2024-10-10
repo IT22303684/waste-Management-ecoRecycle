@@ -108,12 +108,17 @@ export default function Staf() {
       margin: { top: startY },
     });
 
-    // Add the total employee count below the table
-    const totalUsers = userList.length; // Ensure correct userList reference
-    const finalY = doc.autoTable.previous.finalY; // Get the last Y position after table
-    doc.setFontSize(14);
-    doc.setTextColor(40);
-    doc.text(`Total Employees: ${totalUsers}`, 14, finalY + 10);
+    // Footer
+    const footerY = doc.internal.pageSize.getHeight() - 30;
+    doc.setFontSize(10);
+    doc.setTextColor(80);
+    doc.text("All rights reserved © Eco Recycle Company", 14, footerY);
+    doc.text(
+      `Page ${doc.internal.getNumberOfPages()}`,
+      pageWidth - 30,
+      footerY,
+      { align: "right" }
+    );
 
     doc.save("employees.pdf");
   };

@@ -8,6 +8,8 @@ const FormRow = ({
   className,
   labelClass,
   readOnly,
+  onBlur,
+  onChange,
 }) => {
   return (
     <div>
@@ -19,9 +21,10 @@ const FormRow = ({
         id={name}
         name={name}
         defaultValue={defaulyValue || ""}
-        
         className={className}
         readOnly={readOnly}
+        onBlur={onBlur}
+        onChange={onChange}
       />
       <br /> <br />
     </div>

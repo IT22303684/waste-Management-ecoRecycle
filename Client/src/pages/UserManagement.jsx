@@ -107,6 +107,18 @@ function UserManagement() {
       margin: { top: startY },
     });
 
+    // Footer
+    const footerY = doc.internal.pageSize.getHeight() - 30;
+    doc.setFontSize(10);
+    doc.setTextColor(80);
+    doc.text("All rights reserved © Eco Recycle Company", 14, footerY);
+    doc.text(
+      `Page ${doc.internal.getNumberOfPages()}`,
+      pageWidth - 30,
+      footerY,
+      { align: "right" }
+    );
+
     doc.save("Users.pdf"); // Save the PDF
   };
 
@@ -151,9 +163,12 @@ function UserManagement() {
           Generate PDF
         </button>
       </div>
-      <div className="bg-white px-4 pb-4 rounded-sm border border-gray-200 w-full pt-3">
+      <div className="bg-white px-4 pb-4 rounded-sm border border-gray-200 w-full pt-3 mb-16">
         <strong className="font-medium text-xl text-sky-600">All Users</strong>
-        <div className="overflow-y-auto mt-3" style={{ maxHeight: "600px" }}>
+        <div
+          className="overflow-y-auto mt-3"
+          style={{ maxHeight: "600px", paddingBottom: "50px" }}
+        >
           <table className="min-w-full text-gray-700">
             <thead>
               <tr>
