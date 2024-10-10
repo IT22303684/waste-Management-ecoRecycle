@@ -43,8 +43,8 @@ export default function DriverProfile() {
     <div>
       <div className="flex items-center justify-center">
         {/* Card Container */}
-        <div className="relative m-6 space-y-10 bg-white shadow-2xl rounded-2xl border border-black">
-          <h2 className="font-mono mb-5 text-4xl font-bold text-center mt-4">
+        <div className="relative m-6 space-y-10 bg-white border border-black shadow-2xl rounded-2xl">
+          <h2 className="mt-4 mb-5 font-mono text-4xl font-bold text-center">
             My Profile
           </h2>
           <div className="flex">
@@ -55,10 +55,10 @@ export default function DriverProfile() {
                   <img
                     src={user.avatar}
                     alt="profile"
-                    className="w-48 h-48 rounded-full object-cover"
+                    className="object-cover w-48 h-48 rounded-full"
                   />
                 ) : (
-                  <FaUserCircle className="w-48 h-48 rounded-full object-cover" />
+                  <FaUserCircle className="object-cover w-48 h-48 rounded-full" />
                 )}
               </div>
               <h3 className="text-2xl font-semibold">
@@ -69,7 +69,7 @@ export default function DriverProfile() {
             </div>
 
             {/* Right Side (Form) */}
-            <div className="flex justify-center items-center border flex-1">
+            <div className="flex items-center justify-center flex-1 border">
               <Form
                 method="post"
                 className="grid grid-cols-2 gap-4 p-6"
@@ -81,6 +81,8 @@ export default function DriverProfile() {
                   defaulyValue={user?.name}
                   className="w-full p-2 border border-gray-300 rounded-md placeholder:font-sans placeholder:font-light"
                   labelClass="text-xl text-gray-700 font-bold capitalize"
+                  readOnly={true}
+                  
                 />
                 <FormRow
                   type="text"
@@ -88,6 +90,7 @@ export default function DriverProfile() {
                   defaulyValue={user?.lastName}
                   className="w-full p-2 border border-gray-300 rounded-md placeholder:font-sans placeholder:font-light"
                   labelClass="text-xl text-gray-700 font-bold capitalize"
+                  readOnly={true}
                 />
                 <FormRow
                   type="text"
@@ -102,6 +105,7 @@ export default function DriverProfile() {
                   defaulyValue={user?.email}
                   className="w-full p-2 border border-gray-300 rounded-md placeholder:font-sans placeholder:font-light"
                   labelClass="text-xl text-gray-700 font-bold capitalize"
+                  readOnly={true}
                 />
 
                 <div className="col-span-2">
@@ -116,10 +120,10 @@ export default function DriverProfile() {
                   />
                 </div>
 
-                <div className="col-span-2 flex justify-end">
+                <div className="flex justify-end col-span-2">
                   <button
                     type="submit"
-                    className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition-colors duration-200"
+                    className="px-4 py-2 text-white transition-colors duration-200 bg-blue-500 rounded-md hover:bg-blue-600"
                     disabled={isSubmitting}
                   >
                     {isSubmitting ? "Submitting..." : "Submit"}

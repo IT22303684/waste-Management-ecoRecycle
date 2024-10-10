@@ -1,27 +1,53 @@
-import { Form, redirect,  useSearchParams } from "react-router-dom";
+import { Form, redirect, useSearchParams } from "react-router-dom";
 import customFetch from "../utils/customFetch";
 import { toast } from "react-toastify";
-import React from 'react';
+import React from "react";
 
 export const action = async ({ request }) => {
   const formData = await request.formData();
+  const today = new Date().toISOString().split("T")[0];
+  const selectedDate = formData.get("CollectedDate");
+  const price = formData.get("Price");
+  const weight = formData.get("Weight");
 
-  try{
-    await customFetch.post('waste/addCollectedWaste', Object.fromEntries(formData));
-    toast.success('Waste Added Successfully');
+  const weightPattern = /^\d+(\.\d+)?(g|kg)$/;
+
+  // Check if the selected date is in the past or future
+  if (selectedDate < today) {
+    toast.warning("The selected date is in the past. Make sure this is correct.");
+    return null;
+  } else if (selectedDate > today) {
+    toast.warning("The selected date is in the future. Make sure this is correct.");
+    return null;
+  }
+
+  if (!price || isNaN(price) || price <= 0){
+    toast.error("Please enter a valid price greater than 0.");
+    return null;
+  }
+
+  if(!weight || !weightPattern.test(weight)){
+    toast.error("Please enter a valid weight (e.g. , 250g or 2kg.)");
+    return null;
+  }
+
+  // Proceed with form submission regardless of the selected date
+  try {
+    await customFetch.post("waste/addCollectedWaste", Object.fromEntries(formData));
+    toast.success("Waste Added Successfully");
     return redirect("../add-daily-waste");
-  } catch (error){
-    console.error(error); 
-    toast.error(error?.response?.data?.msg || 'An error occurred');
+  } catch (error) {
+    console.error(error);
+    toast.error(error?.response?.data?.msg || "An error occurred");
     return redirect("../add-daily-waste");
   }
-}
+};
 
 export default function AddDailyWaste() {
-  const today = new Date().toISOString().split("T")[0];  
+  const today = new Date().toISOString().split("T")[0];
   const [searchParams] = useSearchParams();
-  const customerId = searchParams.get("customerId");  
-  const customerName = searchParams.get("customerName");  
+  const customerId = searchParams.get("customerId");
+  const customerName = searchParams.get("customerName");
 
   return (
     <div className="flex flex-col items-center justify-center w-full min-h-screen mb-10 bg-white">
@@ -33,12 +59,20 @@ export default function AddDailyWaste() {
             <label className="text-lg font-medium" htmlFor="customerId">Customer ID</label>
             <input
               type="text"
+              className="w-full p-3 mt-1 border-2 border-gray-100 rounded-xl"
+              value={`CUS${customerId?.slice(0, 6) || ""}`}
+              readOnly
+            />
+          </div>
+          <div className="mt-8">
+            <input
+              type="text"
               id="customerId"
               name="CustomerId"
               className="w-full p-3 mt-1 border-2 border-gray-100 rounded-xl"
               value={customerId || ""}
               placeholder="Customer ID"
-              readOnly
+              hidden
             />
           </div>
 
@@ -46,7 +80,7 @@ export default function AddDailyWaste() {
             <label className="text-lg font-medium" htmlFor="customerName">Customer Name</label>
             <input
               type="text"
-              id="customerName" 
+              id="customerName"
               name="CustomerName"
               className="w-full p-3 mt-1 border-2 border-gray-100 rounded-xl"
               value={customerName || ""}
@@ -63,26 +97,28 @@ export default function AddDailyWaste() {
               name="Price"
               className="w-full p-3 mt-1 border-2 border-gray-100 rounded-xl"
               placeholder="Price"
-              required
+              step="0.01" 
+             
             />
           </div>
 
           <div className="mt-8">
             <label className="text-lg font-medium" htmlFor="weight">Weight</label>
             <input
-              type="number"
-              id="weight"  
+              type="text"
+              id="weight"
               name="Weight"
               className="w-full p-3 mt-1 border-2 border-gray-100 rounded-xl"
               placeholder="Weight"
-              required
+              pattern="^\d+(\.\d+)?(g|kg)$" 
+              
             />
           </div>
 
           <div className="mt-8">
             <label className="text-lg font-medium" htmlFor="wasteCategory">Waste Category</label>
             <select
-              id="wasteCategory" 
+              id="wasteCategory"
               name="WasteCategory"
               className="w-full p-3 mt-1 border-2 border-gray-100 rounded-xl"
               required
@@ -99,11 +135,11 @@ export default function AddDailyWaste() {
             <label className="text-lg font-medium" htmlFor="collectedDate">Collected Date</label>
             <input
               type="date"
-              id="collectedDate"  
+              id="collectedDate"
               name="CollectedDate"
               className="w-full p-3 mt-1 border-2 border-gray-100 rounded-xl"
-              value={today}
               required
+              defaultValue={today}
             />
           </div>
 

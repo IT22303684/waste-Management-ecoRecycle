@@ -14,7 +14,7 @@ const CollectedWasteSchema = new mongoose.Schema({
         required: true,
     },
     Weight:{
-        type: Number,
+        type: String,
         required: true,
     },
     WasteCategory: {

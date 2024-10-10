@@ -4,6 +4,10 @@ import AdminStatusGrid from '../Components/AdminStatusGrid';
 import RecentRequest from '../Components/RecentRequest';
 import { toast } from "react-toastify";
 import customFetch from "../utils/customFetch";
+import RequestBarChart from "../Components/RequestBarChart"
+import CollectedWasteBarchart from "../Components/CollectedWasteBarchart"
+import VehicleBarchart from "../Components/VehicleBarchart"
+import EmployeeBarchart from "../Components/EmployeeBarchart"
 
 export const loader = async ({ request }) => {
   try {
@@ -33,17 +37,24 @@ const AllRecentRequest = () => {
 
   return (
     <allRequestDetailsContext.Provider value={{ data, refetch }}>
-      <div className='flex flex-col gap-4'>
+      <div className='flex flex-col gap-4 mb-4'>
         <AdminStatusGrid />
-
-        <div className='flex flex-col gap-4 w-full h-screen  overflow-y-auto'>
-          <div className='flex flex-row gap-4 w-full'>
-            {/* <RecentRequest /> */}
+      </div>
+      <div className='flex flex-row gap-4 w-full h-auto  overflow-y-auto'>
+          <div className='flex flex-row gap-4 w-full bg-white pb-2 mb-4'>
+            <RequestBarChart />
           </div>
-        </div>
-
-       
-        
+          <div className='flex flex-row gap-4 w-full bg-white pb-2 mb-4'>
+            <CollectedWasteBarchart/>
+          </div>
+      </div>
+      <div className='flex flex-row gap-4 w-full h-auto  overflow-y-auto'>
+          <div className='flex flex-row gap-4 w-full bg-white pb-2 mb-4'>
+            <VehicleBarchart />
+          </div>
+          <div className='flex flex-row gap-4 w-full bg-white pb-2 mb-4'>
+            {/*<EmployeeBarchart/>*/}
+          </div>
       </div>
     </allRequestDetailsContext.Provider>
   );
