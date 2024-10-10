@@ -111,6 +111,8 @@ import { loader as paymentLoader } from "./pages/Payment";
 
 import { action as paymentInfoAction } from "./pages/PaymentInfo";
 
+import { loader as dashbordLoaderForAdmin } from "./pages/Dashbord";
+
 
 function App() {
   const router = createBrowserRouter([
@@ -180,7 +182,7 @@ function App() {
             {
               index: true,
               element: <AdminDashbord />,
-              loader: AdminDashboardLoader,
+              loader: dashbordLoaderForAdmin,
             },
             {
               path: "request",
