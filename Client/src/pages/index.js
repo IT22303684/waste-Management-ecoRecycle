@@ -17,6 +17,7 @@ export { default as Paymentinfo} from './PaymentInfo'
 
 
 
+
 export {default as AdminDashbordLayout } from './AdminDashbordLayout'
 export {default as AdminDashbord } from './Dashbord'
 export {default as Request } from './Request'
@@ -59,6 +60,7 @@ export {default as Adduser} from './Adduser'
 
 
 
+
 export {default as DriverDashboardlayout} from './DriverDashboardLayout'
 export {default as DriverDashboard} from './DriverDashboard'
 export {default as DriverProfile} from './DriverProfile'
@@ -69,3 +71,7 @@ export {default as CollectedWaste} from './CollectedWaste'
 
 
 
+export {default as TimeTable} from './TimeTable'
+export {default as AddTimeTable} from './AddTimeTable'
+export {default as deleteTimeTable} from './DeleteTimeTable'
+export {default as EditTimeTable} from './EditTimeTable'

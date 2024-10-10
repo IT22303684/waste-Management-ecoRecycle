@@ -6,6 +6,7 @@ import RItem from '../models/RItemsModel.js'
 import Company from '../models/CompanyModel.js';
 import emp from '../models/Employee.js'
 import cItems from '../models/CompanyItemsModel.js'
+import TimeTable from '../models/TimeTable.js';
 
 import mongoose, { mongo } from 'mongoose';
 
@@ -227,6 +228,25 @@ export const validateCompanyItemParam = withValidationError([
 )
     
 ]);
+
+
+export const validateTimeTable = [
+    body('EmployeeName').notEmpty().withMessage('Employee Name is required'),
+    body('Date').notEmpty().withMessage('Date is required').isDate().withMessage('Invalid date format'),
+    body('Task').notEmpty().withMessage('Task is required'),
+];
+
+export const validateTimeTableIdParam = [
+    param('id').custom(async (value) => {
+        const isValid = mongoose.Types.ObjectId.isValid(value);
+
+        if (!isValid) throw new BadRequestError('Invalid MongoDB id');
+
+        const timeTable = await TimeTable.findById(value);
+
+        if (!timeTable) throw new NotFoundError(`TimeTable with id ${value} not found`);
+    }),
+];
 
 
 

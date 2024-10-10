@@ -24,8 +24,13 @@ import CompanyItemRoute from './routes/CompanyItem.js'
 import collectedWasteRouter  from './routes/collectedWasteRoute.js'
 import routePathRouter from './routes/routePathRouter.js';
 
+
 import vehicleRouter from './routes/vehicleRouter.js';
 import requestRouter from './routes/requestRouter.js';
+
+import timeTableRouter from './routes/TimeTableRouts.js';
+
+
 
 
 //public
@@ -84,6 +89,10 @@ app.use('/api/v1/routePath', routePathRouter);
 
 app.use('/api/v1/vehicle', vehicleRouter);
 app.use('/api/v1/request', requestRouter);
+
+
+// Add the timetable routes
+app.use('/api/v1/timetable', timeTableRouter); // Assuming protected route
 
 
 

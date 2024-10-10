@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useLoaderData } from "react-router-dom";
 import { Form, Link } from "react-router-dom";
-import { IoBuild, IoTrashSharp, IoSearch } from "react-icons/io5";
+import { IoBuild, IoTrashSharp, IoSearch, IoTimeSharp } from "react-icons/io5";
 import customFetch from "../utils/customFetch";
 import { toast } from "react-toastify";
 import { IoPersonAddSharp } from "react-icons/io5";
@@ -132,6 +132,7 @@ export default function Staf() {
             Add Employee
           </button>
         </Link>
+
         <button
           onClick={generatePDF}
           className="bg-blue-500 text-white px-4 py-2 hover:bg-blue-600 rounded shadow-md outline-none border-none select-none flex items-center"
@@ -139,6 +140,12 @@ export default function Staf() {
           Generate PDF
         </button>
       </div>
+      <Link to={"../time-table"}>
+        <button className="bg-purple-400 text-white px-4 mb-4 py-2 hover:bg-purple-800 rounded shadow-md outline-none border-none select-none flex items-center">
+          <IoTimeSharp className="mr-2" />
+          View TimeTable
+        </button>
+      </Link>
 
       {/* Search Input */}
       <div className="relative mb-4">

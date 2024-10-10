@@ -29,7 +29,6 @@ import {
   Route,
   AddRoute,
   EditRoute,
-
   Test,
   Paymentinfo,
   AddEmployee,
@@ -50,6 +49,10 @@ import {
   Adduser,
   AddDailyWaste,
   CollectedWaste,
+  TimeTable,
+  AddTimeTable,
+  deleteTimeTable,
+  EditTimeTable,
 } from "./pages/index";
 
 import { action as registerAction } from "./pages/Register";
@@ -104,6 +107,10 @@ import { loader as editVehicleLoader } from "./pages/EditVehicel";
 import { action as AddVehicleAction } from "./pages/AddVehicle";
 import { action as editVehicleAction } from "./pages/EditVehicel";
 
+import { loader as TimeTableLoader } from "./pages/TimeTable";
+import { action as deleteTimeTableAction } from "./pages/DeleteTimeTable";
+import { loader as EditTimeTableLoader } from "./pages/EditTimeTable";
+import { action as EditTimeTableAction } from "./pages/EditTimeTable";
 
 function App() {
   const router = createBrowserRouter([
@@ -167,26 +174,23 @@ function App() {
         },
         {
           path: "AdminDashboard",
-          element: <AdminDashbordLayout />, 
+          element: <AdminDashbordLayout />,
 
           children: [
             {
               index: true,
               element: <AdminDashbord />,
               loader: AdminDashboardLoader,
-
             },
             {
               path: "request",
               element: <Request />,
               loader: RequestLoader,
-
             },
             {
               path: "route",
               element: <Route />,
               loader: routeLoader,
-
             },
             {
               path: "staf",
@@ -206,7 +210,6 @@ function App() {
               path: "vehicle",
               element: <Vehicle />,
               loader: vehicleLoader,
-
             },
             {
               path: "item",
@@ -237,7 +240,6 @@ function App() {
               action: editVehicleAction,
             },
             {
-
               path: "add-employee",
               element: <AddEmployee />,
               action: addEmployee,
@@ -283,6 +285,22 @@ function App() {
               path: "add-user",
               element: <Adduser />,
               action: AdduserAction,
+            },
+            {
+              path: "time-table",
+              element: <TimeTable />,
+              loader: TimeTableLoader,
+            },
+            {
+              path: "add-time-table",
+              element: <AddTimeTable />,
+            },
+            { path: "delete-time-table/:id", action: deleteTimeTableAction },
+            {
+              path: "edit-timetable/:id",
+              element: <EditTimeTable />,
+              action: EditTimeTableAction,
+              loader: EditTimeTableLoader,
             },
           ],
         },
