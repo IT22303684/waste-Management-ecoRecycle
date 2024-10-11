@@ -3,32 +3,35 @@ import { Form, useLoaderData, redirect } from "react-router-dom";
 import { toast } from "react-toastify";
 import customFetch from "../utils/customFetch";
 import { useNavigation, useSearchParams } from "react-router-dom";
+import jsPDF from "jspdf";
+import "jspdf-autotable";
+import { base64url } from "../../../Utils/base64url"; // Adjust the path as needed
 
 // Loader function to fetch waste and bank data
 export const loader = async ({ params, request }) => {
   try {
     const url = new URL(request.url);
-    const cusId = url.searchParams.get('cusId');  // Get customer ID from query params
+    const cusId = url.searchParams.get("cusId"); // Get customer ID from query params
 
     // Fetch waste and bank data in parallel
     const [wasteResponse, bankResponse] = await Promise.all([
-      customFetch(`/waste/retriveSpecificCollectedWaste/${params.id}`),  // Fetch waste details using `params.id`
-      customFetch(`/bank/${cusId}`),  // Fetch bank details based on `cusId`
+      customFetch(`/waste/retriveSpecificCollectedWaste/${params.id}`), // Fetch waste details using `params.id`
+      customFetch(`/bank/${cusId}`), // Fetch bank details based on `cusId`
     ]);
 
     // Return the fetched data
     return {
       waste: wasteResponse.data,
       bank: bankResponse.data,
-      cusId,  // Return the customer ID from query params
+      cusId, // Return the customer ID from query params
     };
   } catch (error) {
     if (error?.response?.status === 404) {
-      toast.error("User not update their bank details");
+      toast.error("User has not updated their bank details");
     } else {
       toast.error(error?.response?.data?.msg || "Failed to load data");
     }
-    return redirect("/AdminDashboard/transaction");  // Redirect in case of failure
+    return redirect("/AdminDashboard/transaction"); // Redirect in case of failure
   }
 };
 
@@ -37,26 +40,93 @@ export default function Payment() {
   const navigation = useNavigation();
   const isSubmitting = navigation.state === "submitting";
 
-  // Download PDF Handler (You can implement the actual logic here)
+  // Download PDF Handler
   const handleDownloadPDF = () => {
-    // Implement PDF download logic here
-    console.log("Download PDF for customer:", waste.CustomerName);
+    const doc = new jsPDF();
+
+    // Adding a frame around the PDF content
+    const pageWidth = doc.internal.pageSize.getWidth();
+    const pageHeight = doc.internal.pageSize.getHeight();
+    doc.rect(5, 5, pageWidth - 10, pageHeight - 10);
+
+    // Adding a company logo to the header
+    doc.addImage(base64url, "PNG", 10, 10, 50, 20);
+
+    doc.setFontSize(18);
+    doc.setTextColor(40);
+    doc.text("Eco Recycle Company", 70, 15);
+
+    doc.setFontSize(12);
+    doc.setTextColor(80);
+    doc.text("Eco Recycle, 123 Green Street, Recycle City, 54321", 70, 22);
+
+    doc.setFontSize(12);
+    doc.text("Generated on: " + new Date().toLocaleDateString(), 70, 29);
+
+    doc.setFontSize(12);
+    doc.setTextColor(80);
+    doc.text("Contact: info@ecorecycle.com", 14, 45);
+    doc.text("Phone: +94 772931811", 14, 50);
+    doc.text("Website: www.ecorecycle.com", 14, 55);
+
+    doc.setFontSize(16);
+    doc.setTextColor(34, 153, 84);
+    doc.text("Payment Receipt", 14, 70);
+
+    const startY = 75;
+
+    // Prepare data for the table
+    const tableColumn = ["Field", "Value"];
+    const tableRows = [
+      ["Customer Name", waste?.CustomerName || ""],
+      ["Customer ID", waste?.CustomerId.slice(0, 6) || ""],
+      ["Collected Date", waste?.CollectedDate || ""],
+      ["Category", waste?.WasteCategory || ""],
+      ["Weight", waste?.Weight || ""],
+      ["Full Amount", waste?.Price || ""],
+      ["Account Number", bank?.Account_Number || ""],
+      ["Account Name", bank?.Account_Name || ""],
+      ["Bank Name", bank?.Bank_Name || ""],
+      ["Branch Code", bank?.Branch_Code || ""],
+    ];
+
+    doc.autoTable({
+      head: [tableColumn],
+      body: tableRows,
+      startY: startY,
+      styles: {
+        fillColor: [255, 255, 255],
+        textColor: [0, 0, 0],
+      },
+      headStyles: {
+        fillColor: [34, 153, 84],
+        textColor: [255, 255, 255],
+        fontStyle: "bold",
+      },
+      alternateRowStyles: {
+        fillColor: [234, 248, 239],
+      },
+      margin: { top: startY },
+    });
+
+    doc.save("PaymentReceipt.pdf"); // Save the PDF
   };
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
       {/* Card Container */}
       <div className="relative w-full max-w-4xl bg-white shadow-lg p-4 md:p-6 mt-4">
-        <h2 className="text-lg font-bold text-center mb-6">
-          PAYMENT FORM
-        </h2>
+        <h2 className="text-lg font-bold text-center mb-6">PAYMENT FORM</h2>
         <Form
           method="post"
           className="grid grid-cols-1 md:grid-cols-2 gap-4"
         >
           {/* Form Fields */}
           <div className="form-group">
-            <label htmlFor="customerName" className="text-sm text-gray-700 font-semibold">
+            <label
+              htmlFor="customerName"
+              className="text-sm text-gray-700 font-semibold"
+            >
               Customer Name:
             </label>
             <input
@@ -70,7 +140,10 @@ export default function Payment() {
             />
           </div>
           <div className="form-group">
-            <label htmlFor="customerID" className="text-sm text-gray-700 font-semibold">
+            <label
+              htmlFor="customerID"
+              className="text-sm text-gray-700 font-semibold"
+            >
               Customer ID:
             </label>
             <input
@@ -85,7 +158,10 @@ export default function Payment() {
           </div>
 
           <div className="form-group">
-            <label htmlFor="requestDate" className="text-sm text-gray-700 font-semibold">
+            <label
+              htmlFor="requestDate"
+              className="text-sm text-gray-700 font-semibold"
+            >
               Collected Date:
             </label>
             <input
@@ -99,7 +175,10 @@ export default function Payment() {
           </div>
 
           <div className="form-group">
-            <label htmlFor="requestType" className="text-sm text-gray-700 font-semibold">
+            <label
+              htmlFor="requestType"
+              className="text-sm text-gray-700 font-semibold"
+            >
               Category:
             </label>
             <input
@@ -114,7 +193,10 @@ export default function Payment() {
           </div>
 
           <div className="form-group">
-            <label htmlFor="weight" className="text-sm text-gray-700 font-semibold">
+            <label
+              htmlFor="weight"
+              className="text-sm text-gray-700 font-semibold"
+            >
               Weight:
             </label>
             <input
@@ -129,7 +211,10 @@ export default function Payment() {
           </div>
 
           <div className="form-group">
-            <label htmlFor="fullAmount" className="text-sm text-gray-700 font-semibold">
+            <label
+              htmlFor="fullAmount"
+              className="text-sm text-gray-700 font-semibold"
+            >
               Full Amount:
             </label>
             <input
@@ -145,7 +230,10 @@ export default function Payment() {
 
           {/* Bank Details */}
           <div className="form-group">
-            <label htmlFor="accountNumber" className="text-sm text-gray-700 font-semibold">
+            <label
+              htmlFor="accountNumber"
+              className="text-sm text-gray-700 font-semibold"
+            >
               Account Number:
             </label>
             <input
@@ -160,7 +248,10 @@ export default function Payment() {
           </div>
 
           <div className="form-group">
-            <label htmlFor="accountName" className="text-sm text-gray-700 font-semibold">
+            <label
+              htmlFor="accountName"
+              className="text-sm text-gray-700 font-semibold"
+            >
               Account Name:
             </label>
             <input
@@ -175,7 +266,10 @@ export default function Payment() {
           </div>
 
           <div className="form-group">
-            <label htmlFor="bankName" className="text-sm text-gray-700 font-semibold">
+            <label
+              htmlFor="bankName"
+              className="text-sm text-gray-700 font-semibold"
+            >
               Bank Name:
             </label>
             <input
@@ -190,7 +284,10 @@ export default function Payment() {
           </div>
 
           <div className="form-group">
-            <label htmlFor="branchCode" className="text-sm text-gray-700 font-semibold">
+            <label
+              htmlFor="branchCode"
+              className="text-sm text-gray-700 font-semibold"
+            >
               Branch Code:
             </label>
             <input
@@ -221,7 +318,6 @@ export default function Payment() {
               Download PDF
             </button>
           </div>
-
         </Form>
       </div>
     </div>
