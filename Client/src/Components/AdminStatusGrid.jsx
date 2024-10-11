@@ -55,6 +55,6 @@ export default function AdminStatusGrid({ employeeCount, vehicleCount, requestCo
   )
 }
 
-function BoxWrapper({ children }) {
+function BoxWrapper({ children }) { // wrap elements inside a "box" or container
   return <div className='bg-white rounded-sm p-4 flex-1 border-gray-200 flex items-center'>{children}</div>
 }

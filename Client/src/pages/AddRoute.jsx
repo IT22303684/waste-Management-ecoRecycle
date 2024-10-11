@@ -1,19 +1,19 @@
-
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Form, redirect, useLoaderData } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import customFetch from '../utils/customFetch';
 
-// Loader function to fetch data
+
 export const loader = async ({ params, request }) => {
   try {
+    // Get request ID from query params
     const url = new URL(request.url);
-    const reqId = url.searchParams.get('reqId'); // Get request ID from query params
+    const reqId = url.searchParams.get('reqId'); 
 
     // Fetch customer and vehicle data in parallel
     const [customerResponse, vehicleResponse, requestResponce] = await Promise.all([
-      customFetch(`/users/${params.id}`),  // Fetch customer details using `params.id`
-      customFetch(`/vehicle/retrivevehicles`),  // Fetch all vehicles
+      customFetch(`/users/${params.id}`),  
+      customFetch(`/vehicle/retrivevehicles`), 
       customFetch(`/request/retrieveSpecificRequest/${reqId}`),
     ]);
 
@@ -27,14 +27,14 @@ export const loader = async ({ params, request }) => {
     };
   } catch (error) {
     toast.error(error?.response?.data?.msg || 'Failed to load data');
-    return redirect("/AdminDashboard/request");  // Redirect in case of failure
+    return redirect("/AdminDashboard/request"); 
   }
 };
 
 export const action = async ({ request }) => {
   const formData = new URLSearchParams(await request.formData());
 
-  // Extract Reqid from form data
+  // Extract  form data
   const Reqid = formData.get('RequestId');
 
   try {
@@ -42,7 +42,7 @@ export const action = async ({ request }) => {
     await customFetch.post('routePath/addRoutePath', Object.fromEntries(formData));
     toast.success('Route Added Successfully');
 
-    //  update status in request
+    // Update status in request
     if (Reqid) {
       try {
         const response = await customFetch.put(`/request/updateRequestStatus/${Reqid}`, {
@@ -65,26 +65,68 @@ export const action = async ({ request }) => {
   }
 };
 
-export default function AddRoute() {
+const AddRoute = () => {
   const { vehicles, customer, request, reqId, cusId } = useLoaderData();
+  const [formValues, setFormValues] = useState({
+    ContactNumber: request?.phoneNo || '',
+    PickupPath: '',
+    ArriveDate: '',
+    ArriveTime: '',
+    Vehicle: vehicles?.[0]?._id || ''
+  });
+  const [errors, setErrors] = useState({});
   const [vehicleOptions, setVehicleOptions] = useState([]);
   const [minDate, setMinDate] = useState('');
 
   useEffect(() => {
     if (vehicles && Array.isArray(vehicles)) {
-      setVehicleOptions(vehicles);  // Set vehicle options
+      setVehicleOptions(vehicles);
     }
 
     // Set the minimum date to today
     const today = new Date();
-    const formattedToday = today.toISOString().split("T")[0];  // Format as yyyy-mm-dd
+    const formattedToday = today.toISOString().split("T")[0];
     setMinDate(formattedToday);
   }, [vehicles]);
 
-  // Check if customer data is still loading or missing
-  if (!customer) {
-    return <div>Loading...</div>;
-  }
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormValues({ ...formValues, [name]: value });
+    validateField(name, value);
+  };
+
+  const validateField = (name, value) => {
+    let errorMsg = "";
+
+    switch (name) {
+      case "ContactNumber":
+        const phonePattern = /^[0-9]{10}$/;  // Assuming phone number format
+        if (!value) {
+          errorMsg = "Contact Number is required.";
+        } else if (!phonePattern.test(value)) {
+          errorMsg = "Contact Number is invalid.";
+        }
+        break;
+      case "PickupPath":
+        if (!value) errorMsg = "Pickup Path is required.";
+        break;
+      case "ArriveDate":
+        if (!value) errorMsg = "Arrive Date is required.";
+        break;
+      case "ArriveTime":
+        if (!value) errorMsg = "Arrive Time is required.";
+        break;
+      case "Vehicle":
+        if (!value) errorMsg = "Vehicle selection is required.";
+        break;
+      default:
+        break;
+    }
+
+    setErrors((prevErrors) => ({ ...prevErrors, [name]: errorMsg }));
+  };
+
+  const isSubmitting = false; 
 
   return (
     <div className='bg-white w-full flex items-center justify-center flex-col min-h-screen mb-10'>
@@ -92,30 +134,24 @@ export default function AddRoute() {
         <h3 className='font-semibold text-green-600 text-3xl text-center'>ADD ROUTE</h3>
 
         <Form method="post">
-          {/* Request ID */}
-          <div className='mt-8'>
-            <input
-              type='text'
-              name='RequestId'
-              className='w-full border-2 border-gray-100 rounded-xl p-3 mt-1'
-              value={reqId || ''}  // Use reqId from loader data with fallback
-              readOnly
-              hidden
-            />
-          </div>
-          <div className='mt-8'>
-            {/* customer ID */}
-            <input
-              type='text'
-              name='CustomerId'
-              className='w-full border-2 border-gray-100 rounded-xl p-3 mt-1'
-              value={cusId}
-              readOnly
-              hidden
-            />
-          </div>
+          <input
+            type='text'
+            name='RequestId'
+            className='w-full border-2 border-gray-100 rounded-xl p-3 mt-1'
+            value={reqId || ''}
+            readOnly
+            hidden
+          />
+          <input
+            type='text'
+            name='CustomerId'
+            className='w-full border-2 border-gray-100 rounded-xl p-3 mt-1'
+            value={cusId}
+            readOnly
+            hidden
+          />
 
-          {/* Display the Customer Name */}
+          {/* Customer Name */}
           <div className='mt-8'>
             <label className='text-lg font-medium'>Contact Name</label>
             <input
@@ -123,33 +159,22 @@ export default function AddRoute() {
               name='CustomerName'
               defaultValue={customer.user.name + ' ' + customer.user.lastName}
               className='w-full border-2 border-gray-100 rounded-xl p-3 mt-1'
-              placeholder='Enter Name'
               readOnly
             />
           </div>
 
-          {/* Display the Phone number */}
+          {/* Contact Number */}
           <div className='mt-8'>
             <label className='text-lg font-medium'>Contact Number</label>
             <input
               type='text'
               name='ContactNumber'
-              defaultValue={request.phoneNo}
-              className='w-full border-2 border-gray-100 rounded-xl p-3 mt-1'
-              placeholder='Enter Contact Number'
+              value={formValues.ContactNumber}
+              onChange={handleChange}
+              readOnly
+              className='w-full border-2 rounded-xl p-3 mt-1'
             />
-          </div>
-
-          {/* Google Maps Route Selection */}
-          <div className="mt-8">
-            <a
-              href="https://www.google.com/maps"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-block p-2 w-1/2 border-2 border-gray-700 text-gray-700 font-bold py-4 rounded hover:bg-green-500 hover:text-white hover:no-underline text-center"
-            >
-              Select New Route Pin From Google Map
-            </a>
+            {errors.ContactNumber && <p className='text-red-500'>{errors.ContactNumber}</p>}
           </div>
 
           {/* Pickup Path */}
@@ -158,9 +183,14 @@ export default function AddRoute() {
             <input
               type='text'
               name='PickupPath'
-              className='w-full border-2 border-gray-100 rounded-xl p-3 mt-1'
+              value={formValues.PickupPath}
+              onChange={handleChange}
+              className={`w-full border-2 rounded-xl p-3 mt-1 ${
+                errors.PickupPath ? 'border-red' : 'border-gray-100'
+              }`}
               placeholder='Enter Path'
             />
+            {errors.PickupPath && <p className='text-red'>{errors.PickupPath}</p>}
           </div>
 
           {/* Arrive Date */}
@@ -169,9 +199,14 @@ export default function AddRoute() {
             <input
               type='date'
               name='ArriveDate'
-              min={minDate}  // Set the minimum date to today
-              className='w-full border-2 border-gray-100 rounded-xl p-3 mt-1'
+              value={formValues.ArriveDate}
+              onChange={handleChange}
+              min={minDate}
+              className={`w-full border-2 rounded-xl p-3 mt-1 ${
+                errors.ArriveDate ? 'border-red' : 'border-gray-100'
+              }`}
             />
+            {errors.ArriveDate && <p className='text-red'>{errors.ArriveDate}</p>}
           </div>
 
           {/* Arrive Time */}
@@ -180,8 +215,13 @@ export default function AddRoute() {
             <input
               type='time'
               name='ArriveTime'
-              className='w-full border-2 border-gray-100 rounded-xl p-3 mt-1'
+              value={formValues.ArriveTime}
+              onChange={handleChange}
+              className={`w-full border-2 rounded-xl p-3 mt-1 ${
+                errors.ArriveTime ? 'border-red' : 'border-gray-100'
+              }`}
             />
+            {errors.ArriveTime && <p className='text-red-500'>{errors.ArriveTime}</p>}
           </div>
 
           {/* Vehicle Selection */}
@@ -189,7 +229,11 @@ export default function AddRoute() {
             <label className='text-lg font-medium'>Vehicle</label>
             <select
               name='Vehicle'
-              className='w-full border-2 border-gray-50 rounded-xl p-3 mt-1'
+              value={formValues.Vehicle}
+              onChange={handleChange}
+              className={`w-full border-2 rounded-xl p-3 mt-1 ${
+                errors.Vehicle ? 'border-red' : 'border-gray-100'
+              }`}
             >
               {vehicleOptions.length > 0 ? (
                 vehicleOptions.map(vehicle => (
@@ -201,17 +245,22 @@ export default function AddRoute() {
                 <option disabled>No vehicles available</option>
               )}
             </select>
+            {errors.Vehicle && <p className='text-red'>{errors.Vehicle}</p>}
           </div>
 
-          {/* Submit Button */}
-          <div className='mt-4'>
-            <button type='submit' className='bg-green-500 text-white font-bold py-4 rounded w-full hover:bg-green-700'>
-              ADD
+          <div className='mt-8 flex justify-center'>
+            <button
+              type='submit'
+              className='bg-green-500 text-white font-bold py-4 rounded w-full hover:bg-green-700 duration-150'
+              disabled={isSubmitting}
+            >
+              SUBMIT
             </button>
           </div>
         </Form>
       </div>
     </div>
   );
+};
 
-}
+export default AddRoute;

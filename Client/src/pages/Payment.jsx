@@ -1,7 +1,7 @@
 import React from "react";
 import { Form, useLoaderData, redirect } from "react-router-dom";
 import { toast } from "react-toastify";
-import customFetch from "../utils/customFetch";
+import customFetch from "../utils/customFetch"; // Assuming customFetch is your utility for making API requests
 import { useNavigation, useSearchParams } from "react-router-dom";
 import jsPDF from "jspdf";
 import "jspdf-autotable";
@@ -28,6 +28,7 @@ export const loader = async ({ params, request }) => {
   } catch (error) {
     if (error?.response?.status === 404) {
       toast.error("User has not updated their bank details");
+
     } else {
       toast.error(error?.response?.data?.msg || "Failed to load data");
     }
@@ -40,7 +41,43 @@ export default function Payment() {
   const navigation = useNavigation();
   const isSubmitting = navigation.state === "submitting";
 
-  // Download PDF Handler
+
+  // Handle Payment API call
+  const handlePayment = async (event) => {
+    event.preventDefault(); // Prevent the form from submitting normally
+
+    const paymentDetails = {
+      customerName: waste?.CustomerName,
+      customerID: waste?.CustomerId,
+      collectedDate: waste?.CollectedDate,
+      wasteCategory: waste?.WasteCategory,
+      weight: waste?.Weight,
+      fullAmount: waste?.Price,
+      accountNumber: bank?.Account_Number,
+      accountName: bank?.Account_Name,
+      bankName: bank?.Bank_Name,
+      branchCode: bank?.Branch_Code,
+    };
+
+    try {
+      const response = await customFetch.post("/pay-user", paymentDetails);
+
+      if (response.status === 200) {
+        toast.success("Payment processed successfully!");
+      } else {
+        throw new Error("Failed to process payment");
+      }
+    } catch (error) {
+      toast.error(error.message || "Payment failed");
+    }
+  };
+
+  // Redirect user to Stripe Checkout page
+  const handleStripeCheckout = () => {
+    window.location.href = "https://buy.stripe.com/test_8wMcQH6EXdsW5YQfYY";
+  };
+
+
   const handleDownloadPDF = () => {
     const doc = new jsPDF();
 
@@ -117,9 +154,14 @@ export default function Payment() {
       {/* Card Container */}
       <div className="relative w-full max-w-4xl bg-white shadow-lg p-4 md:p-6 mt-4">
         <h2 className="text-lg font-bold text-center mb-6">PAYMENT FORM</h2>
+
+
+        {/* Form with payment details */}
+
         <Form
           method="post"
           className="grid grid-cols-1 md:grid-cols-2 gap-4"
+          onSubmit={handlePayment} // Bind the form submit to the handlePayment function
         >
           {/* Form Fields */}
           <div className="form-group">
@@ -304,16 +346,19 @@ export default function Payment() {
           {/* Action Buttons */}
           <div className="col-span-2 flex flex-col md:flex-row justify-center items-center gap-4 mt-4">
             <button
+              type="button"
+              onClick={handleStripeCheckout} // Updated to handle Stripe Checkout
               className="px-6 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 transition-colors duration-200 text-sm w-full md:w-40"
               disabled={isSubmitting}
             >
-              {isSubmitting ? "Processing..." : "PAY"}
+              Pay Now
             </button>
 
             <button
               type="button"
               onClick={handleDownloadPDF}
-              className="px-6 py-2 bg-sky-500 text-white rounded-md hover:bg-sky-600 transition-colors duration-200 text-sm w-full md:w-40"
+              className="px-6 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition-colors duration-200 text-sm w-full md:w-40"
+              disabled={isSubmitting}
             >
               Download PDF
             </button>

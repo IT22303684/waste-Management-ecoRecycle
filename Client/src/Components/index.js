@@ -13,4 +13,7 @@ export {default as DriverRequest} from './DriverRequest'
 export {default as DriverSidebar} from './DriverSidebar'
 export {default as DriverApprovedRequest} from './DriverApprovedRequest'
 export {default as CollectedWasteTable} from './CollectedWasteTable'
+export {default as RecycleItemsBarChart} from './RecycleItemsClientBarChart'
+
+
 

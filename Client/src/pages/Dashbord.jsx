@@ -9,7 +9,7 @@ import CollectedWasteBarchart from "../Components/CollectedWasteBarchart";
 import VehicleBarchart from "../Components/VehicleBarchart";
 import RequestTypePieChart from "../Components/RequestTypePieChart";
 
-// Fetch all the necessary data when the page loads
+
 export const loader = async () => {
   try {
     const [employeeResponse, vehicleResponse, requestResponse, userResponse] = await Promise.all([
@@ -19,13 +19,13 @@ export const loader = async () => {
       customFetch(`/users/getAllusers`),  // Fetch users
     ]);
 
-    // Count the number of rows for each data set
+    // Count the number of rows
     const employeeCount = employeeResponse.data.length;
     const vehicleCount = vehicleResponse.data.length;
     const requestCount = requestResponse.data.length;
     const userCount = userResponse.data.length;
 
-    // Return the fetched data and the counts
+
     return {
       employee: employeeResponse.data,
       vehicles: vehicleResponse.data,
@@ -55,7 +55,7 @@ export const loader = async () => {
   }
 };
 
-// Create context for shared state management
+// context
 const allDetailsContext = createContext({ data: [], refetch: () => {} });
 
 const AllDetails = () => {
@@ -89,16 +89,17 @@ const AllDetails = () => {
     }
   }, []);
 
-  // Display a loading state if necessary
+
   if (loading || !data || !counts) {
-    return <div>Loading...</div>; // Simple loading state, can be replaced with a spinner
+    return <div>Loading...</div>;
   }
 
   return (
     <allDetailsContext.Provider value={{ data, refetch }}>
       <div className='flex flex-col gap-4 mb-4'>
+
+
         {/* Pass the counts as props to AdminStatusGrid */}
-        
         <AdminStatusGrid 
           employeeCount={counts.employeeCount} 
           vehicleCount={counts.vehicleCount} 
@@ -112,7 +113,6 @@ const AllDetails = () => {
           <RequestBarChart />
         </div>
 
-        {/* Adjusted the size for the pie chart */}
         <div className='flex flex-row gap-4 w-full h-50 bg-white pb-2 mb-4'>
           <div className="w-1/2 h-64 mx-auto">
             <RequestTypePieChart />
@@ -132,7 +132,7 @@ const AllDetails = () => {
   );
 };
 
-// Hook to use the context easily in other components
+// Hook - navigate data for the  componet
 export const useAllDetailsContext = () => useContext(allDetailsContext);
 
 export default AllDetails;

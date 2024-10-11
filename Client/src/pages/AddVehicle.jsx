@@ -39,6 +39,7 @@ export default function AddVehicle() {
               name='VehicleNumber'
               className='w-full border-2 border-gray-100 rounded-xl p-3 mt-1'
               placeholder='Vehicle Number'
+              required
             />
           </div>
           <div className='mt-8'>
@@ -48,6 +49,7 @@ export default function AddVehicle() {
               name='VehicleName'
               className='w-full border-2 border-gray-100 rounded-xl p-3 mt-1'
               placeholder='Vehicle Name'
+              required
             />
           </div>
           <div className='mt-8'>
@@ -57,6 +59,7 @@ export default function AddVehicle() {
               name='ChassiNumber'
               className='w-full border-2 border-gray-100 rounded-xl p-3 mt-1'
               placeholder='Enter Chassi Number'
+              required
             />
           </div>
           <div className='mt-8'>

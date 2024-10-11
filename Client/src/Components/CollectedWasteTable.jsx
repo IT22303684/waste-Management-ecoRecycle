@@ -6,6 +6,8 @@ import customFetch from "../utils/customFetch";
 import { toast } from "react-toastify";
 import jsPDF from "jspdf";
 import html2canvas from "html2canvas";
+import  'jspdf-autotable'
+import { base64url } from '../../../Utils/base64url'
 
 export default function CollectedWasteTable() {
   const { data: waste, refetch } = useAllCollectedWaste();
@@ -43,37 +45,96 @@ export default function CollectedWasteTable() {
   );
 
   // Function to export table to PDF
-  const exportToPDF = () => {
-    const input = document.getElementById("tableToExport");
+  const generatePDF = () => {
 
-    // Hide elements with 'no-print' class
-    const noPrintElements = document.querySelectorAll(".no-print");
-    noPrintElements.forEach((el) => (el.style.display = "none"));
+    const doc = new jsPDF();
 
-    html2canvas(input).then((canvas) => {
-      const imgData = canvas.toDataURL("image/png");
-      const pdf = new jsPDF();
-      const imgWidth = 210;
-      const pageHeight = 295;
-      const imgHeight = (canvas.height * imgWidth) / canvas.width;
-      let heightLeft = imgHeight;
-      let position = 0;
+     // Adding a frame around the PDF content
+    const pageWidth = doc.internal.pageSize.getWidth();
+    const pageHeight = doc.internal.pageSize.getHeight();
+    doc.rect(5, 5, pageWidth - 10, pageHeight - 10);
 
-      pdf.addImage(imgData, "PNG", 0, position, imgWidth, imgHeight);
-      heightLeft -= pageHeight;
+    doc.addImage(base64url, "PNG", 10,10,50,20);
 
-      while (heightLeft >= 0) {
-        position = heightLeft - imgHeight;
-        pdf.addPage();
-        pdf.addImage(imgData, "PNG", 0, position, imgWidth, imgHeight);
-        heightLeft -= pageHeight;
-      }
+    doc.setFontSize(18);
+    doc.setTextColor(40);
+    doc.text("Eco Recycle Company", 70, 15);
 
-      pdf.save("collected_waste_table.pdf");
+    doc.setFontSize(12);
+    doc.setTextColor(80);
+    doc.text("Eco Recycle, 123 Green Street, Recycle City, 54321", 70, 22);
 
-      // Show elements with 'no-print' class back after PDF generation
-      noPrintElements.forEach((el) => (el.style.display = ""));
+    doc.setFontSize(12);
+    doc.text("Generated on: " + new Date().toLocaleDateString(), 70, 29);
+
+    doc.setFontSize(12);
+    doc.setTextColor(80);
+    doc.text("Contact: info@ecorecycle.com", 14, 45);
+    doc.text("Phone: +94 772931811", 14, 50);
+    doc.text("Website: www.ecorecycle.com", 14, 55);
+
+    doc.setFontSize(12);
+    doc.setTextColor(34, 153, 84);
+    doc.text("Collected Waste List", 14, 70); 
+
+    const startY = 75;
+
+    const tableColumn = [
+      "Customer ID",
+      "Customer Name",
+      "Price",
+      "Weight",
+      "Waste Category",
+      "Collected Date",
+    ];
+
+    const tableRows = [];
+
+    waste.forEach((wastes) => {
+      const wasteData = [
+        wastes.CustomerId.slice(0,6),
+        wastes.CustomerName,
+        wastes.Price,
+        wastes.Weight,
+        wastes.WasteCategory,
+        wastes.CollectedDate,
+      ];
+      tableRows.push(wasteData);
     });
+
+    doc.autoTable({
+      head: [tableColumn],
+      body: tableRows,
+      startY: startY,
+      styles: {
+        fillColor: [255, 255, 255],
+        textColor: [0, 0, 0],
+      },
+      headStyles: {
+        fillColor: [34, 153, 84],
+        textColor: [255, 255, 255],
+        fontStyle: "bold",
+      },
+      alternateRowStyles: {
+        fillColor: [234, 248, 239],
+      },
+      margin: { top: startY },
+    });
+
+        // Footer
+    const footerY = doc.internal.pageSize.getHeight() - 30;
+    doc.setFontSize(10);
+    doc.setTextColor(80);
+    doc.text("All rights reserved © Eco Recycle Company", 14, footerY);
+    doc.text(
+      `Page ${doc.internal.getNumberOfPages()}`,
+      pageWidth - 30,
+      footerY,
+      { align: "right" }
+      );
+
+    doc.save("Collected Waste.pdf"); 
+
   };
 
   return (
@@ -91,7 +152,7 @@ export default function CollectedWasteTable() {
       {/* Add Export to PDF Button */}
       <div className="p-4">
         <button
-          onClick={exportToPDF}
+          onClick={generatePDF}
           className="px-4 py-2 text-white bg-green-500 rounded shadow-md hover:bg-green-600"
         >
           Export to PDF
@@ -115,7 +176,7 @@ export default function CollectedWasteTable() {
         <tbody>
           {filteredData.map((waste) => (
             <tr key={waste._id}>
-              <td>{waste.CustomerId}</td>
+              <td>CUS{waste.CustomerId.slice(0, 6)}</td>
               <td>{waste.CustomerName}</td>
               <td>{waste.Price}</td>
               <td>{waste.Weight}</td>
@@ -152,7 +213,7 @@ export default function CollectedWasteTable() {
                 </p>
                 <div className="flex justify-between">
                   <button
-                    onClick={exportToPDF}
+                    onClick={generatePDF}
                     className="px-4 py-2 text-white bg-green-500 rounded hover:bg-green-600"
                   >
                     Export to PDF

@@ -115,7 +115,7 @@ export default function DriverApprovedRequest() {
             {approvedRoute.length > 0 ? (
               approvedRoute.map((route) => (
                 <tr key={route._id} className="hover:bg-gray-100">
-                  <td>{route.CustomerId}</td>
+                  <td>CUS{route.CustomerId.slice(0,6)}</td>
                   <td>{route.CustomerName}</td>
                   <td>{route.ContactNumber}</td>
                   <td>
@@ -151,13 +151,7 @@ export default function DriverApprovedRequest() {
         </table>
       </div>
 
-      <button
-        onClick={printToPDF}
-        className="px-4 py-2 mt-4 text-white bg-green-500 rounded"
-      >
-        Export to PDF
-      </button>
-
+      
       {showConfirm.visible && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
           <div className="p-6 bg-white rounded shadow-lg">

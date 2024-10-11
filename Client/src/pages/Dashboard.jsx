@@ -5,6 +5,7 @@ import dimage from "../assets/Images/d-image.svg";
 import { FaUser, FaDollarSign, FaTrash } from "react-icons/fa";
 import { toast } from "react-toastify";
 import customFetch from "../utils/customFetch";
+import { RecycleItemsBarChart } from "../Components";
 
 export const loader = async ({ request }) => {
   try {
@@ -67,6 +68,8 @@ function Dashboard() {
           </a>
         </div>
       </div>
+      <RecycleItemsBarChart />
+     {/* Recycle Items Barchart */}
 
       {/* RItem Data Table */}
       <div className="bg-white p-6 rounded-lg shadow-md mt-4">

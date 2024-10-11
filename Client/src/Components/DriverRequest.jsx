@@ -99,7 +99,7 @@ export default function DriverRequest() {
             {scheduledRoute.length > 0 ? (
               scheduledRoute.map((route) => (
                 <tr key={route._id} className="hover:bg-gray-100">
-                  <td>{route.CustomerId}</td>
+                  <td>CUS{route.CustomerId.slice(0,6)}</td>
                   <td>{route.CustomerName}</td>
                   <td>{route.ContactNumber}</td>
                   <td>

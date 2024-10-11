@@ -107,6 +107,18 @@ export default function Company() {
       margin: { top: startY },
     });
 
+    // Footer
+    const footerY = doc.internal.pageSize.getHeight() - 30;
+    doc.setFontSize(10);
+    doc.setTextColor(80);
+    doc.text("All rights reserved © Eco Recycle Company", 14, footerY);
+    doc.text(
+      `Page ${doc.internal.getNumberOfPages()}`,
+      pageWidth - 30,
+      footerY,
+      { align: "right" }
+    );
+
     doc.save("Company.pdf"); // Save the PDF
   };
 

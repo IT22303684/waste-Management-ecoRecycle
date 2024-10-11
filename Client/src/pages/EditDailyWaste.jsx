@@ -57,7 +57,6 @@ export default function EditDailyWaste() {
 
         <Form method="post">
           <div className="mt-8">
-            <label className="text-lg font-medium">Customer ID</label>
             <input
               type="text"
               name="CustomerId"
@@ -65,6 +64,7 @@ export default function EditDailyWaste() {
               className="w-full p-3 mt-1 border-2 border-gray-100 rounded-xl"
               placeholder="Customer ID"
               readOnly={true}
+              hidden
             />
           </div>
           <div className="mt-8">
