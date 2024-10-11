@@ -5,6 +5,7 @@ import dimage from "../assets/Images/d-image.svg";
 import { FaUser, FaDollarSign, FaTrash } from "react-icons/fa";
 import { toast } from "react-toastify";
 import customFetch from "../utils/customFetch";
+import { RecycleItemUserBarchart } from "../Components";
 
 export const loader = async ({ request }) => {
   try {
@@ -27,7 +28,7 @@ function Dashboard() {
         {" "}
         {/* Add justify-between */}
         <div>
-          <h2 className="text-2xl font-semibold mb-2">
+          <h2 className="text-4xl font-semibold mb-2">
             Welcome back, {user?.name}!
           </h2>
           <p className="text-gray-600">We're glad to have you here.</p>
@@ -44,7 +45,7 @@ function Dashboard() {
           {/* Equally separate links */}
           <a
             href="/profile"
-            className="text-blue-500 hover:underline flex flex-col items-center"
+            className="text-green-600 hover:underline flex flex-col items-center"
           >
             {" "}
             {/* Vertical layout for each link */}
@@ -53,20 +54,22 @@ function Dashboard() {
           </a>
           <a
             href="/earn-money"
-            className="text-blue-500 hover:underline flex flex-col items-center"
+            className="text-green-600 hover:underline flex flex-col items-center"
           >
             <FaDollarSign className="text-4xl mb-2" />
             Earn Money
           </a>
           <a
             href="/waste-items"
-            className="text-blue-500 hover:underline flex flex-col items-center"
+            className="text-green-600 hover:underline flex flex-col items-center"
           >
             <FaTrash className="text-4xl mb-2" />
             Waste Items
           </a>
         </div>
       </div>
+
+      <RecycleItemUserBarchart />
 
       {/* RItem Data Table */}
       <div className="bg-white p-6 rounded-lg shadow-md mt-4">
