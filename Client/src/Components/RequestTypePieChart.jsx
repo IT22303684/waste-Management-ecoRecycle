@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Pie } from 'react-chartjs-2';
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
-import customFetch from "../utils/customFetch"; // Adjust this import path as needed
+import customFetch from "../utils/customFetch";
 import { toast } from 'react-toastify';
 
 // Register components for Pie chart in Chart.js
@@ -16,14 +16,12 @@ export default function RequestTypePieChart() {
         const { data } = await customFetch.get("/request/retriveRequest");
         console.log('data fetched:', data);
 
-        // Initialize an object to store counts of requests per category
         const categoryCounts = {};
 
-        // Iterate over the fetched data and count the categories
+        // fetching
         data.forEach(request => {
-          const category = request.category; // Assuming 'category' is the field name in your model
+          const category = request.category; 
 
-          // Increment the count for this category
           if (categoryCounts[category]) {
             categoryCounts[category] += 1;
           } else {
@@ -31,26 +29,31 @@ export default function RequestTypePieChart() {
           }
         });
 
-        setCategoryData(categoryCounts); // Update state with the calculated category data
+        // Update state with the calculated category data
+        setCategoryData(categoryCounts); 
       } catch (error) {
         toast.error(error?.response?.data?.msg || 'Failed to fetch data');
-        setCategoryData({}); // Reset data on error
+        setCategoryData({});
       }
     }
 
     fetchRequestData();
-  }, []); // Empty dependency array means it runs once on component mount
+  }, []); 
 
-  // Prepare the data for the pie chart
-  const categories = Object.keys(categoryData); // Get all categories (labels for the pie chart)
-  const categoryCounts = Object.values(categoryData); // Get the counts for each category (data for the pie chart)
+  // data for the pie chart
+  const categories = Object.keys(categoryData); //labels for the pie chart
+  const categoryCounts = Object.values(categoryData); // data for the pie chart
 
   const data = {
-    labels: categories, // Use categories as labels
+
+    labels: categories, 
+
     datasets: [
       {
         label: 'Number of Requests per Category',
-        data: categoryCounts, // Use dynamically fetched category data
+
+        data: categoryCounts, 
+
         backgroundColor: [
           'rgba(255, 99, 132, 0.6)',
           'rgba(54, 162, 235, 0.6)',
@@ -58,7 +61,7 @@ export default function RequestTypePieChart() {
           'rgba(75, 192, 192, 0.6)',
           'rgba(153, 102, 255, 0.6)',
           'rgba(255, 159, 64, 0.6)',
-        ], // Different colors for different categories
+        ],
         borderColor: [
           'rgba(255, 99, 132, 1)',
           'rgba(54, 162, 235, 1)',
@@ -82,7 +85,7 @@ export default function RequestTypePieChart() {
         display: true,
         text: 'Requests per Category',
         font: {
-          size: 20, // Adjust title font size
+          size: 20,
         },
       },
     },
