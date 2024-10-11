@@ -116,6 +116,8 @@ import { loader as paymentLoader } from "./pages/Payment";
 
 import { action as paymentInfoAction } from "./pages/PaymentInfo";
 
+import { loader as dashbordLoaderForAdmin } from "./pages/Dashbord";
+
 
 import { loader as TimeTableLoader } from "./pages/TimeTable";
 import { action as deleteTimeTableAction } from "./pages/DeleteTimeTable";
@@ -192,7 +194,7 @@ function App() {
             {
               index: true,
               element: <AdminDashbord />,
-              loader: AdminDashboardLoader,
+              loader: dashbordLoaderForAdmin,
             },
             {
               path: "request",

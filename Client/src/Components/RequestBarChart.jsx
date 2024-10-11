@@ -43,8 +43,8 @@ export default function RequestBarChart() {
       {
         label: 'Number of Requests',
         data: monthlyData, // Use dynamically fetched data
-        backgroundColor: 'rgba(0, 128, 4, 0.6)',
-        borderColor: 'rgba(75, 192, 192, 1)',
+        backgroundColor: 'rgba(245, 152, 39, 0.6)',
+        borderColor: 'rgba(245, 152, 39, 0.6)',
         borderWidth: 1,
       },
     ],

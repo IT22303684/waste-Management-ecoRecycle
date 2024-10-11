@@ -43,8 +43,8 @@ export default function VehicleBarchart() {
       {
         label: 'Number of Collected Requests',
         data: monthlyData, // Use dynamically fetched data
-        backgroundColor: 'rgba(0, 128, 4, 0.6)',
-        borderColor: 'rgba(75, 192, 192, 1)',
+        backgroundColor: 'rgba(39, 196, 245, 0.8)',
+        borderColor: 'rgba(39, 196, 245, 0.8)',
         borderWidth: 1,
       },
     ],
